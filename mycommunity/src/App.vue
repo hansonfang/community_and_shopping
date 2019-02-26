@@ -48,7 +48,7 @@ a {
 }
 .page{
   position: absolute;
-  top:100px;
+  top:93px;
   bottom:0;
     width: 100%;
     margin: 0 auto;
@@ -81,5 +81,10 @@ a {
 }
 .slide-right-leave-to{
   transform: translate(100%, 0);
+}
+
+.v-dialog .v-card__title {
+  justify-content: center;
+  padding-bottom: 0;
 }
 </style>

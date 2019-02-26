@@ -29,7 +29,7 @@ export default {
     },
     image: {
       type: String,
-      default: require("../assets/images/index_idea.png")
+      default: require("@/assets/images/index_idea.png")
     },
     divider:{
         type:Boolean,
