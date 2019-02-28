@@ -35,7 +35,6 @@ export default {
 };
 </script>
 <style scoped>
-@import "../assets/font/font.css"; 
 @media screen and (max-width: 800px) {
   .v-btn {
     width: 100px;
@@ -52,8 +51,7 @@ export default {
   }
 }
 .logo{
-  font-family: "简雁翎";
-  font-size: 2.5rem;
+  font-size: 2rem;
   align-self: center;
 }
 .logo:after{

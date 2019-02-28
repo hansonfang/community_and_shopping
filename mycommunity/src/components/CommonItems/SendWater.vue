@@ -112,6 +112,7 @@
                     v-model="expectedDate"
                     no-title
                     scrollable
+                      locale="zh-cn"
                     @input="$refs.menu.save(expectedDate);dateMenu=false"
                   >
 

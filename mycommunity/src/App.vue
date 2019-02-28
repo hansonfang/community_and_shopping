@@ -49,10 +49,12 @@ a {
 .page{
   position: absolute;
   top:93px;
-  bottom:0;
     width: 100%;
     margin: 0 auto;
     -webkit-overflow-scrolling: touch;
+}
+.theme--light.application{
+  background: none;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -86,5 +88,12 @@ a {
 .v-dialog .v-card__title {
   justify-content: center;
   padding-bottom: 0;
+}
+
+.theme--light.v-pagination .v-pagination__navigation .v-icon{
+    font-size: 1.3rem!important;
+}
+.sel-none{
+  user-select: none!important;
 }
 </style>

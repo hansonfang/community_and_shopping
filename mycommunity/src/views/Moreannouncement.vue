@@ -105,9 +105,6 @@ export default {
   z-index: 9;
 }
 
->>>.v-pagination .v-pagination__navigation .v-icon{
-    font-size: 1.3rem;
-}
 .pagination{
     position: fixed;
     left:0;

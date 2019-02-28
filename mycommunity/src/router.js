@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from "./views/main/Index"
-import Common from "./views/main/Common"
 import Post from "./views/main/Post"
 import Shopping from "./views/main/Shopping"
 import Moreannouncement from "./views/Moreannouncement"
+
+/* 引入Post贴吧页面views */
+import PostIndex from "@/views/post/PostIndex"
+import PostBest from "@/views/post/PostBest"
+import PostWrite from "@/views/post/PostWrite"
 
 import Login from "./views/Login.vue"
 import Register from "./views/Register.vue"
@@ -18,15 +21,12 @@ export default new Router({
     {
       path: "/",
       name: "index",//首页
-      component:Index,
+      component:(resolve)=>require(["@/views/main/Index"],resolve),
     },
     {
       path: '/common',//常用功能页面
       name: 'common',
-      component: Common,
-      meta: {
-        key: 0,
-      }
+      component: (resolve)=>require(["@/views/main/Common"],resolve),
     },
     {
       path: '/moreannouncement',
@@ -38,11 +38,14 @@ export default new Router({
     },
     {
       path: '/post',
-      name: 'post',
       component: Post,//贴吧页面
-      meta: {
-        key: 3,
-      }
+      children:[ //贴吧子路由
+        {path:"",redirect:"index"},
+        {path:"index",component:PostIndex},
+        {path:"best",component:PostBest},
+        {path:"write",component:PostWrite},
+        {path:"poll",component: (resolve)=>require(["@/views/post/PostPoll"],resolve)},
+      ]
     },
     {
       path: '/shopping',
