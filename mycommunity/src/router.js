@@ -8,6 +8,7 @@ import Moreannouncement from "./views/Moreannouncement"
 import PostIndex from "@/views/post/PostIndex"
 import PostBest from "@/views/post/PostBest"
 import PostWrite from "@/views/post/PostWrite"
+import PostPage from "@/views/post/PostPage"
 
 import Login from "./views/Login.vue"
 import Register from "./views/Register.vue"
@@ -45,6 +46,7 @@ export default new Router({
         {path:"best",component:PostBest},
         {path:"write",component:PostWrite},
         {path:"poll",component: (resolve)=>require(["@/views/post/PostPoll"],resolve)},
+        {path:":id",component:PostPage}
       ]
     },
     {

@@ -96,4 +96,13 @@ a {
 .sel-none{
   user-select: none!important;
 }
+.d-f{
+  display: flex!important;
+}
+.min-h{
+    min-height:300px!important;
+}
+.f-col{
+  flex-direction: column;
+}
 </style>

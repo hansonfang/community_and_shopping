@@ -8,5 +8,8 @@ module.exports = {
           '@': path.resolve('src'),
         }
       }
+  },
+  devServer:{
+    host: '0.0.0.0'
   }
 }
