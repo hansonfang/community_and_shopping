@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import vuetify from "vuetify"
-import zhHans from 'vuetify/es5/locale/zh-Hans'
+// import zhHans from 'vuetify/es5/locale/zh-Hans'
 import App from './App.vue'
 import router from './router'
 import axios from "axios"
@@ -20,10 +20,6 @@ Vue.prototype.$log=window.console.log;
 Vue.use(vuetify,{
   theme:{
     primary:"#1976D2"
-  },
-  lang:{
-    locales:{zhHans},
-    current:zhHans
   },
   iconfont:"fa"
 })

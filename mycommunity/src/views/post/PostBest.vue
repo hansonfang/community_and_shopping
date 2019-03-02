@@ -26,7 +26,7 @@
 
 </template>
 <script>
-import PostList from "@/components/PostList"
+import PostList from "@/components/Post/PostList"
 export default {
   name: "postbest",
   components:{PostList},
