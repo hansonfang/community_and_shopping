@@ -8,26 +8,16 @@
         <v-form ref="signupForm">
           <v-container grid-list-md>
             <v-layout row>
-              <v-flex
-                xs12
-                md3
-              >
+              <v-flex xs12 md3>
                 <div class="text-xs-center pt-3 subheading">头像上传</div>
               </v-flex>
-              <v-flex
-                xs12
-                md9
-              >
-                <img
-                  :src="avatarUrl"
-                  height="150"
-                  v-if="avatarUrl"
-                />
+              <v-flex xs12 md9>
+                <img :src="avatarUrl" height="150" v-if="avatarUrl">
                 <v-text-field
                   label="选择图片"
-                  @click='pickFile'
-                  v-model='avatarName'
-                  prepend-icon='fa-upload'
+                  @click="pickFile"
+                  v-model="avatarName"
+                  prepend-icon="fa-upload"
                 ></v-text-field>
                 <input
                   type="file"
@@ -37,39 +27,20 @@
                   @change="onFilePicked"
                 >
               </v-flex>
-
             </v-layout>
             <v-layout row>
-              <v-flex
-                xs12
-                md3
-              >
+              <v-flex xs12 md3>
                 <div class="text-xs-center pt-3 subheading">姓名</div>
               </v-flex>
-              <v-flex
-                xs12
-                md9
-              >
-                <v-text-field
-                  ref
-                  label="姓名"
-                  placeholder="汉字"
-                  color="success"
-                  v-model="signup_name"
-                ></v-text-field>
+              <v-flex xs12 md9>
+                <v-text-field ref label="姓名" placeholder="汉字" color="success" v-model="signup_name"></v-text-field>
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex
-                xs12
-                md3
-              >
+              <v-flex xs12 md3>
                 <div class="text-xs-center pt-3 subheading">手机号</div>
               </v-flex>
-              <v-flex
-                xs12
-                md9
-              >
+              <v-flex xs12 md9>
                 <v-text-field
                   ref
                   label="手机号"
@@ -82,16 +53,10 @@
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex
-                xs12
-                md3
-              >
+              <v-flex xs12 md3>
                 <div class="text-xs-center pt-3 subheading">邮箱(可选)</div>
               </v-flex>
-              <v-flex
-                xs12
-                md9
-              >
+              <v-flex xs12 md9>
                 <v-text-field
                   ref="signupEmail"
                   label="邮箱"
@@ -145,10 +110,7 @@
         <small></small>
       </v-card-text>
       <v-card-actions class="btnWrapper">
-        <v-btn
-          color="blue lighten-1"
-          @click="signupSubmit()"
-        >提交</v-btn>
+        <v-btn color="blue lighten-1" @click="signupSubmit()">提交</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -167,9 +129,10 @@ export default {
       signup_email: "",
       signup_password: "123a",
       signup_confirm_password: "123a",
-      avatarUrl:"",
-      avatarName:"",
-      avatarFile:"",
+      avatarUrl: "",
+      avatarName: "",
+      avatarFile: "",
+      avatarRemoteUrl: "",
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
@@ -203,48 +166,57 @@ export default {
       }
       if (valid) {
         //post
-
+        _this.$axios.get("/chengfeng/community/listall?pageNum=1&pageSize=10").then(val=>{
+          _this.$log(val);
+        })
         this.signup_dialog = false;
       }
     },
     validateAll(ref) {
       return ref.validate();
     },
-    pickFile () {
-          this.$refs.image.click();
+    pickFile() {
+      this.$refs.image.click();
     },
-    onFilePicked (e) {
-			const files = e.target.files
-			if(files[0] !== undefined) {
-				this.avatarName = files[0].name
-				if(this.avatarName.lastIndexOf('.') <= 0) {
-					return
-				}
-				const fr = new FileReader()
-				fr.readAsDataURL(files[0])
-				fr.addEventListener('load', () => {
-					this.avatarUrl = fr.result
-					this.avatarFile = files[0] // this is an image file that can be sent to server...
-        /* 上传图片 */
+    onFilePicked(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        this.avatarName = files[0].name;
+        if (this.avatarName.lastIndexOf(".") <= 0) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.avatarUrl = fr.result;
+          this.avatarFile = files[0]; // this is an image file that can be sent to server...
+          /* 上传图片 */
           let param = new FormData(); //创建form对象
-          param.append('file',this.avatarFile,this.avatarFile.name);//通过append向form对象添加数据
-          param.append('chunk','0');//添加form表单中其他数据
+          param.append("file", this.avatarFile, this.avatarFile.name); //通过append向form对象添加数据
+          param.append("chunk", "0"); //添加form表单中其他数据
           // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
           let config = {
-            headers:{'Content-Type':'multipart/form-data'}
-          };  //添加请求头
-          _this.$axios.post('http://47.95.244.237:9990/chengfeng/per/uploadimg',param,config)
-          .then(response=>{
-            _this.$log(response.data);
-          })    
-        })
-
-			} else {
-				this.imageName = ''
-				this.imageFile = ''
-				this.imageUrl = ''
-			}
-		}
+            headers: {
+              "Content-Type": "multipart/form-data",
+              
+            }
+          }; //添加请求头
+          _this.$axios
+            .post(
+              "http://47.95.244.237:9990/chengfeng/per/uploadimg",
+              param,
+              config
+            )
+            .then(response => {
+              _this.$log(response.data);
+            });
+        });
+      } else {
+        this.imageName = "";
+        this.imageFile = "";
+        this.imageUrl = "";
+      }
+    }
   }
 };
 </script>

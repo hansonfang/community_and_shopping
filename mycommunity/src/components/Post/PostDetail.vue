@@ -22,8 +22,48 @@
     <v-flex xs10 class="post-info">
       <div class="d-f box-shadow msg-wrapper f-col" style="position:relative;">
         <div class="pa-2 min-h">
-          <p class="pa-4 min-h">{{detail.msg}}</p>
+          <p class="pa-4">{{detail.msg}}</p>
           <img src alt>
+
+          <!-- 投票区 -->
+          <v-container class="poll" v-if="detail.floor===1&&detail.poll">
+            <h4 class="text-xs-center grey--text pt-0 mt-0 mb-3">{{`${detail.poll.multi?"多项选择":"单项选择"}`}}</h4>
+            <v-layout
+              no-wrap
+              row
+              class="poll-option"
+              v-for="(option,index) in detail.poll.options"
+              :key="index"
+            >
+              <v-flex xs4 class="desc">
+                {{option.desc}}
+                <span class="grey--text">({{option.count}})</span>
+              </v-flex>
+              <v-flex xs6>
+                <div class="option-width" :style="{width:(option.count/detail.poll.sum)*100+'%'}"></div>
+                &nbsp;{{Math.floor((option.count/detail.poll.sum)*100)+'%'}}
+              </v-flex>
+              <v-flex xs2>
+                <!-- 单选时显示 -->
+                <v-checkbox
+                v-if="!detail.poll.multi"
+                  v-model="checkbox"
+                  :value="option.id"
+                  :disabled="disableAttr(option.id)"
+                ></v-checkbox>
+
+                <!-- 多选时显示 -->
+                <v-checkbox
+                v-if="detail.poll.multi"
+                  v-model="checkbox"
+                  :value="option.id"
+                ></v-checkbox>
+              </v-flex>
+            </v-layout>
+            <div class="d-f justify-center pt-3">
+              <v-btn color="info">投票</v-btn>
+            </div>
+          </v-container>
         </div>
 
         <div class="msg-footer ma-1">
@@ -71,9 +111,12 @@
 <script>
 export default {
   name: "postdetail",
+
   data() {
     return {
-      toggleReply: false
+      toggleReply: false,
+      picked: "",
+      checkbox: []
     };
   },
   props: {
@@ -88,16 +131,37 @@ export default {
           isPoster: false,
           floor: 1,
           dateTime: "",
+          poll: {},
           replys: []
         };
       }
     }
   },
+  created() {
+    if (this.detail.floor === 1 && this.detail.poll) {
+      let optionsSum = 0;
+      this.detail.poll.options.forEach(val => {
+        optionsSum += val.count;
+      });
+      this.detail.poll.sum = optionsSum;
+    }
+  },
+  mounted() {},
   computed: {
     replyCount() {
       return this.detail.replys ? `(${this.detail.replys.length})` : "";
+    },
+    disableAttr() {
+      return function(id) {
+        if (this.checkbox && this.checkbox[0] === id) {
+          return false;
+        } else if (this.checkbox.length!==0) {
+          return true;
+        } else return false;
+      };
     }
-  }
+  },
+  methods: {}
 };
 </script>
 <style scoped>
@@ -116,12 +180,12 @@ export default {
 }
 .slide-enter-active {
   transition-duration: 0.3s;
-  transition-timing-function: ease-in;
+  transition-timing-function: linear;
 }
 
 .slide-leave-active {
   transition-duration: 0.3s;
-  transition-timing-function: ease-out;
+  transition-timing-function: linear;
 }
 
 .slide-enter-to,
@@ -141,8 +205,8 @@ export default {
 .replys {
   width: 70%;
   margin-left: auto;
-  margin-right:15px;
-  margin-bottom:15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 .reply {
   padding: 15px;
@@ -159,5 +223,25 @@ export default {
 .reply-foot > .theme--light.v-btn {
   color: #78909c !important;
   font-size: 12px;
+}
+
+/* 投票区 */
+
+.poll-option > div {
+  align-items: center;
+  display: flex;
+}
+.poll-option > .desc {
+  justify-content: flex-end;
+  margin-right: 5px;
+}
+.poll-option {
+  height: 30px;
+  margin-bottom: 10px;
+}
+.poll-option .option-width {
+  background: rgba(21, 168, 255, 0.6);
+  width: 80%;
+  height: 100%;
 }
 </style>
