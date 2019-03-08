@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="">
     <Head/>
     <Nav/>
     <transition :name="transitionName">
@@ -49,6 +49,8 @@ a {
 .page{
   position: absolute;
   top:93px;
+  left:0;
+  right:0;
     width: 100%;
     margin: 0 auto;
     -webkit-overflow-scrolling: touch;
@@ -107,6 +109,9 @@ a {
 }
 .box-shadow{
   box-shadow:0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  
+}
+.application--wrap{
   
 }
 </style>
