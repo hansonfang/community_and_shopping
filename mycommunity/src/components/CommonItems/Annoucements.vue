@@ -2,7 +2,7 @@
      <!-- 物业公告 -->
             <div style="width:100%;" class="">
               <!-- 物业 -->
-              <v-list>
+              <v-list >
                 <v-subheader>{{title}}
                   <v-spacer></v-spacer>
                   <router-link v-if="moreLink" :to="moreLink">更多{{title}}</router-link>
@@ -14,7 +14,7 @@
                   @click="announcement.dialog_show=true"
                 >
                   <v-list-tile-content>
-                    <v-list-tile-title>{{ announcement.title }}</v-list-tile-title>
+                    <v-list-tile-title class="text-truncate">{{ announcement.title }}</v-list-tile-title>
                   </v-list-tile-content>
 
                   <v-list-tile-action>
@@ -67,5 +67,7 @@ export default {
 }
 </script>
 <style scoped>
-
+.v-list__tile__action{
+  min-width: unset;
+}
 </style>

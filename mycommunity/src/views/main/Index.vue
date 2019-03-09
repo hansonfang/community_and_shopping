@@ -1,105 +1,168 @@
 <template>
-  <v-container grid-list-md>
-    <v-layout row wrap>
-      <v-flex xs8 class="mb-2">
-        <v-carousel cycle max="100%">
-          <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
-        </v-carousel>
-      </v-flex>
-      <v-flex xs4 class="mb-2 d-f">
-        <v-layout column>
-          <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2 box-shadow">
-            <Announcement
-              :announcements="propertyAnnounces"
-              title="物业公告"
-              moreLink="/moreannouncement"
-            />
-          </v-flex>
-          <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2 box-shadow">
-            <Announcement
-              :announcements="communityAnnounces"
-              title="社区公告"
-              moreLink="/moreCommunityAnnoucements"
-            />
-          </v-flex>
-        </v-layout>
-      </v-flex>
-
-      <v-layout row>
-        <v-flex d-flex xs12 sm6 md7 row style="flex-wrap:wrap;">
-          <!-- 新闻列表 -->
-          <div class="box-shadow news mb-2" v-for="(item,index) in news" :key="index">
-            <v-layout row>
-              <v-flex xs4 class="v-sheet">
-                <v-img :src="item.image" aspect-ratio="1" max-height="200" max-width="300"></v-img>
-              </v-flex>
-              <v-flex xs8 class="content-container d-f pt-4 px-4 pb-2">
-                <h4>{{item.title}}</h4>
-                <p class="grey--text text--darken-1">{{item.brief}}</p>
-                <footer class="d-f align-center content-footer mb-1">
-                  <v-avatar size="40" color="grey lighten-4" class="mr-3">
-                    <img :src="item.authorAvatar" alt="avatar">
-                  </v-avatar>
-                  <span class="grey--text text--darken-1 mr-3">{{item.author}}</span>
-                  <span class="grey--text text--lighten-1">{{item.dateTime}}</span>
-                  <v-spacer></v-spacer>
-                  <span class="mr-2 grey--text text--lighten-1">
-                    <v-icon size="16" class="mr-1" color="grey lighten-1">far fa-eye</v-icon>
-                    <span>{{item.watchCount}}</span>
-                  </span>
-                  <span class="grey--text text--lighten-1">
-                    <v-icon
-                      size="16"
-                      class="mr-1"
-                      color="grey lighten-1"
-                    >far fa-comment-dots fa-flip-horizontal</v-icon>
-                    <span>{{item.commentsCount}}</span>
-                  </span>
-                </footer>
-              </v-flex>
-            </v-layout>
-          </div>
+  <div>
+    <v-container grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs8 class="mb-2">
+          <v-carousel cycle max="100%" hide-delimiters>
+            <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
+          </v-carousel>
         </v-flex>
-        <v-flex d-flex xs12 sm6 md5>
+        <v-flex xs4 class="mb-2 d-f">
           <v-layout column>
-            <v-flex style="width:100%;flex-grow:0;margin-top:4px;" class="pa-2 mb-2 box-shadow">
-              <h4 class="pt-2">常用功能</h4>
-              <v-layout row no-wrap class="interactive-wrapper">
-                <v-flex xs4>
-                  <div class="interactive">
-                    <v-icon size="50" color="info">fas fa-tools</v-icon>
-                    <span>立刻报修</span>
-                  </div>
-                </v-flex>
-                <v-flex xs4>
-                  <div class="interactive">
-                    <v-icon size="50" color="info">fas fa-tint</v-icon>
-                    <span>预约送水</span>
-                  </div>
-                </v-flex>
-                <v-flex xs4>
-                  <div class="interactive">
-                    <v-icon size="50" color="info">fas fa-user-tie</v-icon>
-                    <span>找书记</span>
-                  </div>
-                </v-flex>
-              </v-layout>
+            <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2">
+              <Announcement
+                :announcements="propertyAnnounces"
+                title="物业公告"
+                moreLink="/announcements"
+              />
             </v-flex>
-            <v-flex style="width:100%;flex-grow:0;margin-top:4px;" class="pa-2 mb-2 box-shadow">
-              
-            </v-flex>
-            <v-flex d-flex>
-              <v-layout row>
-                <v-flex>
-                  <!-- 便民服务 -->
-                </v-flex>
-              </v-layout>
+            <v-divider></v-divider>
+            <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2">
+              <Announcement
+                :announcements="communityAnnounces"
+                title="社区公告"
+                moreLink="/announcements"
+              />
             </v-flex>
           </v-layout>
         </v-flex>
+
+        <v-layout row>
+          <v-flex xs12 sm6 md7 class="d-f f-col py-5 pr-5" style="flex-wrap:no-wrap;">
+            <!-- 新闻列表 -->
+            <div class="d-f f-row align-center justify-space-between">
+              <h4 class="py-2 index-title">社区头条
+              <span>community headlines</span>
+            </h4>
+            <router-link to="/news">更多新闻>>></router-link>
+            </div>
+            
+            <div
+              class="box-shadow news"
+              v-for="(item,index) in news"
+              :key="index"
+              style="flex-grow:1"
+            >
+              <v-layout row>
+                <v-flex xs4 class="v-sheet">
+                  <v-img :src="item.image" aspect-ratio="1" max-height="190" max-width="300"></v-img>
+                </v-flex>
+                <v-flex xs8 class="content-container d-f pt-4 px-3 pb-2">
+                  <h4>{{item.title}}</h4>
+                  <p class="grey--text text--darken-1 mb-0">{{item.brief}}</p>
+                  <footer class="d-f align-center content-footer mb-1">
+                    <v-avatar size="40" color="grey lighten-4" class="mr-3">
+                      <img :src="item.authorAvatar" alt="avatar">
+                    </v-avatar>
+                    <span class="grey--text text--darken-1 mr-3">{{item.author}}</span>
+                    <span class="grey--text text--lighten-1">{{item.dateTime}}</span>
+                    <v-spacer></v-spacer>
+                    <span class="mr-2 grey--text text--lighten-1">
+                      <v-icon size="16" class="mr-1" color="grey lighten-1">far fa-eye</v-icon>
+                      <span>{{item.watchCount}}</span>
+                    </span>
+                    <span class="grey--text text--lighten-1">
+                      <v-icon
+                        size="16"
+                        class="mr-1"
+                        color="grey lighten-1"
+                      >far fa-comment-dots fa-flip-horizontal</v-icon>
+                      <span>{{item.commentsCount}}</span>
+                    </span>
+                  </footer>
+                </v-flex>
+              </v-layout>
+            </div>
+          </v-flex>
+          <v-flex d-flex xs12 sm6 md5 class="py-5">
+            <v-layout column>
+              <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class>
+                <h4 class="py-2 index-title">常用功能
+                  <span>community services</span>
+                </h4>
+                <v-layout row no-wrap class="interactive-wrapper box-shadow">
+                  <v-flex xs4>
+                    <router-link to="/orderRepair">
+                      <div class="interactive">
+                        <v-icon size="50" color="info">fas fa-tools</v-icon>
+                        <span>立刻报修</span>
+                      </div>
+                    </router-link>
+                  </v-flex>
+                  <v-flex xs4>
+                    <router-link to="/orderWater">
+                      <div class="interactive">
+                        <v-icon size="50" color="info">fas fa-tint</v-icon>
+                        <span>预约送水</span>
+                      </div>
+                    </router-link>
+                  </v-flex>
+                  <v-flex xs4>
+                    <router-link to="/tellManager">
+                      <div class="interactive">
+                        <v-icon size="50" color="info">fas fa-user-tie</v-icon>
+                        <span>找书记</span>
+                      </div>
+                    </router-link>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex style="width:100%;flex-grow:0;margin-top:4px;" class="pa-2 mt-4">
+                <!-- 购物推荐 -->
+                <div class="d-f f-row align-center justify-space-between">
+             <h4 class="py-2 index-title">推荐购物
+                  <span>Shopping recommendation</span>
+                </h4>
+            <router-link to="/shopping">拼购商城>>></router-link>
+            </div>
+                
+                <v-layout row wrap class="box-shadow">
+                  <v-flex md4 xs12 v-for="(item,index) in goods" :key="index">
+                    <v-card class="ma-1">
+                      <v-img :src="item.image" aspect-ratio="2.75" height="200"></v-img>
+
+                      <v-card-title primary-title class="py-2 text-truncate" style="overflow:hidden;">
+                        <div>
+                          <h3 class="headline mb-0 subheading">{{item.title}}</h3>
+                        </div>
+                      </v-card-title>
+
+                      <v-card-actions>
+                        <div class="d-f pt-2 group">
+                          <div>
+                            <div class="red--text">
+                              <span class="body-2">￥</span>
+                              <span class="title">{{item.groupPrice}}</span>
+                            </div>
+                            <div class="font-weight-thin single-price grey--text">
+                              <span class="caption">￥</span>
+                              <span class="body-2">{{item.singlePrice}}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <v-btn color="red" round dark>立刻拼团</v-btn>
+                          </div>
+                        </div>
+                      </v-card-actions>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-layout>
       </v-layout>
-    </v-layout>
-  </v-container>
+    </v-container>
+    <v-footer class="d-f">
+      <div></div>
+      <div class="text-xs-center">使用MIT License开源，基于
+        <a href="https://vuetifyjs.com/zh-Hans/">Vuetify</a>
+        <br>Copyright © 2016-2019 Hanson
+      </div>
+      <div class="text-xs-right">Twitter</div>
+    </v-footer>
+  </div>
 </template>
 <script>
 import Announcement from "@/components/CommonItems/Annoucements";
@@ -147,6 +210,17 @@ export default {
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 873,
           commentsCount: 53
+        },
+        {
+          title: "15天1万公里，“卡车航班”从德国一路开往中国",
+          image: "https://picsum.photos/400/500?random",
+          brief:
+            "当地时间2月28日，一辆满载精密仪器、航空航天材料以及电子产品的卡车已从德国多特蒙德出发，穿过波兰、白俄罗斯、俄罗斯、哈萨克斯坦等国，在我国新疆霍尔果斯口岸换车，行驶近1万公里，计划3月15日前抵达上海。",
+          dateTime: "2019-03-01",
+          author: "王力",
+          authorAvatar: "https://picsum.photos/150/150?random",
+          watchCount: 497,
+          commentsCount: 12
         },
         {
           title: "15天1万公里，“卡车航班”从德国一路开往中国",
@@ -220,6 +294,44 @@ export default {
         { src: "https://picsum.photos/300/400?random" },
         { src: "https://picsum.photos/300/400?random" },
         { src: "https://picsum.photos/300/400?random" }
+      ],
+      goods: [
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "海天生抽",
+          groupPrice: 9,
+          singlePrice: 12
+        },
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "海天蚝油",
+          groupPrice: 8,
+          singlePrice: 13
+        },
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "鲁花花生油",
+          groupPrice: 56,
+          singlePrice: 68
+        },
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "家家乐味精",
+          groupPrice: 5,
+          singlePrice: 8
+        },
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "团圆速冻水饺",
+          groupPrice: 17,
+          singlePrice: 21
+        },
+        {
+          image: "https://picsum.photos/300/400?random",
+          title: "湾仔码头速冻馄饨",
+          groupPrice: 15,
+          singlePrice: 23
+        }
       ]
     };
   }
@@ -229,10 +341,22 @@ export default {
 .container {
   margin: 0 auto;
 }
+
 .news {
-  min-height: 200px;
-  max-height: 300px;
+  /* height: 190px; */
   overflow: hidden;
+}
+.index-title {
+  font-family: "宋体", Microsoft YaHei;
+  font-size: 20px;
+}
+.index-title > span {
+  text-transform: capitalize;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: rgba(0, 0, 0, 0.4);
+}
+.news:not(:last-child) {
+  margin-bottom: 10px;
 }
 .content-container {
   flex-direction: column;
@@ -248,7 +372,7 @@ export default {
   padding: 20px 12px !important;
 }
 .interactive {
-  border: 2px solid rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(17, 140, 241, 0.651);
   border-radius: 8px;
   width: 100%;
   height: 150px;
@@ -263,5 +387,21 @@ export default {
 }
 .interactive:hover {
   box-shadow: 0 14px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.single-price {
+  text-decoration: line-through;
+  font-family: cursive;
+}
+.group {
+  width: 100%;
+  justify-content: space-between;
+}
+.v-footer {
+  min-height: 3vw;
+  justify-content: center;
+}
+.v-footer > div {
+  width: 100%;
+  flex: 1 1 auto;
 }
 </style>

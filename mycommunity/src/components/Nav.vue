@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-toolbar color="grey lighten-2">
+    <v-toolbar flat color="white">
       <v-layout row fill-height justify-center>
-        <v-flex xs2>
-          <v-icon size="2vw" color="blue darken-1">fa-home</v-icon>
-          <span class="logo">我爱我家</span>
-          </v-flex>
+        <v-flex xs2 class="d-f align-center">
+          <v-icon size="30px" color="blue darken-1">fa-home</v-icon>&nbsp;
+          <span class="headline">中北路社区</span>
+        </v-flex>
         <v-toolbar-items>
           <v-btn
             flat
@@ -26,8 +26,8 @@ export default {
     return {
       items: [
         { to: "/", text: "首页" },
-        { to: "/common", text: "常用功能" },
-        { to: "/post", text: "社区贴吧" },
+        { to: "/post", text: "社区热论" },
+        { to: "/news", text: "社区头条" },
         { to: "/shopping", text: "拼购商城" }
       ]
     };
@@ -42,30 +42,17 @@ export default {
 }
 @media screen and (max-width: 1280px) {
   .v-btn {
-    width:140px;
+    width: 140px;
   }
 }
 @media screen and (min-width: 1280px) {
   .v-btn {
-    width:200px;
+    width: 200px;
   }
 }
-.logo{
-  font-size: 2rem;
-  align-self: center;
-}
-.logo:after{
-  display: block;
-  content:"家人在哪儿,家就在哪儿";
-  font-family:"微软雅黑";
-  font-size: 1rem;
-  font-style: italic;
-  color:grey;
-  position: absolute;
-  bottom:0.1rem;
-}
+
 .v-btn--active {
-  background-color: #fafafa;
+  background-color: #57b2fdc7;
   font-weight: 700;
 }
 .nav {

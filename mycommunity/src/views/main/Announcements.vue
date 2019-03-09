@@ -4,7 +4,7 @@
       <v-progress-circular :size="120" :width="10" color="grey darken-1" indeterminate>加载中</v-progress-circular>
     </div>
     <v-flex class="pa-4">
-      <v-btn large to="/common" style="z-index:10;">
+      <v-btn large to="/" style="z-index:10;">
         <v-icon color="info" small>fas fa-chevron-left</v-icon>返回
       </v-btn>
     </v-flex>

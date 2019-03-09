@@ -1,6 +1,6 @@
 <template>
   <div id="head">
-    <v-toolbar color="blue lighten-1" height="28">
+    <v-toolbar color="grey lighten-3" height="28">
       <v-toolbar-title class="body-2">
         <v-icon size="20" color>fas fa-map-marker-alt</v-icon>&nbsp;&nbsp;中北路社区
       </v-toolbar-title>

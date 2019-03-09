@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Post from "./views/main/Post"
 import Shopping from "./views/main/Shopping"
-import Moreannouncement from "./views/Moreannouncement"
+
 
 /* 引入Post贴吧页面views */
 import PostIndex from "@/views/post/PostIndex"
@@ -25,18 +25,25 @@ export default new Router({
       component:(resolve)=>require(["@/views/main/Index"],resolve),
     },
     {
-      path: '/common',//常用功能页面
-      name: 'common',
-      component: (resolve)=>require(["@/views/main/Common"],resolve),
+      path: '/announcements',
+      name: 'announcements',
+      component:(resolve)=>require(["@/views/main/Announcements"],resolve), //物业更多公告页面
+     
     },
     {
-      path: '/moreannouncement',
-      name: 'moreannouncement',
-      component: Moreannouncement,//物业更多公告页面
-      meta: {
-        key: 1,
-      }
+      path:"/news",
+      component:(resolve)=>require(["@/views/main/News"],resolve),
+      children:[
+        //新闻子路由
+        {path:"",redirect:"index"},
+        {path:"index",component:(re)=>require(["@/views/news/News"],re)},
+        {path:"propertyA",component:(re)=>require(["@/views/news/PropertyA"],re)},
+        {path:"communityA",component:(re)=>require(["@/views/news/CommunityA"],re)},
+      ]
     },
+    {path:"/orderRepair",name:"orderRepair",component:(resolve)=>require(["@/views/index/orderRepair"],resolve)},
+    {path:"/orderWater",name:"orderWater",component:(resolve)=>require(["@/views/index/orderWater"],resolve)},
+    {path:"/tellManager",name:"tellManager",component:(resolve)=>require(["@/views/index/tellManager"],resolve)},
     {
       path: '/post',
       component: Post,//贴吧页面
