@@ -2,19 +2,21 @@
   <div>
     <v-toolbar flat color="white">
       <v-layout row fill-height justify-center>
-        <v-flex xs2 class="d-f align-center">
+        <v-flex xs12 md2 class="d-f align-center">
           <v-icon size="30px" color="blue darken-1">fa-home</v-icon>&nbsp;
-          <span class="headline">中北路社区</span>
+          <span class="headline text-truncate">中北路社区</span>
         </v-flex>
-        <v-toolbar-items>
-          <v-btn
-            flat
-            class="nav"
-            v-for="(item,index) in items"
-            :key="index"
-            :to="item.to"
-          >{{item.text}}</v-btn>
-        </v-toolbar-items>
+        <v-flex xs12 md8>
+          <v-toolbar-items style="height:100%">
+            <v-btn
+              flat
+              class="nav"
+              v-for="(item,index) in items"
+              :key="index"
+              :to="item.to"
+            >{{item.text}}</v-btn>
+          </v-toolbar-items>
+        </v-flex>
       </v-layout>
     </v-toolbar>
   </div>

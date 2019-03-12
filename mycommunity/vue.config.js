@@ -19,5 +19,6 @@ module.exports = {
           "^/chengfeng":""
         }
       }},
-  }
+  },
+  assetsDir:"./src/assets"
 }

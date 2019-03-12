@@ -1,6 +1,6 @@
 <template>
-    <div> 
-        <v-card-title>
+    <div class="service-box"> 
+        <v-card-title class="justify-center">
           <span class="headline">报修服务</span>
         </v-card-title>
         <v-card-text>
@@ -10,6 +10,7 @@
                 <v-text-field
                   label="地址"
                   required
+                  :value="address"
                 >{{address}}</v-text-field>
               </v-flex>
 
@@ -17,6 +18,7 @@
                 <v-text-field
                   label="电话"
                   required
+                  :value="telephone"
                 >{{telephone}}</v-text-field>
               </v-flex>
               <v-flex xs6>
@@ -107,8 +109,8 @@ export default {
     data(){
         return {
              repairText: "",
-      address: "",
-      telephone: "",
+      address: "取默认用户注册时的地址",
+      telephone: "取默认用户注册时的电话",
       expectedDate: new Date().toISOString().substr(0, 10),
       expectedTime: null,
       dateMenu: false,

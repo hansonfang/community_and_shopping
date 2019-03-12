@@ -1,7 +1,7 @@
 <template>
-    <div> <v-card>
-        <v-card-title>
-          <span class="headline">书记</span>
+    <div class="service-box"> <v-card flat>
+        <v-card-title class="justify-center">
+          <span class="headline">找书记</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -29,7 +29,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="secretary_dialog=false">关闭</v-btn>
           <v-btn color="blue darken-1" flat @click="tellManagerSubmit()">提交</v-btn>
         </v-card-actions>
       </v-card></div>

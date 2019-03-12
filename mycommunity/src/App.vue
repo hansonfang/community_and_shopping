@@ -121,4 +121,13 @@ a {
 li{
   list-style-type: none;
 }
+.paragraph{
+  text-indent: 2rem;
+  line-height: 1.9rem;
+  font-size: 1.2rem;
+}
+.service-box{
+  max-width: 860px;
+  padding-top:80px;
+}
 </style>

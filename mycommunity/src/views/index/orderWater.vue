@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <v-card-title primary-title>
+  <div class="service-box">
+    <v-card-title primary-title class="mb-5">
       <div style="width:100%;height:270px">
-        <h3 class="headline mb-0">{{title}}</h3>
+        <h3 class="headline mb-0 text-xs-center">价格</h3>
 
         <!-- 送水 -->
         <v-data-table hide-actions flat :headers="headers" :items="brands">
@@ -14,13 +14,9 @@
       </div>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="info" @click="order_dialog=true">预约送水</v-btn>
-    </v-card-actions>
 
-    <v-card>
-      <v-card-title class="text-xs-center">
+    <v-card flat>
+      <v-card-title class="justify-center">
         <span class="headline">预约送水</span>
       </v-card-title>
       <v-card-text>
@@ -45,10 +41,10 @@
               </v-list>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="电话" required>{{telephone}}</v-text-field>
+              <v-text-field label="电话" value="取默认用户注册时的电话" required>{{telephone}}</v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="地址" required>{{address}}</v-text-field>
+              <v-text-field label="地址" required value="取默认用户注册时的地址">{{address}}</v-text-field>
             </v-flex>
             <v-flex xs6>
               <v-menu
@@ -117,10 +113,40 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" flat @click="order_dialog=false">关闭</v-btn>
-        <v-btn color="blue darken-1" flat @click="sendWaterSubmit()">提交</v-btn>
+        <v-btn color="blue darken-1" flat @click="confirm_dialog=true">提交</v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-dialog v-model="confirm_dialog" max-width="290">
+      <v-card v-if="selectedInfo.length">
+        <v-card-title class="headline">确定提交吗？</v-card-title>
+
+        <v-card-text>
+          你选择
+          <span v-for="(item,i) in selectedInfo" :key="i">{{item.brand}} {{item.count}}桶,</span>
+          价格共
+          <span class="red--text subheading">￥{{totalPrice}}</span>
+
+          元
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" flat="flat" @click="confirm_dialog = false">改一下</v-btn>
+
+          <v-btn color="green darken-1" flat="flat" @click="sendWaterSubmit()">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card v-else>
+        <v-card-title class="headline">提示</v-card-title>
+        <v-card-text>请选择桶装水品牌及数量</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="confirm_dialog=false">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -146,36 +172,56 @@ export default {
       expectedTime: null,
       dateMenu: false,
       timeMenu: false,
+      confirm_dialog: false,
       brands: [
-        { brand: "农夫山泉", price: 24 },
-        { brand: "百脉泉", price: 16 },
-        { brand: "娃哈哈", price: 20 },
-        { brand: "雀巢纯水", price: 22 }
-      ],
+        { brand: "农夫山泉", price: 24, id: "001" },
+        { brand: "百脉泉", price: 16, id: "002" },
+        { brand: "娃哈哈", price: 20, id: "003" },
+        { brand: "雀巢纯水", price: 22, id: "004" }
+      ]
     };
   },
   mounted() {
     this.brands.forEach(element => {
-      element["count"] = 0;
+      element["count"] = 1;
     });
   },
   computed: {
     waterBrandPrice() {
       return this.brands.map(value => `${value.brand} - ${value.price}`);
+    },
+    totalPrice() {
+      return this.selectedInfo
+        .map(item => item.count * item.price)
+        .reduce((sum, curr) => {
+          return sum + curr;
+        });
     }
   },
   methods: {
-    sendWaterSubmit() {}
+    sendWaterSubmit() {
+      this.$log("post");
+    }
   },
   watch: {
     selectedValue() {
       const temp = [];
       this.selectedValue.forEach(value => {
         const arr = value.split(" -");
-        temp.push({ brand: arr[0], price: arr[1], count: 0 });
+        temp.push({ brand: arr[0], price: arr[1], count: 1 });
       });
       this.selectedInfo = temp;
-    }
+    },
+    selectedInfo: {
+      handler(now) {
+        now.forEach((value, index) => {
+          if (value.count === 0) {
+            now.splice(index, 1);
+          }
+        });
+      },
+      deep:true
+    },
   }
 };
 </script>

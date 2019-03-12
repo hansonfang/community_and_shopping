@@ -13,7 +13,7 @@
               <Announcement
                 :announcements="propertyAnnounces"
                 title="物业公告"
-                moreLink="/announcements"
+                moreLink="/news/propertyA"
               />
             </v-flex>
             <v-divider></v-divider>
@@ -21,7 +21,7 @@
               <Announcement
                 :announcements="communityAnnounces"
                 title="社区公告"
-                moreLink="/announcements"
+                moreLink="/news/communityA"
               />
             </v-flex>
           </v-layout>
@@ -31,12 +31,13 @@
           <v-flex xs12 sm6 md7 class="d-f f-col py-5 pr-5" style="flex-wrap:no-wrap;">
             <!-- 新闻列表 -->
             <div class="d-f f-row align-center justify-space-between">
-              <h4 class="py-2 index-title">社区头条
-              <span>community headlines</span>
-            </h4>
-            <router-link to="/news">更多新闻>>></router-link>
+              <h4 class="py-2 index-title">
+                社区头条
+                <span>community headlines</span>
+              </h4>
+              <router-link to="/news">更多新闻>>></router-link>
             </div>
-            
+
             <div
               class="box-shadow news"
               v-for="(item,index) in news"
@@ -47,10 +48,12 @@
                 <v-flex xs4 class="v-sheet">
                   <v-img :src="item.image" aspect-ratio="1" max-height="190" max-width="300"></v-img>
                 </v-flex>
-                <v-flex xs8 class="content-container d-f pt-4 px-3 pb-2">
-                  <h4>{{item.title}}</h4>
-                  <p class="grey--text text--darken-1 mb-0">{{item.brief}}</p>
-                  <footer class="d-f align-center content-footer mb-1">
+                <v-flex xs8 class="sel-none content-container d-f pt-4 px-3 pb-2">
+                  <router-link :to="'news/'+item.id" style="flex:1 1 auto;">
+                    <h4>{{item.title}}</h4>
+                    <p class="grey--text text--darken-1 mb-0 mt-2">{{item.brief}}</p>
+                  </router-link>
+                  <footer class="d-f align-center content-footer mb-1" style="flex:0 0 auto;">
                     <v-avatar size="40" color="grey lighten-4" class="mr-3">
                       <img :src="item.authorAvatar" alt="avatar">
                     </v-avatar>
@@ -61,14 +64,6 @@
                       <v-icon size="16" class="mr-1" color="grey lighten-1">far fa-eye</v-icon>
                       <span>{{item.watchCount}}</span>
                     </span>
-                    <span class="grey--text text--lighten-1">
-                      <v-icon
-                        size="16"
-                        class="mr-1"
-                        color="grey lighten-1"
-                      >far fa-comment-dots fa-flip-horizontal</v-icon>
-                      <span>{{item.commentsCount}}</span>
-                    </span>
                   </footer>
                 </v-flex>
               </v-layout>
@@ -77,7 +72,8 @@
           <v-flex d-flex xs12 sm6 md5 class="py-5">
             <v-layout column>
               <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class>
-                <h4 class="py-2 index-title">常用功能
+                <h4 class="py-2 index-title">
+                  常用功能
                   <span>community services</span>
                 </h4>
                 <v-layout row no-wrap class="interactive-wrapper box-shadow">
@@ -110,18 +106,23 @@
               <v-flex style="width:100%;flex-grow:0;margin-top:4px;" class="pa-2 mt-4">
                 <!-- 购物推荐 -->
                 <div class="d-f f-row align-center justify-space-between">
-             <h4 class="py-2 index-title">推荐购物
-                  <span>Shopping recommendation</span>
-                </h4>
-            <router-link to="/shopping">拼购商城>>></router-link>
-            </div>
-                
+                  <h4 class="py-2 index-title">
+                    推荐购物
+                    <span>Shopping recommendation</span>
+                  </h4>
+                  <router-link to="/shopping">拼购商城>>></router-link>
+                </div>
+
                 <v-layout row wrap class="box-shadow">
                   <v-flex md4 xs12 v-for="(item,index) in goods" :key="index">
                     <v-card class="ma-1">
                       <v-img :src="item.image" aspect-ratio="2.75" height="200"></v-img>
 
-                      <v-card-title primary-title class="py-2 text-truncate" style="overflow:hidden;">
+                      <v-card-title
+                        primary-title
+                        class="py-2 text-truncate"
+                        style="overflow:hidden;"
+                      >
                         <div>
                           <h3 class="headline mb-0 subheading">{{item.title}}</h3>
                         </div>
@@ -154,21 +155,15 @@
         </v-layout>
       </v-layout>
     </v-container>
-    <v-footer class="d-f">
-      <div></div>
-      <div class="text-xs-center">使用MIT License开源，基于
-        <a href="https://vuetifyjs.com/zh-Hans/">Vuetify</a>
-        <br>Copyright © 2016-2019 Hanson
-      </div>
-      <div class="text-xs-right">Twitter</div>
-    </v-footer>
+    <Footer/>
   </div>
 </template>
 <script>
 import Announcement from "@/components/CommonItems/Annoucements";
+import Footer from "@/components/Footer";
 export default {
   name: "index",
-  components: { Announcement },
+  components: { Announcement, Footer },
   data() {
     return {
       items: [
@@ -187,7 +182,7 @@ export default {
           author: "中国新闻网",
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 325,
-          commentsCount: 34
+          id: "00002"
         },
         {
           title: "伊拉克欲加入“一带一路”和亚投行与中国合作海陆运输",
@@ -198,7 +193,7 @@ export default {
           author: "央视网",
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 5697,
-          commentsCount: 214
+          id: "00005"
         },
         {
           title: "民航局：“一带一路”航线五年客运量超一亿",
@@ -209,7 +204,7 @@ export default {
           author: "高艺宁",
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 873,
-          commentsCount: 53
+          id: "00006"
         },
         {
           title: "15天1万公里，“卡车航班”从德国一路开往中国",
@@ -220,7 +215,7 @@ export default {
           author: "王力",
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 497,
-          commentsCount: 12
+          id: "00007"
         },
         {
           title: "15天1万公里，“卡车航班”从德国一路开往中国",
@@ -231,7 +226,7 @@ export default {
           author: "王力",
           authorAvatar: "https://picsum.photos/150/150?random",
           watchCount: 497,
-          commentsCount: 12
+          id: "00008"
         }
       ],
       repair_dialog: false,
@@ -300,37 +295,43 @@ export default {
           image: "https://picsum.photos/300/400?random",
           title: "海天生抽",
           groupPrice: 9,
-          singlePrice: 12
+          singlePrice: 12,
+          id:"000001"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "海天蚝油",
           groupPrice: 8,
-          singlePrice: 13
+          singlePrice: 13,
+          id:"000002"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "鲁花花生油",
           groupPrice: 56,
-          singlePrice: 68
+          singlePrice: 68,
+          id:"000003"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "家家乐味精",
           groupPrice: 5,
-          singlePrice: 8
+          singlePrice: 8,
+          id:"000004"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "团圆速冻水饺",
           groupPrice: 17,
-          singlePrice: 21
+          singlePrice: 21,
+          id:"000005"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "湾仔码头速冻馄饨",
           groupPrice: 15,
-          singlePrice: 23
+          singlePrice: 23,
+          id:"000006"
         }
       ]
     };
@@ -395,13 +396,5 @@ export default {
 .group {
   width: 100%;
   justify-content: space-between;
-}
-.v-footer {
-  min-height: 3vw;
-  justify-content: center;
-}
-.v-footer > div {
-  width: 100%;
-  flex: 1 1 auto;
 }
 </style>

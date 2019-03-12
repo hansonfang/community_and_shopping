@@ -9,8 +9,10 @@
                 <span class="date">{{item.date}}</span>
                 <span class="year">{{item.year}}</span>
               </div>
-              <h4 class="text-truncate">{{item.title}}</h4>
-              <p class="text-truncate">{{item.detail}}</p>
+              <router-link :to="item.id">
+                <h4 class="text-truncate">{{item.title}}</h4>
+                <p class="text-truncate">{{item.detail}}</p>
+              </router-link>
             </li>
           </ul>
           <div class="text-xs-center">
@@ -21,12 +23,15 @@
           <div class="hot ml-3">
             <h3 class="my-3 ml-4">热点新闻</h3>
             <ul>
-              <li class>
-                <v-img src="https://picsum.photos/100/100?random" contain height="70" width="70"></v-img>
-                <div class="msg">
-                  <div class="time">02-19 | 2019</div>
-                  <div class="word mt-1">东明县领导来校走访交流第一书记工作明县领导来校走访交流第一书记工作东明县领导来校走访交流第一书记工作</div>
-                </div>
+              <li class v-for="(item,index) in hotNews" :key="index">
+                <router-link :to="item.id">
+                  <v-img :src="item.image" contain height="70" width="70"></v-img>
+
+                  <div class="msg">
+                    <div class="time">{{item.date}} | {{item.year}}</div>
+                    <div class="word mt-1">{{item.detail}}</div>
+                  </div>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -45,6 +50,7 @@ export default {
           title: "山东师范大学援疆支教团顺利完成实习岗前培训",
           date: "07",
           year: "2019.2",
+          id: "00001",
           detail:
             "    3月3日上午，2019年山东师范大学实习岗前培训班开班仪式在新疆维吾尔自治区喀什市岳普湖县一中会议室召开。教育工委书记和新就职的8"
         },
@@ -52,6 +58,7 @@ export default {
           title: "山东师大附中入选山东省首批“人工智能教育试点校”",
           date: "02",
           year: "2019.2",
+          id: "00002",
           detail:
             "近日，山东省教育厅公布《山东省首批人工智能教育试点市、县和试点校名单》，山东师大附中成功入选山东省首批试点校。"
         },
@@ -59,6 +66,7 @@ export default {
           title: "山东师大附小召开山东省教育学会科技教育专项课题开题论证会",
           date: "29",
           year: "2019.1",
+          id: "00003",
           detail:
             "3月6日上午，山东师大附小山东省教育学会科技教育专项课题开题论证会在南楼一层会议室召开。山东省教科院教育评估所副所长杨璐、"
         },
@@ -66,8 +74,35 @@ export default {
           title: "山东师大附小举办“庆三八女神魅力蝶变主题分享会”",
           date: "22",
           year: "2019.01",
+          id: "00004",
           detail:
             "3月6日下午，在三八节来临之际，山东师大附小妇委会联合家委会举办了“庆三八女神魅力蝶变主题分享会”"
+        }
+      ],
+      hotNews: [
+        {
+          date: "08/26",
+          year: "2018",
+          detail:
+            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
+          image: "https://picsum.photos/100/100?random",
+          id:"00007"
+        },
+        {
+          date: "05/21",
+          year: "2018",
+          detail:
+            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
+          image: "https://picsum.photos/100/100?random",
+          id:"00008"
+        },
+        {
+          date: "03/18",
+          year: "2018",
+          detail:
+            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
+          image: "https://picsum.photos/100/100?random",
+          id:"00009"
         }
       ],
       page: 1
@@ -76,6 +111,9 @@ export default {
 };
 </script>
 <style scoped>
+a {
+  color: unset !important;
+}
 .normal-news > ul > li {
   border-top: 1px solid #ccc;
   padding: 25px 0px;
