@@ -64,6 +64,7 @@ export default new Router({
         { path: "food", name: "food", component: (re) => require(["@/views/shop/food"], re) },
         { path: "home", name: "home", component: (re) => require(["@/views/shop/home"], re) },
         { path: "service", name: "service", component: (re) => require(["@/views/shop/service"], re) },
+        { path: "goods", name: "goods", component: (re) => require(["@/views/shop/goods"], re) },
       ]
     },
     {

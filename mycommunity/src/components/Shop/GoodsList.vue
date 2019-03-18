@@ -1,38 +1,43 @@
 <template>
   <div>
-    <v-container fluid>
-      <v-layout>
-        <v-flex xs1 lg2></v-flex>
-        <v-flex xs10 lg8 class="banner-container">
-          <span class="left"></span>
-          <v-carousel hide-delimiters height="400">
-            <v-carousel-item v-for="(item,i) in bannerImage" :key="i" :src="item.src">
-              <router-link :to="`/${item.target}`"></router-link>
-            </v-carousel-item>
-          </v-carousel>
-          <span class="right"></span>
-        </v-flex>
-        <v-flex xs1 lg2></v-flex>
-      </v-layout>
-    </v-container>
 
     <v-container fluid>
       <v-layout>
-        <v-flex xs1 lg2></v-flex>
-        <v-flex xs10 lg8>
+        <v-flex
+          xs1
+          lg2
+        ></v-flex>
+        <v-flex
+          xs10
+          lg8
+        >
           <!-- 排序导航按钮 -->
           <v-layout>
             <v-flex>
-              <v-btn-toggle v-model="icon" active-class="active-btn" mandatory>
-                <v-btn flat value="sales">
+              <v-btn-toggle
+                v-model="icon"
+                active-class="active-btn"
+                mandatory
+              >
+                <v-btn
+                  flat
+                  value="sales"
+                >
                   <span>销量</span>
                   <v-icon>fas fa-sort-down</v-icon>
                 </v-btn>
-                <v-btn flat value="pop">
+                <v-btn
+                  flat
+                  value="pop"
+                >
                   <span>好评率</span>
                   <v-icon>fas fa-sort-down</v-icon>
                 </v-btn>
-                <v-btn flat value="price" @click="togglePrice()">
+                <v-btn
+                  flat
+                  value="price"
+                  @click="togglePrice()"
+                >
                   <span>价格</span>
                   <v-icon>{{`fas fa-sort-${priceSort}`}}</v-icon>
                 </v-btn>
@@ -41,13 +46,45 @@
           </v-layout>
 
           <!-- 商品列表 -->
-          <v-layout row wrap class="goods-list">
-            <v-flex xs12 sm6 md4 lg3 v-for="(item,index) in goods" :key="index">
+          <v-layout
+            row
+            wrap
+            class="goods-list"
+          >
+            <v-flex
+              xs12
+              sm6
+              md4
+              lg3
+              v-for="(item,index) in goods"
+              :key="index"
+            >
               <v-hover>
-                <v-card slot-scope="{ hover }" class="mx-auto good-card" color="grey lighten-4">
-                  <v-img :aspect-ratio="5/6" :src="item.image" contain min-height="200"></v-img>
-                  <v-card-text class="pt-4" style="position: relative;">
-                    <v-btn absolute color="red lighten-1" class="white--text" fab right top>
+                <v-card
+                  slot-scope="{ hover }"
+                  class="mx-auto good-card"
+                  color="grey lighten-4"
+                >
+                <router-link :to="`goods?goods_id=${item.id}&category=${fromView}`">  <v-img
+                    :aspect-ratio="5/6"
+                    :src="item.image"
+                    contain
+                    min-height="200"
+                  ></v-img></router-link>
+                
+                  <v-card-text
+                    class="pt-4"
+                    style="position: relative;"
+                  >
+                    <v-btn
+                      absolute
+                      color="red lighten-1"
+                      class="white--text"
+                      fab
+                      right
+                      top
+                      @click="addCart(item.id,$event)"
+                    >
                       <v-icon>fas fa-shopping-cart</v-icon>
                     </v-btn>
                     <h3 class="body-1 font-weight-light black--text mb-1 goods-title">{{item.title}}</h3>
@@ -69,7 +106,13 @@
                         class="d-flex transition-fast-in-fast-out mask darken-2 v-card--reveal display-3 white--text"
                         style
                       >
-                        <v-btn color="red" round dark class="font-weight-bold" v-if="!service">
+                        <v-btn
+                          color="red"
+                          round
+                          dark
+                          class="font-weight-bold"
+                          v-if="!service"
+                        >
                           立刻拼购
                           <span class="body-2">￥</span>
                           {{item.groupPrice}}
@@ -87,10 +130,17 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex xs1 lg2></v-flex>
+        <v-flex
+          xs1
+          lg2
+        ></v-flex>
       </v-layout>
       <v-layout justify-center>
-        <v-pagination v-model="page" :length="15" :total-visible="7"></v-pagination>
+        <v-pagination
+          v-model="page"
+          :length="15"
+          :total-visible="7"
+        ></v-pagination>
       </v-layout>
     </v-container>
   </div>
@@ -106,12 +156,6 @@ export default {
     };
   },
   props: {
-    bannerImage: {
-      type: Array,
-      default() {
-        () => [];
-      }
-    },
     goods: {
       type: Array,
       default() {
@@ -123,6 +167,7 @@ export default {
       default: ""
     },
     service: {
+      //    到家服务的话为 true
       type: Boolean,
       default: false
     }
@@ -130,62 +175,38 @@ export default {
   methods: {
     togglePrice() {
       this.priceSort = this.priceSort === "up" ? "down" : "up";
+    },
+    addCart(id, e) {
+      let i = null;
+      if (e.target.nodeName == "I") {
+        i = e.target;
+      } else i = e.target.childNodes[0].childNodes[0];
+      i.classList.add("pop");
+      setTimeout(() => {
+        i.classList.remove("pop");
+      }, 300);
+
+      
     }
   }
 };
 </script>
 <style scoped>
-.banner-container {
-  position: relative;
+.v-icon.fa-shopping-cart.pop {
+  animation: btn-pop 0.3s;
 }
-.banner-container .left {
-  position: absolute;
-  left: -150px;
-  bottom: 0;
-  height: 200px;
-  width: 200px;
-  display: inline-block;
-  background: url("../../assets/images/shop/food/right_bg.png") no-repeat left
-    bottom;
-  background-size: 150%;
-  z-index: -10;
-}
-.banner-container .right {
-  position: absolute;
-  right: -150px;
-  bottom: 0;
-  height: 220px;
-  width: 200px;
-  display: inline-block;
-  background: url("../../assets/images/shop/food/left_bg2.png") no-repeat right
-    bottom;
-  background-size: 90%;
-  transform: rotateY(180deg);
-  z-index: -10;
-}
->>> .v-responsive__content {
-  display: flex;
-}
->>> .v-responsive__content a {
-  width: 100%;
-  height: 100%;
-}
-@media screen and (max-width: 960px) {
-  .v-window.v-carousel {
-    height: 300px !important;
+@keyframes btn-pop {
+  0% {
+    transform: scale(1);
   }
-  >>> .v-window-item .v-image {
-    height: 300px !important;
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
   }
 }
-@media screen and (min-width: 960px) {
-  .v-window.v-carousel {
-    height: 400px !important;
-  }
-  >>> .v-window-item .v-image {
-    height: 400px !important;
-  }
-}
+
 >>> .v-item-group .v-btn {
   color: black;
   opacity: 0.8;

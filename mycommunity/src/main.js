@@ -5,6 +5,7 @@ import vuetify from "vuetify"
 import App from './App.vue'
 import router from './router'
 import axios from "axios"
+import VueCarousel from 'vue-carousel';
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -16,6 +17,8 @@ Vue.prototype.$axios=axios;
 
 // 封装console.log
 Vue.prototype.$log=window.console.log;
+
+Vue.use(VueCarousel);
 
 Vue.use(vuetify,{
   theme:{
