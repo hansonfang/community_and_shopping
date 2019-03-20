@@ -1,28 +1,14 @@
 <template>
   <div class="count">
-    <div class="">
-      <v-btn
-        fab
-        flat
-        small
-        @click="increase()"
-      >
+    <div class>
+      <v-btn fab flat small @click="increase()">
         <v-icon>fa-plus</v-icon>
       </v-btn>
     </div>
-    <v-text-field
-      class="number-input"
-      @input="updateVal($event.target.value)"
-      :value="value"
-      type="number"
-    ></v-text-field>
-    <div class="">
-      <v-btn
-        fab
-        flat
-        small
-        @click="decrease()"
-      >
+    <!-- .value -->
+    <v-text-field class="number-input" @input="updateVal($event)" :value="number" type="number"></v-text-field>
+    <div class>
+      <v-btn fab flat small @click="decrease()">
         <v-icon>fa-minus</v-icon>
       </v-btn>
     </div>
@@ -33,25 +19,25 @@ export default {
   name: "count",
   data() {
     return {
-        number:0,
+      number: 0
     };
   },
-  model:{
-      prop:"value",
-      event:"update"
+  model: {
+    prop: "value",
+    event: "update"
   },
   props: {
     value: {
       type: Number,
-      default:0,
+      default: 0
     },
     max: {
       type: Number,
       default: 5
     }
   },
-  mounted(){
-      this.number=this.value;
+  mounted() {
+    this.number = this.value;
   },
   methods: {
     increase() {
@@ -61,13 +47,19 @@ export default {
       if (this.number > 0) this.number--;
     },
     updateVal(val) {
-      this.$emit("update", val);
+      if (val > this.max) {
+          this.number = this.max;
+      }
+      this.$emit("update", this.number);
     }
   },
-  watch:{
-      number(val){
-          this.$emit("update",val);
-      }
+  watch: {
+    number(val) {
+      this.$emit("update", val);
+    },
+    value(newVal) {
+      this.number = newVal;
+    }
   }
 };
 </script>

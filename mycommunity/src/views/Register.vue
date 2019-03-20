@@ -105,6 +105,24 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
+            <v-layout row>
+              <v-flex xs3>
+                <div class="text-xs-center pt-3 subheading">选择社区</div>
+              </v-flex>
+              <v-flex xs9>
+                <v-autocomplete
+                  v-model="community"
+                  :hint="!isEditing ? '点击图标查找' : '点击图标保存'"
+                  :items="communityNames"
+                  :readonly="!isEditing"
+                  :label="`${isEditing ? '搜索' : ''}`"
+                  persistent-hint
+                  @click="fetchCommunityNames()"
+                >
+               
+                </v-autocomplete>
+              </v-flex>
+            </v-layout>
           </v-container>
         </v-form>
         <small></small>
@@ -133,6 +151,10 @@ export default {
       avatarName: "",
       avatarFile: "",
       avatarRemoteUrl: "",
+      communityNames: [],
+      communityData:[],
+      community:"",
+      isEditing: false,
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
@@ -166,10 +188,16 @@ export default {
       }
       if (valid) {
         //post
-        _this.$axios.get("/chengfeng/community/listall?pageNum=1&pageSize=10").then(val=>{
-          _this.$log(val);
-        })
-        this.signup_dialog = false;
+        _this.$axios
+          .post("http://192.168.123.92:8585/chengfeng/user/registry", {
+            nickname: this.signup_name,
+            password: this.signup_confirm_password,
+            phone: this.signup_phone,
+            communityId: 1
+          })
+          .then(val => {
+            _this.$log(val);
+          });
       }
     },
     validateAll(ref) {
@@ -197,8 +225,7 @@ export default {
           // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
           let config = {
             headers: {
-              "Content-Type": "multipart/form-data",
-              
+              "Content-Type": "multipart/form-data"
             }
           }; //添加请求头
           _this.$axios
@@ -216,6 +243,20 @@ export default {
         this.imageFile = "";
         this.imageUrl = "";
       }
+    },
+    fetchCommunityNames() {
+      this.isEditing=!this.isEditing;
+      if (this.communityNames.length) {
+        return;
+      }
+     
+      this.$axios
+        .get("http://192.168.123.92:8585/chengfeng/community/listall")
+        .then(val => {
+            this.communityNames=val.data.data.map(val=>val.name);
+        }).catch(e=>{
+          this.error(e)
+        });
     }
   }
 };
@@ -231,6 +272,9 @@ export default {
 }
 .btnWrapper {
   justify-content: center;
+}
+.v-autocomplete__content.v-menu__content .v-card{
+  margin:unset!important;
 }
 </style>
 

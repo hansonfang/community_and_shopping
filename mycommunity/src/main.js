@@ -16,7 +16,8 @@ Vue.config.productionTip = false
 Vue.prototype.$axios=axios;
 
 // 封装console.log
-Vue.prototype.$log=window.console.log;
+Vue.prototype.log=window.console.log;
+Vue.prototype.error=window.console.error;
 
 Vue.use(VueCarousel);
 
