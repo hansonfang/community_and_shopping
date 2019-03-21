@@ -3,21 +3,41 @@ import './plugins/vuetify'
 import vuetify from "vuetify"
 // import zhHans from 'vuetify/es5/locale/zh-Hans'
 import App from './App.vue'
+import functions from "./functions/functions.js";
 import router from './router'
 import axios from "axios"
 import VueCarousel from 'vue-carousel';
+import VueLogger from 'vuejs-logger';
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
-Vue.config.productionTip = false
+const isProduction = process.env.NODE_ENV === 'production';
 
+Vue.config.productionTip = false
+Vue.prototype.bus=new Vue;
 //封装Axios
 Vue.prototype.$axios=axios;
 
 // 封装console.log
 Vue.prototype.log=window.console.log;
-Vue.prototype.error=window.console.error;
+Vue.prototype.dir=window.console.dir;
+
+Vue.prototype.functions=functions;
+
+Vue.prototype.baseUrl="http://192.168.123.92:8585/chengfeng";
+ 
+const options = {
+    isEnabled: true,
+    logLevel : isProduction ? 'error' : 'debug',
+    stringifyArguments : false,
+    showLogLevel : true,
+    showMethodName : true,
+    separator: '|',
+    showConsoleColors: true
+};
+ 
+Vue.use(VueLogger, options);
 
 Vue.use(VueCarousel);
 

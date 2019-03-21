@@ -30,10 +30,16 @@
             </v-layout>
             <v-layout row>
               <v-flex xs12 md3>
-                <div class="text-xs-center pt-3 subheading">姓名</div>
+                <div class="text-xs-center pt-3 subheading">昵称</div>
               </v-flex>
               <v-flex xs12 md9>
-                <v-text-field ref label="姓名" placeholder="汉字" color="success" v-model="signup_name"></v-text-field>
+                <v-text-field
+                  ref
+                  label="姓名"
+                  color="success"
+                  v-model="signup_name"
+                  :rules="[rules.required,rules.counter]"
+                ></v-text-field>
               </v-flex>
             </v-layout>
             <v-layout row>
@@ -52,21 +58,7 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
-            <v-layout row>
-              <v-flex xs12 md3>
-                <div class="text-xs-center pt-3 subheading">邮箱(可选)</div>
-              </v-flex>
-              <v-flex xs12 md9>
-                <v-text-field
-                  ref="signupEmail"
-                  label="邮箱"
-                  color="success"
-                  v-model="signup_email"
-                  :rules="[rules.email]"
-                  validate-on-blur
-                ></v-text-field>
-              </v-flex>
-            </v-layout>
+
             <v-layout row>
               <v-flex xs3>
                 <div class="text-xs-center pt-3 subheading">密码</div>
@@ -78,7 +70,7 @@
                   color="primary"
                   v-model="signup_password"
                   type="password"
-                  :rules="[rules.password]"
+                  :rules="[rules.password,()=>signup_password.length<=20&&signup_password.length>=5 || '密码长度在5-20之间']"
                   validate-on-blur
                   clearable
                   counter
@@ -110,20 +102,167 @@
                 <div class="text-xs-center pt-3 subheading">选择社区</div>
               </v-flex>
               <v-flex xs9>
-                <v-autocomplete
-                  v-model="community"
-                  :hint="!isEditing ? '点击图标查找' : '点击图标保存'"
-                  :items="communityNames"
-                  :readonly="!isEditing"
-                  :label="`${isEditing ? '搜索' : ''}`"
-                  persistent-hint
-                  @click="fetchCommunityNames()"
+                <v-text-field
+                  label="选择社区"
+                  color="primary"
+                  :value="community"
+                  type="input"
+                  :rules="[() => !!community || '必填项']"
+                  @click="fetchCommunitys()"
+                ></v-text-field>
+                <!-- 选择社区dialog -->
+                <v-dialog
+                  v-model="community_choose_dialog"
+                  fullscreen
+                  hide-overlay
+                  transition="dialog-bottom-transition"
                 >
-               
-                </v-autocomplete>
+                  <v-card>
+                    <v-toolbar dark color="primary">
+                      <v-btn icon dark @click="community_choose_dialog = false">
+                        <v-icon>fas fa-times</v-icon>
+                      </v-btn>
+                      <v-toolbar-title>选择社区</v-toolbar-title>
+                    </v-toolbar>
+                    <v-list subheader v-if="this.communitys.length" class="pa-5">
+                      <v-subheader>社区信息</v-subheader>
+                      <v-list-tile
+                        avatar
+                        v-for="(item,index) in this.communitys"
+                        :key="index"
+                        class="my-2"
+                        @click="saveCommunity(item)"
+                      >
+                        <v-list-tile-content>
+                          <v-list-tile-title>{{item.name}}</v-list-tile-title>
+                          <v-list-tile-sub-title>
+                            <v-layout row wrap>
+                              <v-flex xs2>
+                                <span>书记:{{item.admin}}</span>
+                              </v-flex>
+                              <v-flex xs10>
+                                <div class="d-f row">
+                                  <span>地址:</span>
+                                  <address>{{item.address}}</address>
+                                </div>
+                              </v-flex>
+                            </v-layout>
+                          </v-list-tile-sub-title>
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </v-list>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+
+            <!-- 可选信息 -->
+            <v-layout>
+              <v-flex xs12 class="d-f row align-center">
+                <v-btn block @click="more=true;" v-if="!more" flat color="blue">
+                  <v-icon size="20">fas fa-angle-double-down</v-icon>&nbsp;更多信息
+                </v-btn>
+                <v-btn block @click="more=false;" v-if="more" flat color="blue">
+                  <v-icon size="20">fas fa-angle-double-up</v-icon>&nbsp;收起更多
+                </v-btn>
+                <v-icon color="green" class="ml-2" @click="more_dialog=true">far fa-question-circle</v-icon>
+                <v-dialog v-model="more_dialog" persistent max-width="290">
+                  <v-card style="margin:unset;">
+                    <v-card-title class="headline">关于更多信息</v-card-title>
+                    <v-card-text>填写以下信息以方便浏览并在社区热论模块发帖,点击收起更多只填基本信息</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" flat @click="more_dialog = false">好的</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </v-flex>
             </v-layout>
           </v-container>
+        </v-form>
+        <v-form v-if="more" ref="signupMoreForm">
+          <v-layout row>
+            <v-flex xs12 md3>
+              <div class="text-xs-center pt-3 subheading">邮箱(可选)</div>
+            </v-flex>
+            <v-flex xs12 md9>
+              <v-text-field
+                ref="signupEmail"
+                label="邮箱"
+                color="success"
+                v-model="signup_email"
+                :rules="[rules.email]"
+                validate-on-blur
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs12 md3>
+              <div class="text-xs-center pt-3 subheading">真实姓名</div>
+            </v-flex>
+            <v-flex xs12 md9>
+              <v-text-field
+                label="姓名"
+                color="success"
+                v-model="username"
+                :rules="[rules.username]"
+                validate-on-blur
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs12 md3>
+              <div class="text-xs-center pt-3 subheading">性别</div>
+            </v-flex>
+            <v-flex xs12 md9>
+              <v-radio-group v-model="gender" row>
+                <v-radio label="男" value="male"></v-radio>
+                <v-radio label="女" value="female"></v-radio>
+              </v-radio-group>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs12 md3>
+              <div class="text-xs-center pt-3 subheading">身份证号码</div>
+            </v-flex>
+            <v-flex xs12 md9>
+              <v-text-field
+                label="身份证"
+                color="success"
+                v-model="id_card"
+                :rules="[rules.idCard]"
+                validate-on-blur
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <!-- <v-layout row>
+                <v-flex xs12 md3>
+                  <div class="text-xs-center pt-3 subheading">出生日期</div>
+                </v-flex>
+                <v-flex xs12 md9>
+                  <v-text-field
+                    label="出生日期"
+                    color="success"
+                    v-model="signup_email"
+                    :rules="[rules.email]"
+                    validate-on-blur
+                  ></v-text-field>
+                </v-flex>
+          </v-layout>-->
+          <v-layout row>
+            <v-flex xs12 md3>
+              <div class="text-xs-center pt-3 subheading">个人签名</div>
+            </v-flex>
+            <v-flex xs12 md9>
+              <v-textarea
+                name="motto"
+                label="记得体现你的个人特点"
+                value
+                v-model="motto"
+                :rules="[motto=>motto.length<=200||'字符限制在200以内']"
+              ></v-textarea>
+            </v-flex>
+          </v-layout>
         </v-form>
         <small></small>
       </v-card-text>
@@ -131,6 +270,7 @@
         <v-btn color="blue lighten-1" @click="signupSubmit()">提交</v-btn>
       </v-card-actions>
     </v-card>
+
   </div>
 </template>
 <script>
@@ -151,10 +291,19 @@ export default {
       avatarName: "",
       avatarFile: "",
       avatarRemoteUrl: "",
-      communityNames: [],
-      communityData:[],
-      community:"",
-      isEditing: false,
+      communitys: [],
+      community: "",
+      communityId: 0,
+      community_choose_dialog: false,
+      more: false,
+      more_dialog: false,
+      username: "",
+      gender: "",
+      id_card: "",
+      motto: "",
+      snackbar: "",
+      snackbarColor: "",
+      snackbarText: "",
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
@@ -163,6 +312,10 @@ export default {
           return pattern.test(value) || "邮箱不合法";
         },
         phone: value => /^1[34578]\d{9}$/.test(value) || "手机号不合法",
+        username: value => /^[\u4e00-\u9fa5]+$/.test(value) || "姓名输入不合法",
+        idCard: value =>
+          /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value) ||
+          "身份证输入不合法",
         password: value =>
           /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]+$/.test(value) ||
           "密码不合法,只能包含大小写字母和数字",
@@ -175,29 +328,54 @@ export default {
   methods: {
     signupSubmit() {
       const form = this.$refs.signupForm;
-      const email = this.$refs.signupEmail;
+      const moreForm = this.$refs.signupMoreForm;
       let valid = false;
 
-      //若存在邮箱值，则全部校验。不存在邮箱值，则省略邮箱值的校验
-      if (email.value) {
-        valid = this.validateAll(form);
+      //若用户填写更多，则全部校验。不填写更多，则省略以下值的校验
+      if (this.more) {
+        valid = this.validateAll(form) && this.validateAll(moreForm);
       } else {
-        valid = !form.inputs.filter(field => {
-          return field.label !== "邮箱" && !field.valid;
-        }).length;
+        valid = this.validateAll(form);
       }
       if (valid) {
         //post
-        _this.$axios
-          .post("http://192.168.123.92:8585/chengfeng/user/registry", {
+        this.$axios
+          .post(this.baseUrl + "/user/registry", {
             nickname: this.signup_name,
             password: this.signup_confirm_password,
             phone: this.signup_phone,
-            communityId: 1
+            communityId: 1,
+            username: this.username,
+            avatar: "",
+            gender: this.gender,
+            idcard: this.id_card,
+            motto: this.motto
           })
-          .then(val => {
-            _this.$log(val);
+          .then(res => {
+            this.$log.debug("Register Post Success!");
+            this.bus.$emit("hint",{
+              color:"success",
+              text:"注册成功 正在跳转登录界面..."
+            })
+            this.functions.formatTime(res.data.data.signUp).today;
+            const _this=this;
+            setTimeout(()=>{
+              _this.$router.push({name:"login",params: { nickname:_this.signup_name,password:_this.signup_confirm_password }});
+            },2000);
+          })
+          .catch(e => {
+            this.log(e.response.data);
+            if (e.response) {
+              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+              this.snackbarColor = "error";
+              this.snackbarText = "注册失败:" + e.response.data.data.error;
+              this.snackbar = true;
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              this.$log.error("Error", e.message);
+            }
           });
+        this.$log.debug("Register Post!");
       }
     },
     validateAll(ref) {
@@ -229,13 +407,9 @@ export default {
             }
           }; //添加请求头
           _this.$axios
-            .post(
-              "http://47.95.244.237:9990/chengfeng/per/uploadimg",
-              param,
-              config
-            )
+            .post(this.baseUrl + "file/uploads", { file: param }, config)
             .then(response => {
-              _this.$log(response.data);
+              _this.log(response.data);
             });
         });
       } else {
@@ -244,19 +418,27 @@ export default {
         this.imageUrl = "";
       }
     },
-    fetchCommunityNames() {
-      this.isEditing=!this.isEditing;
-      if (this.communityNames.length) {
-        return;
+    fetchCommunitys() {
+      this.community_choose_dialog = true;
+      if (this.communitys.length) {
+        //若有缓存则不请求
+        this.$log.debug("已缓存");
+      } else {
+        //若没有缓存则请求
+        this.$axios
+          .get(this.baseUrl + "/community/listall")
+          .then(val => {
+            this.communitys = val.data.data;
+          })
+          .catch(e => {
+            this.error(e);
+          });
       }
-     
-      this.$axios
-        .get("http://192.168.123.92:8585/chengfeng/community/listall")
-        .then(val => {
-            this.communityNames=val.data.data.map(val=>val.name);
-        }).catch(e=>{
-          this.error(e)
-        });
+    },
+    saveCommunity(item) {
+      this.community = item.name;
+      this.communityId = item.id;
+      this.community_choose_dialog = false;
     }
   }
 };
@@ -273,8 +455,8 @@ export default {
 .btnWrapper {
   justify-content: center;
 }
-.v-autocomplete__content.v-menu__content .v-card{
-  margin:unset!important;
+.v-autocomplete__content.v-menu__content .v-card {
+  margin: unset !important;
 }
 </style>
 

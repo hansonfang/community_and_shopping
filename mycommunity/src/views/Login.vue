@@ -9,6 +9,24 @@
           <v-container grid-list-md>
             <v-layout row>
               <v-flex xs3>
+                <div class="text-xs-center pt-3 subheading">用户昵称</div>
+              </v-flex>
+              <v-flex xs9>
+                <v-text-field
+                  label="昵称"
+                  color="primary"
+                  v-model="username"
+                  type="input"
+                  :rules="[rules.required,rules.minfive,rules.counter]"
+                  validate-on-blur
+                  clearable
+                  counter
+                  maxlength="20"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+            <!-- <v-layout row>
+              <v-flex xs3>
                 <v-spacer></v-spacer>
                 <v-switch v-model="emailSwitch" :label="switchLable"></v-switch>
               </v-flex>
@@ -24,7 +42,7 @@
                   clearable
                 ></v-text-field>
               </v-flex>
-            </v-layout>
+            </v-layout>-->
             <v-layout row>
               <v-flex xs3>
                 <div class="text-xs-center pt-3 subheading">密码</div>
@@ -62,7 +80,12 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs3 class="text-xs-center pt-3 captcha">
-                <img ref="login_captchaImage" alt title="点击更换" @click="getCaptcha('login_captchaImage')">
+                <img
+                  ref="login_captchaImage"
+                  alt
+                  title="点击更换"
+                  @click="getCaptcha('login_captchaImage')"
+                >
               </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -71,9 +94,10 @@
           </v-container>
         </v-form>
         <small></small>
+  
       </v-card-text>
       <v-card-actions class="loginBtnWrapper">
-        <v-btn color="blue lighten-1" @click="loginSubmit()">提交</v-btn>
+        <v-btn color="blue lighten-1" @click="loginSubmit()">登录</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -156,9 +180,7 @@
 <script>
 export default {
   name: "login",
-  created() {
-    this.getCaptcha("login_captchaImage");
-  },
+
   data() {
     return {
       emailSwitch: true,
@@ -174,6 +196,7 @@ export default {
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
+        minfive: value => value.length >= 5 || "最少5个字符",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "邮箱不合法";
@@ -184,6 +207,12 @@ export default {
           "密码不合法,只能包含大小写字母和数字"
       }
     };
+  },
+  created() {
+    if (this.$route.params.nickname) {
+      this.username = this.$route.params.nickname;
+      this.password = this.$route.params.password;
+    }
   },
   computed: {
     switchLable() {
@@ -203,25 +232,30 @@ export default {
   methods: {
     loginSubmit() {
       if (this.validateAll(this.$refs.loginForm)) {
-        this.$axios.post("http://localhost:3000/captcha", {
-          usernameType: this.emailSwitch ? "email" : "phone",
-          username: this.username,
-          password: this.password,
-          autoLogin: this.autoLoginCheckbox,
-          captchaCode: this.login_captcha
-        });
-        // console.log(this.username, this.password);
+        // this.$axios.post("http://localhost:3000/captcha", {
+        //   usernameType: this.emailSwitch ? "email" : "phone",
+        //   username: this.username,
+        //   password: this.password,
+        //   autoLogin: this.autoLoginCheckbox,
+        //   captchaCode: this.login_captcha
+        // });
+        this.$axios.post(this.baseUrl+"/user/login",{
+          nickname:this.username,
+          password:this.password
+        }).then(data=>{
+          window.localStorage.setItem("token",data.data.Authorization);
+          this.bus.$emit("hint",{
+            color:"success",
+            text:"登录成功"
+          })
+        })
       }
     },
     validateAll(ref) {
       return ref.validate();
     },
     //获取验证码并进行base64编码
-    getCaptcha(ref) {
-      this.$axios.get("http://localhost:3000/captcha").then(res => {
-        this.$refs[ref].src = "data:image/png;base64," + res.data;
-      });
-    },
+    getCaptcha() {},
     resetpwdSubmit() {
       this.resetpwd_dialog = false;
       //post提交
@@ -250,8 +284,8 @@ export default {
   max-width: 800px;
   margin: 8vh auto 2vh;
 }
->>>.reset-card{
-  margin:0;
+>>> .reset-card {
+  margin: 0;
 }
 .loginBtnWrapper {
   justify-content: center;

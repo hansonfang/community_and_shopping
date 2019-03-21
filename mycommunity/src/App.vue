@@ -5,12 +5,14 @@
     <transition :name="transitionName">
       <router-view :key="key" class="page"></router-view>
     </transition>
+    <Snackbar/>
   </v-app>
 </template>
 
 <script>
 import Nav from "./components/Nav.vue";
 import Head from "./components/Head.vue";
+import Snackbar from "@/components/Snackbar"
 export default {
   name: "App",
   data() {
@@ -20,7 +22,8 @@ export default {
   },
   components: {
     Nav,
-    Head
+    Head,
+    Snackbar
   },
   watch: {
     $route(to, from) {
