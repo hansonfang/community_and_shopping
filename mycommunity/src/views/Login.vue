@@ -1,5 +1,11 @@
 <template>
   <div>
+     <v-alert
+      v-model="alert"
+      :type="alertType"
+    >
+      {{alertMsg}}
+    </v-alert>
     <v-card>
       <v-card-title class="justify-center pb-0">
         <span class="headline">登录</span>
@@ -94,7 +100,6 @@
           </v-container>
         </v-form>
         <small></small>
-  
       </v-card-text>
       <v-card-actions class="loginBtnWrapper">
         <v-btn color="blue lighten-1" @click="loginSubmit()">登录</v-btn>
@@ -178,6 +183,8 @@
   </div>
 </template>
 <script>
+const qs = require("qs");
+
 export default {
   name: "login",
 
@@ -193,6 +200,9 @@ export default {
       resetpwd_phone: "",
       resetpwd_email: "",
       signup_name: "hanson",
+      alert:false,
+      alertType:"error",
+      alertMsg:"",
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
@@ -212,6 +222,11 @@ export default {
     if (this.$route.params.nickname) {
       this.username = this.$route.params.nickname;
       this.password = this.$route.params.password;
+    }
+    if(this.$route.query.needAuth){
+      this.alert=true;
+      this.alertType="error";
+      this.alertMsg="访问此页面需要登录"
     }
   },
   computed: {
@@ -239,16 +254,49 @@ export default {
         //   autoLogin: this.autoLoginCheckbox,
         //   captchaCode: this.login_captcha
         // });
-        this.$axios.post(this.baseUrl+"/user/login",{
-          nickname:this.username,
-          password:this.password
-        }).then(data=>{
-          window.localStorage.setItem("token",data.data.Authorization);
-          this.bus.$emit("hint",{
-            color:"success",
-            text:"登录成功"
+        this.$axios({
+          method: "post",
+          url: this.baseUrl + "/user/login",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          data: qs.stringify({
+            nickname: this.username,
+            password: this.password
           })
         })
+          .then(res => {
+            // this.$log.debug(res.data);
+            this.$store.commit("setToken", {
+              Authorization: res.data.data.Authorization
+            });
+            if (this.$store.state.Authorization) {
+              this.bus.$emit("hint", {
+                color: "success",
+                text: "登录成功，即将跳转到首页",
+                timeout: 2000
+              });
+              setTimeout(() => {
+                this.$router.push("/");
+              }, 2000);
+            } else {
+              this.$router.replace("/login");
+            }
+
+            // this.log()
+            setTimeout(() => {}, 2000);
+          })
+          .catch(e => {
+            this.$log.error(e);
+            if (e.response) {
+              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+              this.$log.debug(e.response);
+              this.bus.$emit("hint", {
+                color: "error",
+                text: "登录失败:" + e.response.data.message
+              });
+            }
+          });
       }
     },
     validateAll(ref) {

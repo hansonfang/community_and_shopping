@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="0">
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
       {{ snackbarText }}
       <v-btn dark flat @click="snackbar = false">关闭</v-btn>
     </v-snackbar>
@@ -12,14 +12,16 @@ export default {
             snackbar:false,
             snackbarColor:"",
             snackbarText:"",
+            snackbarTimeout:0,
         }
     },
     created() {
         const _this = this;
         this.bus.$on('hint', function(data) {
-            _this.snackbar=true;
+                _this.snackbar=!data.hide;
             _this.snackbarColor=data.color;
             _this.snackbarText=data.text;
+            _this.snackbarTimeout=data.timeout||0;
         })
     }
 }

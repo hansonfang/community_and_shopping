@@ -270,7 +270,6 @@
         <v-btn color="blue lighten-1" @click="signupSubmit()">提交</v-btn>
       </v-card-actions>
     </v-card>
-
   </div>
 </template>
 <script>
@@ -353,23 +352,32 @@ export default {
           })
           .then(res => {
             this.$log.debug("Register Post Success!");
-            this.bus.$emit("hint",{
-              color:"success",
-              text:"注册成功 正在跳转登录界面..."
-            })
+            this.bus.$emit("hint", {
+              color: "success",
+              text: "注册成功 正在跳转登录界面...",
+              timeout: 1000
+            });
             this.functions.formatTime(res.data.data.signUp).today;
-            const _this=this;
-            setTimeout(()=>{
-              _this.$router.push({name:"login",params: { nickname:_this.signup_name,password:_this.signup_confirm_password }});
-            },2000);
+            const _this = this;
+            setTimeout(() => {
+              _this.$router.push({
+                name: "login",
+                params: {
+                  nickname: _this.signup_name,
+                  password: _this.signup_confirm_password
+                }
+              });
+            }, 1000);
           })
           .catch(e => {
             this.log(e.response.data);
             if (e.response) {
               // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-              this.snackbarColor = "error";
-              this.snackbarText = "注册失败:" + e.response.data.data.error;
-              this.snackbar = true;
+
+              this.bus.$emit("hint", {
+                color: "error",
+                text: "注册失败:" + e.response.data.data.error
+              });
             } else {
               // Something happened in setting up the request that triggered an Error
               this.$log.error("Error", e.message);
