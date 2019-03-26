@@ -343,9 +343,9 @@ export default {
             nickname: this.signup_name,
             password: this.signup_confirm_password,
             phone: this.signup_phone,
-            communityId: 1,
+            communityId: this.communityId,
             username: this.username,
-            avatar: "",
+            avatar: this.avatarRemoteUrl,
             gender: this.gender,
             idcard: this.id_card,
             motto: this.motto
@@ -406,8 +406,7 @@ export default {
           this.avatarFile = files[0]; // this is an image file that can be sent to server...
           /* 上传图片 */
           let param = new FormData(); //创建form对象
-          param.append("file", this.avatarFile, this.avatarFile.name); //通过append向form对象添加数据
-          param.append("chunk", "0"); //添加form表单中其他数据
+          param.append("files", this.avatarFile, this.avatarFile.name); //通过append向form对象添加数据
           // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
           let config = {
             headers: {
@@ -415,9 +414,21 @@ export default {
             }
           }; //添加请求头
           _this.$axios
-            .post(this.baseUrl + "file/uploads", { file: param }, config)
-            .then(response => {
-              _this.log(response.data);
+            .post(this.baseUrl + "/file/uploads", param, config)
+            .then(res => {
+              this.avatarRemoteUrl=res.data.data;
+              this.bus.$emit("hint",{
+                color:"success",
+                text:`图片${this.avatarFile.name}上传成功`,
+                timeout:1500
+              })
+            }).catch(e=>{
+              this.$log.error(e.response);
+              this.bus.$emit("hint",{
+                color:"error",
+                text:`头像上传失败`,
+                timeout:2000
+              })
             });
         });
       } else {

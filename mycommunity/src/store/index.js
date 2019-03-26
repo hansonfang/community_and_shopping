@@ -6,7 +6,9 @@ const store = new Vuex.Store({
  
   state: {
     // 存储token
-    Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : ''
+    Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '',
+
+    user:localStorage.getItem("user")?localStorage.getItem("user"):null,
   },
  
   mutations: {
@@ -18,6 +20,14 @@ const store = new Vuex.Store({
     deleteToken(state){
         state.Authorization="";
         localStorage.removeItem("Authorization");
+    },
+    setUser(state,user){
+        state.user=JSON.stringify(user);
+        localStorage.setItem('user', JSON.stringify(user));
+    },
+    deleteUser(state){
+      state.user=null;
+      localStorage.removeItem("user");
     }
   }
 });

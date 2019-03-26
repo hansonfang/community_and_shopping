@@ -22,7 +22,10 @@ const router=new Router({
     {
       path: "/",
       name: "index", //首页
-      component: resolve => require(["@/views/main/Index"], resolve)
+      component: resolve => require(["@/views/main/Index"], resolve),
+      meta:{
+        requireAuth:true
+      }
     },
 
     {

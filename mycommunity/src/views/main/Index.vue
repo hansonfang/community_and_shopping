@@ -284,57 +284,69 @@ export default {
           dialog_show: false
         }
       ],
-      adItems: [
-        { src: "https://picsum.photos/300/400?random" },
-        { src: "https://picsum.photos/300/400?random" },
-        { src: "https://picsum.photos/300/400?random" },
-        { src: "https://picsum.photos/300/400?random" }
-      ],
       goods: [
         {
           image: "https://picsum.photos/300/400?random",
           title: "海天生抽",
           groupPrice: 9,
           singlePrice: 12,
-          id:"000001"
+          id: "000001"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "海天蚝油",
           groupPrice: 8,
           singlePrice: 13,
-          id:"000002"
+          id: "000002"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "鲁花花生油",
           groupPrice: 56,
           singlePrice: 68,
-          id:"000003"
+          id: "000003"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "家家乐味精",
           groupPrice: 5,
           singlePrice: 8,
-          id:"000004"
+          id: "000004"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "团圆速冻水饺",
           groupPrice: 17,
           singlePrice: 21,
-          id:"000005"
+          id: "000005"
         },
         {
           image: "https://picsum.photos/300/400?random",
           title: "湾仔码头速冻馄饨",
           groupPrice: 15,
           singlePrice: 23,
-          id:"000006"
+          id: "000006"
         }
       ]
     };
+  },
+  mounted() {
+    this.$axios
+      .get(this.baseUrl + "/portal/index")
+      .then(res => {
+        this.data = res.data.data;
+        this.propertyAnnounces = this.data.properNoticeVos;
+        this.data.properNoticeVos.forEach(val => {
+          this.propertyAnnounces.push({
+            title: val.title,
+            date: this.functions.formatTime(val.showtime),
+            detail: val.description
+          });
+        });
+      })
+      .catch(e => {
+        this.$log.error(e);
+      });
   }
 };
 </script>

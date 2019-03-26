@@ -270,6 +270,15 @@ export default {
             this.$store.commit("setToken", {
               Authorization: res.data.data.Authorization
             });
+            this.$axios.get(this.baseUrl+"/user/find").then(res=>{
+              this.$log.debug(res);
+              if(res.data.status!==10000){
+                this.$store.commit("setUser",res.data.data.base_info);
+                this.bus.$emit("setUsername",res.data.data.base_info.nickname);
+              }
+            }).catch(e=>{
+              this.$log.error(e);
+            })
             if (this.$store.state.Authorization) {
               this.bus.$emit("hint", {
                 color: "success",
