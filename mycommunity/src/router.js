@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Post from "./views/main/Post";
 import Shopping from "./views/main/Shopping";
 
-import store from "@/store/index";
+import store from "@/store";
 /* 引入Post贴吧页面views */
 import PostIndex from "@/views/post/PostIndex";
 import PostBest from "@/views/post/PostBest";
@@ -15,7 +15,7 @@ import Register from "./views/Register.vue";
 
 Vue.use(Router);
 
-const router=new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -23,8 +23,8 @@ const router=new Router({
       path: "/",
       name: "index", //首页
       component: resolve => require(["@/views/main/Index"], resolve),
-      meta:{
-        requireAuth:true
+      meta: {
+        requireAuth: true
       }
     },
 
@@ -56,24 +56,24 @@ const router=new Router({
       path: "/orderRepair",
       name: "orderRepair",
       component: resolve => require(["@/views/index/orderRepair"], resolve),
-      meta:{
-        requireAuth:true,
+      meta: {
+        requireAuth: true
       }
     },
     {
       path: "/orderWater",
       name: "orderWater",
       component: resolve => require(["@/views/index/orderWater"], resolve),
-      meta:{
-        requireAuth:true,
+      meta: {
+        requireAuth: true
       }
     },
     {
       path: "/tellManager",
       name: "tellManager",
       component: resolve => require(["@/views/index/tellManager"], resolve),
-      meta:{
-        requireAuth:true,
+      meta: {
+        requireAuth: true
       }
     },
     {
@@ -141,8 +141,8 @@ router.beforeEach((to, from, next) => {
     hide: true
   });
   if (to.matched.some(r => r.meta.requireAuth)) {
-    if (store.state.Authorization) next();
-    else next({ path: "/login" ,query:{needAuth:true}});
+    if (store.state.token) next();
+    else next({ path: "/login", query: { needAuth: true } });
   } else next();
 });
 export default router;

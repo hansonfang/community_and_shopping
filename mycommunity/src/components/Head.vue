@@ -51,8 +51,8 @@ export default {
   },
   methods: {
     logout() {
-      this.$axios
-        .post(this.baseUrl + "/logout")
+      this.$store
+        .dispatch("FedLogOut")
         .then(res => {
           if (res.data.status === 200) {
             this.username = "";

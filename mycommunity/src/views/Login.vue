@@ -1,11 +1,6 @@
 <template>
   <div>
-     <v-alert
-      v-model="alert"
-      :type="alertType"
-    >
-      {{alertMsg}}
-    </v-alert>
+    <v-alert v-model="alert" :type="alertType">{{alertMsg}}</v-alert>
     <v-card>
       <v-card-title class="justify-center pb-0">
         <span class="headline">登录</span>
@@ -183,8 +178,6 @@
   </div>
 </template>
 <script>
-const qs = require("qs");
-
 export default {
   name: "login",
 
@@ -200,9 +193,9 @@ export default {
       resetpwd_phone: "",
       resetpwd_email: "",
       signup_name: "hanson",
-      alert:false,
-      alertType:"error",
-      alertMsg:"",
+      alert: false,
+      alertType: "error",
+      alertMsg: "",
       rules: {
         required: value => !!value || "必须输入",
         counter: value => value.length <= 20 || "最大20个字符",
@@ -218,15 +211,15 @@ export default {
       }
     };
   },
-  created() {
+  mounted() {
     if (this.$route.params.nickname) {
       this.username = this.$route.params.nickname;
       this.password = this.$route.params.password;
     }
-    if(this.$route.query.needAuth){
-      this.alert=true;
-      this.alertType="error";
-      this.alertMsg="访问此页面需要登录"
+    if (this.$route.query.needAuth) {
+      this.alert = true;
+      this.alertType = "error";
+      this.alertMsg = "访问此页面需要登录";
     }
   },
   computed: {
@@ -247,64 +240,38 @@ export default {
   methods: {
     loginSubmit() {
       if (this.validateAll(this.$refs.loginForm)) {
-        // this.$axios.post("http://localhost:3000/captcha", {
-        //   usernameType: this.emailSwitch ? "email" : "phone",
-        //   username: this.username,
-        //   password: this.password,
-        //   autoLogin: this.autoLoginCheckbox,
-        //   captchaCode: this.login_captcha
-        // });
-        this.$axios({
-          method: "post",
-          url: this.baseUrl + "/user/login",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          data: qs.stringify({
-            nickname: this.username,
+        this.$store
+          .dispatch("Login", {
+            username: this.username,
             password: this.password
           })
-        })
           .then(res => {
-            // this.$log.debug(res.data);
-            this.$store.commit("setToken", {
-              Authorization: res.data.data.Authorization
+            this.$log.debug(res);
+            this.bus.$emit("hint", {
+              color: "success",
+              text: "登录成功 正在跳转首页..."
             });
-            this.$axios.get(this.baseUrl+"/user/find").then(res=>{
-              this.$log.debug(res);
-              if(res.data.status!==10000){
-                this.$store.commit("setUser",res.data.data.base_info);
-                this.bus.$emit("setUsername",res.data.data.base_info.nickname);
-              }
-            }).catch(e=>{
-              this.$log.error(e);
-            })
-            if (this.$store.state.Authorization) {
-              this.bus.$emit("hint", {
-                color: "success",
-                text: "登录成功，即将跳转到首页",
-                timeout: 2000
-              });
-              setTimeout(() => {
-                this.$router.push("/");
-              }, 2000);
-            } else {
-              this.$router.replace("/login");
-            }
 
-            // this.log()
-            setTimeout(() => {}, 2000);
+            //获取用户信息
+            this.$store
+              .dispatch("GetInfo")
+              .then(res => {
+                this.$log.debug("获取用户信息成功", res.data.data.base_info);
+              })
+              .catch(e => {
+                this.$log.error("获取用户信息失败", e.response);
+              });
+            setTimeout(() => {
+              this.$router.push({ path: "/" });
+            }, 2000);
           })
           .catch(e => {
-            this.$log.error(e);
-            if (e.response) {
-              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-              this.$log.debug(e.response);
-              this.bus.$emit("hint", {
-                color: "error",
-                text: "登录失败:" + e.response.data.message
-              });
-            }
+            this.$log.error(e.response);
+            this.bus.$emit("hint", {
+              color: "error",
+              text: "登录失败" + e.response.data.message,
+              timeout: 3000
+            });
           });
       }
     },
