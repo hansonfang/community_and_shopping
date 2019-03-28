@@ -28,4 +28,4 @@ const announcements = {
   }
 };
 
-export default user;
+export default announcements;
