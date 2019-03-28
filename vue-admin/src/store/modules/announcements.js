@@ -1,6 +1,6 @@
 import { submit } from "@/api/announcements";
 import { getToken, setToken, removeToken } from "@/utils/auth";
-//gg
+
 const announcements = {
   state: {
     token: getToken()
