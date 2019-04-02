@@ -2,14 +2,15 @@ import { login, logout, getInfo } from "@/api/user";
 import qs from "querystring";
 
 import { getToken, setToken, removeToken } from "@/utils/auth";
-
+import { setObject, removeObject, getObject } from "@/utils/persistent";
 const user = {
   state: {
     token: getToken(),
     name: "",
     avatar: "",
     nickname: "",
-    communityId: ""
+    communityId: "",
+    user: getObject("user_info")
   },
 
   mutations: {
@@ -24,6 +25,9 @@ const user = {
     },
     SET_COMMUNITY: (state, id) => {
       state.communityId = id;
+    },
+    SET_USER: (state, payload) => {
+      state.user = payload;
     }
   },
 
@@ -54,6 +58,8 @@ const user = {
             commit("SET_NICKNAME", info.nickname);
             commit("SET_AVATAR", info.avatar);
             commit("SET_COMMUNITY", info.communityId);
+            commit("SET_USER", info);
+            setObject("user_info", info);
             resolve(response);
           })
           .catch(error => {
@@ -66,11 +72,12 @@ const user = {
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token)
-          .then(() => {
+          .then(res => {
             commit("SET_TOKEN", "");
-            commit("SET_ROLES", []);
+            commit("SET_USER", null);
             removeToken();
-            resolve();
+            removeObject("user_info");
+            resolve(res);
           })
           .catch(error => {
             reject(error);
@@ -78,15 +85,12 @@ const user = {
       });
     },
 
-    // 前端 登出
-    FedLogOut({ commit }) {
-      return new Promise(resolve => {
-        commit("SET_TOKEN", "");
-        removeToken();
-        logout().then(res => {
-          resolve(res);
-        });
-      });
+    //前端登出
+    FedLogout({ commit }) {
+      commit("SET_TOKEN", "");
+      commit("SET_USER", null);
+      removeToken();
+      removeObject("user_info");
     }
   }
 };

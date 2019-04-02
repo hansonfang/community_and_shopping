@@ -1,17 +1,16 @@
-const path=require("path");
+const path = require("path");
 
 module.exports = {
-  configureWebpack:{
+  configureWebpack: {
     resolve: {
-        extensions: ['.js', '.vue', '.json'],
-        alias: {
-          '@': path.resolve('src'),
-        }
+      extensions: [".js", ".vue", ".json"],
+      alias: {
+        "@": path.resolve("src")
       }
+    }
   },
-  devServer:{
-    host: '0.0.0.0',
-   
+  devServer: {
+    host: "0.0.0.0"
   },
-  assetsDir:"./src/assets"
-}
+  assetsDir: "./src/assets"
+};

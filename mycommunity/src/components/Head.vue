@@ -33,41 +33,33 @@
 
 <script>
 export default {
-  mounted() {
-    const _this = this;
-    if (this.$store.state.Authorization && this.$store.state.user) {
-      const user = JSON.parse(this.$store.state.user);
-      this.log(user);
-      this.username = user.nickname;
-    }
-    this.bus.$on("setUsername", name => {
-      _this.username = name;
-    });
-  },
+  created() {},
   data() {
-    return {
-      username: ""
-    };
+    return {};
   },
   methods: {
     logout() {
       this.$store
-        .dispatch("FedLogOut")
+        .dispatch("LogOut")
         .then(res => {
           if (res.data.status === 200) {
-            this.username = "";
             this.bus.$emit("hint", {
               color: "success",
               text: res.data.message,
               timeout: 2000
             });
           }
-          this.$store.commit("deleteToken");
-          this.$store.commit("deleteUser");
         })
         .catch(e => {
           this.$log.error(e.response);
         });
+    }
+  },
+  computed: {
+    username() {
+      if (this.$store.getters.user) {
+        return this.$store.getters.user.nickname;
+      } else return "";
     }
   }
 };

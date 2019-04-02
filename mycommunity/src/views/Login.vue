@@ -18,9 +18,8 @@
                   color="primary"
                   v-model="username"
                   type="input"
-                  :rules="[rules.required,rules.minfive,rules.counter]"
+                  :rules="[rules.required,rules.counter]"
                   validate-on-blur
-                  clearable
                   counter
                   maxlength="20"
                 ></v-text-field>
@@ -198,8 +197,9 @@ export default {
       alertMsg: "",
       rules: {
         required: value => !!value || "必须输入",
-        counter: value => value.length <= 20 || "最大20个字符",
-        minfive: value => value.length >= 5 || "最少5个字符",
+        counter: value =>
+          (value.length <= 20 && value.length >= 5) ||
+          "最大20个字符,最少5个字符",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "邮箱不合法";
@@ -220,6 +220,9 @@ export default {
       this.alert = true;
       this.alertType = "error";
       this.alertMsg = "访问此页面需要登录";
+      if (this.$route.query.message) {
+        this.alertMsg = decodeURI(this.$route.query.message) + ",请重新登录";
+      }
     }
   },
   computed: {
@@ -251,7 +254,6 @@ export default {
               color: "success",
               text: "登录成功 正在跳转首页..."
             });
-
             //获取用户信息
             this.$store
               .dispatch("GetInfo")
@@ -269,7 +271,7 @@ export default {
             this.$log.error(e.response);
             this.bus.$emit("hint", {
               color: "error",
-              text: "登录失败" + e.response.data.message,
+              text: "登录失败:" + e.response.data.message,
               timeout: 3000
             });
           });
@@ -278,8 +280,6 @@ export default {
     validateAll(ref) {
       return ref.validate();
     },
-    //获取验证码并进行base64编码
-    getCaptcha() {},
     resetpwdSubmit() {
       this.resetpwd_dialog = false;
       //post提交

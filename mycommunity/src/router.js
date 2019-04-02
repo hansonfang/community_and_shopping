@@ -141,7 +141,7 @@ router.beforeEach((to, from, next) => {
     hide: true
   });
   if (to.matched.some(r => r.meta.requireAuth)) {
-    if (store.state.token) next();
+    if (store.getters.token) next();
     else next({ path: "/login", query: { needAuth: true } });
   } else next();
 });

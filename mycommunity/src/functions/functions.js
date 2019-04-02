@@ -1,4 +1,4 @@
-const formatTime=function (time) {
+function formatTime(time) {
   let unixtime = time;
   let unixTimestamp = new Date(unixtime);
   let Y = unixTimestamp.getFullYear();
@@ -15,9 +15,7 @@ const formatTime=function (time) {
     year: Y,
     month: M,
     day: D,
-    today: toDay
+    toDay: toDay
   };
 }
-export default {
-    formatTime
-}
+export { formatTime };

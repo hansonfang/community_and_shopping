@@ -357,7 +357,7 @@ export default {
               text: "注册成功 正在跳转登录界面...",
               timeout: 1000
             });
-            this.functions.formatTime(res.data.data.signUp).today;
+            this.functions.formatTime(res.data.data.signUp).toDay;
             const _this = this;
             setTimeout(() => {
               _this.$router.push({
@@ -376,7 +376,8 @@ export default {
 
               this.bus.$emit("hint", {
                 color: "error",
-                text: "注册失败:" + e.response.data.data.error
+                text: "注册失败:" + e.response.data.data.error,
+                timeout: 3000
               });
             } else {
               // Something happened in setting up the request that triggered an Error
@@ -416,19 +417,20 @@ export default {
           _this.$axios
             .post(this.baseUrl + "/file/uploads", param, config)
             .then(res => {
-              this.avatarRemoteUrl=res.data.data;
-              this.bus.$emit("hint",{
-                color:"success",
-                text:`图片${this.avatarFile.name}上传成功`,
-                timeout:1500
-              })
-            }).catch(e=>{
+              this.avatarRemoteUrl = res.data.data;
+              this.bus.$emit("hint", {
+                color: "success",
+                text: `图片${this.avatarFile.name}上传成功`,
+                timeout: 1500
+              });
+            })
+            .catch(e => {
               this.$log.error(e.response);
-              this.bus.$emit("hint",{
-                color:"error",
-                text:`头像上传失败`,
-                timeout:2000
-              })
+              this.bus.$emit("hint", {
+                color: "error",
+                text: `头像上传失败`,
+                timeout: 2000
+              });
             });
         });
       } else {

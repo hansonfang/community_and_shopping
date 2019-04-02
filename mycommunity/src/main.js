@@ -3,7 +3,7 @@ import "./plugins/vuetify";
 import vuetify from "vuetify";
 // import zhHans from 'vuetify/es5/locale/zh-Hans'
 import App from "./App.vue";
-import functions from "./functions/functions.js";
+import * as functions from "./functions/functions";
 import router from "./router";
 import Vuex from "vuex";
 import store from "@/store";

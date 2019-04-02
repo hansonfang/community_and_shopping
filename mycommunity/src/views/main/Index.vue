@@ -4,7 +4,17 @@
       <v-layout row wrap>
         <v-flex xs8 class="mb-2">
           <v-carousel cycle max="100%" hide-delimiters>
-            <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
+            <v-carousel-item
+              v-for="(item,i) in carousals"
+              :key="i"
+              :src="item.imageUrl"
+              style="position:relative;"
+            >
+              <router-link
+                :to="`/news/${item.journalismId}`"
+                style="position:absolute;width:100%;height:100%"
+              ></router-link>
+            </v-carousel-item>
           </v-carousel>
         </v-flex>
         <v-flex xs4 class="mb-2 d-f">
@@ -19,7 +29,7 @@
             <v-divider></v-divider>
             <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2">
               <Announcement
-                :announcements="communityAnnounces"
+                :announcements="communityNoticeVos"
                 title="社区公告"
                 moreLink="/news/communityA"
               />
@@ -161,16 +171,49 @@
 <script>
 import Announcement from "@/components/CommonItems/Annoucements";
 import Footer from "@/components/Footer";
+import { getIndex } from "@/api/information";
 export default {
   name: "index",
   components: { Announcement, Footer },
+  created() {
+    const _this = this;
+    getIndex()
+      .then(res => {
+        const data = res.data;
+        //轮播图
+        _this.carousals = data.data.carousals;
+
+        //社区3条
+        _this.communityNoticeVos = data.data.communityNoticeVos.map(item => {
+          return {
+            title: item.notice,
+            detail: item.description,
+            date: _this.functions.formatTime(item.showtime).toDay
+          };
+        });
+
+        //新闻5条
+      })
+      .catch(e => {
+        this.$log.error(e || e.response);
+      });
+  },
   data() {
     return {
-      items: [
-        { src: "https://picsum.photos/500/1920?random" },
-        { src: "https://picsum.photos/500/1920?random" },
-        { src: "https://picsum.photos/500/1920?random" },
-        { src: "https://picsum.photos/500/1920?random" }
+      carousals: [
+        {
+          imageUrl: "https://picsum.photos/500/1920?random",
+          journalismId: "1"
+        },
+        {
+          imageUrl: "https://picsum.photos/500/1920?random",
+          journalismId: "2"
+        },
+        {
+          imageUrl: "https://picsum.photos/500/1920?random",
+          journalismId: "3"
+        },
+        { imageUrl: "https://picsum.photos/500/1920?random", journalismId: "4" }
       ],
       news: [
         {
@@ -261,26 +304,12 @@ export default {
           dialog_show: false
         }
       ],
-      communityAnnounces: [
+      communityNoticeVos: [
         {
-          title: "东门社区党群服务中心3月份活动预告",
+          notice: "东门社区党群服务中心3月份活动预告",
           date: "2019/03/05",
-          detail:
+          description:
             "社区居民可前来参与会议，特此公告。地址：解放路2003号金世界六楼东门社区工作站",
-          dialog_show: false
-        },
-        {
-          title: "“榜样就在身边”东门社区党员志愿服务活动",
-          date: "2019/02/15",
-          detail:
-            "在东门社区党委的号召下，秉承着“向雷锋同志学习”的口号，东门社区党群服务中心于2019年3月5日下午开展了&l详细“榜样就在身边”东门社区党员志愿服务",
-          dialog_show: false
-        },
-        {
-          title: "东门社区关于召开2019年民生微实事第一次居民议事会议公告",
-          date: "2019/02/06",
-          detail:
-            "北门居委会定于2019年2月28日（星期四）16:00在东门社区工作站会议室，组织召开社区第1次居民议事会议，对以下1个民生微实事项目进行集中审议",
           dialog_show: false
         }
       ],
@@ -330,24 +359,7 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.$axios
-      .get(this.baseUrl + "/portal/index")
-      .then(res => {
-        this.data = res.data.data;
-        this.propertyAnnounces = this.data.properNoticeVos;
-        this.data.properNoticeVos.forEach(val => {
-          this.propertyAnnounces.push({
-            title: val.title,
-            date: this.functions.formatTime(val.showtime),
-            detail: val.description
-          });
-        });
-      })
-      .catch(e => {
-        this.$log.error(e);
-      });
-  }
+  mounted() {}
 };
 </script>
 <style scoped>
