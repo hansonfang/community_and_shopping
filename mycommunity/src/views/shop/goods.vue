@@ -2,39 +2,75 @@
   <div>
     <v-container>
       <v-layout wrap>
-        <v-flex xs12 md6 order-xs2 order-md1 class="px-5">
+        <v-flex
+          xs12
+          md6
+          order-xs2
+          order-md1
+          class="px-5"
+        >
           <v-carousel height="500">
-            <v-carousel-item v-for="(item,i) in image" :key="i" :src="item.src"></v-carousel-item>
+            <v-carousel-item
+              v-for="(item,i) in image"
+              :key="i"
+              :src="item.src"
+            ></v-carousel-item>
           </v-carousel>
-          <div class="text-xs-center mt-2">
-            <v-btn color="red" outline round v-if="!hasFollow">加关注+</v-btn>
-            <v-btn disabled outline round v-else>已关注</v-btn>
-          </div>
         </v-flex>
-        <v-flex xs12 md6 order-xs1 order-md2>
+        <v-flex
+          xs12
+          md6
+          order-xs1
+          order-md2
+        >
           <h3 class="my-2 headline font-weight-bold">{{title}}</h3>
-          <v-layout row class="py-2">
-            <v-flex xs12 md2 class="justify-center d-f align-center">
+          <v-layout
+            row
+            class="py-2"
+          >
+            <v-flex
+              xs12
+              md2
+              class="justify-center d-f align-center"
+            >
               <span>商品价格</span>
             </v-flex>
-            <v-flex xs12 md10>
+            <v-flex
+              xs12
+              md10
+            >
               <div class="price d-f">
-                <v-chip small outline color="red body-2">{{groupNumber}}人拼</v-chip>
+                <v-chip
+                  small
+                  outline
+                  color="red body-2"
+                >{{groupNumber}}人拼</v-chip>
                 <span class="group-price red--text text--darken-1 headline">￥{{groupPrice}}</span>
                 &nbsp;
-                <span
-                  class="single-price grey--text text--lighten-1"
-                >￥{{singlePrice}}</span>
+                <span class="single-price grey--text text--lighten-1">￥{{singlePrice}}</span>
               </div>
             </v-flex>
           </v-layout>
-          <v-layout row class="py-2">
-            <v-flex xs12 md2 class="justify-center d-f align-center">
+          <v-layout
+            row
+            class="py-2"
+          >
+            <v-flex
+              xs12
+              md2
+              class="justify-center d-f align-center"
+            >
               <span>选择数量</span>
             </v-flex>
-            <v-flex xs12 md10>
+            <v-flex
+              xs12
+              md10
+            >
               <div class="my-2 d-f align-baseline count">
-                <Count v-model="goodsCount" :max="goodsLeft"/>
+                <Count
+                  v-model="goodsCount"
+                  :max="goodsLeft"
+                />
                 <p class="grey--text text--lighten-1">
                   剩余库存
                   <span>{{goodsLeft-goodsCount}}</span>
@@ -44,24 +80,56 @@
               </div>
             </v-flex>
           </v-layout>
-          <v-layout row class="py-2">
-            <v-flex xs12 md2 class="justify-center d-f align-center">
+          <v-layout
+            row
+            class="py-2"
+          >
+            <v-flex
+              xs12
+              md2
+              class="justify-center d-f align-center"
+            >
               <span>选择分类</span>
             </v-flex>
-            <v-flex xs12 md10>
+            <v-flex
+              xs12
+              md10
+            >
               <v-btn-toggle v-model="text">
-                <v-btn flat value="left">Left</v-btn>
-                <v-btn flat value="center">Center</v-btn>
-                <v-btn flat value="right">Right</v-btn>
-                <v-btn flat value="justify">Justify</v-btn>
+                <v-btn
+                  flat
+                  value="left"
+                >Left</v-btn>
+                <v-btn
+                  flat
+                  value="center"
+                >Center</v-btn>
+                <v-btn
+                  flat
+                  value="right"
+                >Right</v-btn>
+                <v-btn
+                  flat
+                  value="justify"
+                >Justify</v-btn>
               </v-btn-toggle>
             </v-flex>
           </v-layout>
-          <v-layout row class="py-2 pt-4">
-            <v-flex xs12 md2 class="justify-center d-f align-center">
+          <v-layout
+            row
+            class="py-2 pt-4"
+          >
+            <v-flex
+              xs12
+              md2
+              class="justify-center d-f align-center"
+            >
               <span>正在拼团</span>
             </v-flex>
-            <v-flex xs12 md10>
+            <v-flex
+              xs12
+              md10
+            >
               <div class="group pa-1 mb-4">
                 <div class="grey--text pa-1">
                   <p class="mb-0 text-xs-left">剩余时间23:32:18</p>
@@ -87,38 +155,86 @@
             </v-flex>
           </v-layout>
 
-          <div class="button d-f row">
-            <v-btn block color="red white--text mr-2">
+          <div
+            class="button d-f row"
+            style="position:relative;"
+          >
+            <v-btn
+              block
+              color="red white--text mr-2"
+              :to="`/shopping/order?from=1&id=${goodsId}`"
+            >
               <span class="caption">￥</span>132&nbsp;立刻拼购
             </v-btn>
-            <v-btn block>
+            <v-btn
+              block
+              :to="`/shopping/order?from=0&id=${goodsId}`"
+            >
               <span class="body-1">￥</span>198&nbsp;单价购买
+            </v-btn>
+            <v-btn
+              color="red"
+              fab
+              dark
+              small
+              absolute
+              bottom
+              right
+            >
+              <v-icon>fas fa-cart-plus</v-icon>
             </v-btn>
           </div>
         </v-flex>
       </v-layout>
 
-      <v-tabs fixed-tabs v-model="tab">
+      <v-tabs
+        fixed-tabs
+        v-model="tab"
+      >
         <v-tab>商品详情</v-tab>
         <v-tab>评价({{commentCount}})</v-tab>
       </v-tabs>
 
-      <v-layout v-if="tab===0" wrap>
-        <v-flex xs12 v-for="(image,index) in goodsDetailImage" :key="index">
+      <v-layout
+        v-if="tab===0"
+        wrap
+      >
+        <v-flex
+          xs12
+          v-for="(image,index) in goodsDetailImage"
+          :key="index"
+        >
           <v-img :src="image"></v-img>
         </v-flex>
       </v-layout>
-      <div v-else-if="tab===1" class="mx-auto" style="max-width:980px">
-        <v-layout nowrap class="px-4 pt-4">
-          <v-flex xs1 md2></v-flex>
-          <v-flex xs2 md2 class="d-f f-col">
+      <div
+        v-else-if="tab===1"
+        class="mx-auto"
+        style="max-width:980px"
+      >
+        <v-layout
+          nowrap
+          class="px-4 pt-4"
+        >
+          <v-flex
+            xs1
+            md2
+          ></v-flex>
+          <v-flex
+            xs2
+            md2
+            class="d-f f-col"
+          >
             <span class="percent-tip">好评度</span>
             <div class="red--text percent-num">
               <span>98</span>
               <span class="headline">%</span>
             </div>
           </v-flex>
-          <v-flex xs8 class="d-f align-bottom">
+          <v-flex
+            xs8
+            class="d-f align-bottom"
+          >
             <v-tabs v-model="commentTab">
               <v-tab>好评({{comment.goodCommentCount}})</v-tab>
               <v-tab>中评({{comment.mediumCommentCount}})</v-tab>
@@ -136,11 +252,20 @@
             :key="index"
           >
             <v-flex xs1>
-              <v-avatar color="grey lighten-4" size="60">
-                <img :src="item.avatar" alt="avatar">
+              <v-avatar
+                color="grey lighten-4"
+                size="60"
+              >
+                <img
+                  :src="item.avatar"
+                  alt="avatar"
+                >
               </v-avatar>
             </v-flex>
-            <v-flex xs11 class="d-f f-col">
+            <v-flex
+              xs11
+              class="d-f f-col"
+            >
               <div class="d-f row mb-2">
                 <span class="font-weight-bold">{{item.name}}</span>
                 <v-spacer></v-spacer>
@@ -149,7 +274,10 @@
               <p>{{item.content}}</p>
             </v-flex>
           </v-layout>
-          <v-btn block @click="loadMoreComment('good')">
+          <v-btn
+            block
+            @click="loadMoreComment('good')"
+          >
             <v-icon size="15">fas fa-angle-double-down</v-icon>&nbsp;加载更多
           </v-btn>
         </div>
@@ -167,6 +295,7 @@ export default {
   },
   created() {
     this.tab = parseInt(this.$route.query.tab);
+    this.goodsId = this.$route.query.goods_id;
   },
   data() {
     return {
@@ -176,11 +305,10 @@ export default {
         { src: "https://picsum.photos/500/600/?random" }
       ],
       title: "元盛 进口整切 牛排套餐 自营生鲜 牛肉生鲜 8连包（西冷*4 眼肉*4）",
-      hasFollow: false, //是否已经关注商品
       groupNumber: 2, //拼团的人数
       groupPrice: 112, //拼团价格
       singlePrice: 132, //单买价格
-
+      goodsId: 0,
       text: "left",
       goodsCount: 1,
       goodsLeft: 24,
