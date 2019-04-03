@@ -1,4 +1,10 @@
-import { login, logout, getInfo } from "@/api/user";
+import {
+  login,
+  logout,
+  getInfo,
+  uploadAvatar,
+  getCommunityList
+} from "@/api/user";
 import qs from "querystring";
 
 import { getToken, setToken, removeToken } from "@/utils/auth";
@@ -10,7 +16,8 @@ const user = {
     avatar: "",
     nickname: "",
     communityId: "",
-    user: getObject("user_info")
+    user: getObject("user_info"),
+    communityList: []
   },
 
   mutations: {
@@ -28,6 +35,9 @@ const user = {
     },
     SET_USER: (state, payload) => {
       state.user = payload;
+    },
+    SET_COMMUNITYS: (state, list) => {
+      state.communityList = list;
     }
   },
 
@@ -49,6 +59,20 @@ const user = {
       });
     },
 
+    //上传头像
+    UploadAvatar({ commit }, formData) {
+      return new Promise((resolve, reject) => {
+        uploadAvatar(formData)
+          .then(response => {
+            const avatarUrl = response.data.data;
+            commit("SET_AVATAR", avatarUrl);
+            resolve(response);
+          })
+          .catch(e => {
+            reject(e);
+          });
+      });
+    },
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -68,6 +92,19 @@ const user = {
       });
     },
 
+    //获取社区列表
+    getCommunityList({ commit }) {
+      return new Promise((resolve, reject) => {
+        getCommunityList()
+          .then(response => {
+            resolve(response);
+            commit("SET_COMMUNITYS", response.data.data);
+          })
+          .catch(e => {
+            reject(e);
+          });
+      });
+    },
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {

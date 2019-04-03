@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <v-container>
 
     <v-layout column>
@@ -602,3 +603,12 @@ export default {
     display:inline-block!important;
 }
 </style>
+=======
+  <div>Order</div>
+</template>
+<script>
+export default {
+  name: "order"
+};
+</script>
+>>>>>>> 9e7e7398edfbf331123bc9b662791cf4285ab0ab

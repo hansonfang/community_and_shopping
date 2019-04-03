@@ -274,6 +274,7 @@
 </template>
 <script>
 let _this = null;
+import { mapGetters } from "vuex";
 export default {
   name: "register",
   created() {
@@ -290,7 +291,6 @@ export default {
       avatarName: "",
       avatarFile: "",
       avatarRemoteUrl: "",
-      communitys: [],
       community: "",
       communityId: 0,
       community_choose_dialog: false,
@@ -409,13 +409,8 @@ export default {
           let param = new FormData(); //创建form对象
           param.append("files", this.avatarFile, this.avatarFile.name); //通过append向form对象添加数据
           // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
-          let config = {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }; //添加请求头
-          _this.$axios
-            .post(this.baseUrl + "/file/uploads", param, config)
+          this.$store
+            .dispatch("uploadAvatar", param)
             .then(res => {
               this.avatarRemoteUrl = res.data.data;
               this.bus.$emit("hint", {
@@ -441,13 +436,13 @@ export default {
     },
     fetchCommunitys() {
       this.community_choose_dialog = true;
-      if (this.communitys.length) {
+      if (this.$store.getters.communityList.length >= 1) {
         //若有缓存则不请求
         this.$log.debug("已缓存");
       } else {
         //若没有缓存则请求
-        this.$axios
-          .get(this.baseUrl + "/community/listall")
+        this.$store
+          .dispatch("getCommunityList")
           .then(val => {
             this.communitys = val.data.data;
           })
@@ -460,6 +455,15 @@ export default {
       this.community = item.name;
       this.communityId = item.id;
       this.community_choose_dialog = false;
+    }
+  },
+  computed: {
+    ...mapGetters(["communityList"]),
+    communitys: {
+      get() {
+        return this.communityList;
+      },
+      set() {}
     }
   }
 };

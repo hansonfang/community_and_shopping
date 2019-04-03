@@ -155,6 +155,7 @@
             </v-flex>
           </v-layout>
 
+<<<<<<< HEAD
           <div
             class="button d-f row"
             style="position:relative;"
@@ -170,6 +171,13 @@
               block
               :to="`/shopping/order?from=0&id=${goodsId}`"
             >
+=======
+          <div class="button d-f row">
+            <v-btn block color="red white--text mr-2" to="order?type=2">
+              <span class="caption">￥</span>132&nbsp;立刻拼购
+            </v-btn>
+            <v-btn block to="order?type=1">
+>>>>>>> 9e7e7398edfbf331123bc9b662791cf4285ab0ab
               <span class="body-1">￥</span>198&nbsp;单价购买
             </v-btn>
             <v-btn

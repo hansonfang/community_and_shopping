@@ -10,7 +10,16 @@ export function login(str) {
     data: str
   });
 }
-
+export function uploadAvatar(formData) {
+  return request({
+    url: "/file/uploads",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: formData
+  });
+}
 export function getInfo(token) {
   return request({
     url: "/user/find",
@@ -20,7 +29,12 @@ export function getInfo(token) {
     }
   });
 }
-
+export function getCommunityList() {
+  return request({
+    url: "community/listall",
+    method: "get"
+  });
+}
 export function logout() {
   return request({
     url: "/logout",

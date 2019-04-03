@@ -188,7 +188,8 @@ export default {
           return {
             title: item.notice,
             detail: item.description,
-            date: _this.functions.formatTime(item.showtime).toDay
+            date: _this.functions.formatTime(item.showtime).toDay,
+            dialog_show: false
           };
         });
 

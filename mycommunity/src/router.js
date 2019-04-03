@@ -133,6 +133,28 @@ const router = new Router({
       path: "/register",
       name: "register",
       component: Register //注册页面
+    },
+    {
+      path: "/userinfo",
+      component: re => require(["@/views/user/index"], re),
+      children: [
+        { path: "", redirect: "activities" },
+        {
+          path: "activities",
+          name: "activities",
+          component: re => require(["@/views/user/modules/activities"], re)
+        },
+        {
+          path: "services",
+          name: "services",
+          component: re => require(["@/views/user/modules/services"], re)
+        },
+        {
+          path: "info",
+          name: "info",
+          component: re => require(["@/views/user/modules/info"], re)
+        }
+      ]
     }
   ]
 });
