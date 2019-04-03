@@ -31,11 +31,14 @@ service.interceptors.response.use(
     return Promise.resolve(response);
   },
   error => {
-    if (error.toString().indexOf("timeout") != -1) {
+    if (
+      error.toString().indexOf("timeout") != -1 ||
+      error.toString().indexOf("Network Error") != -1
+    ) {
       //网络超时
       Vue.prototype.bus.$emit("hint", {
         color: "error",
-        text: "网络请求超时"
+        text: "网络请求错误"
       });
       return Promise.reject(error);
     }

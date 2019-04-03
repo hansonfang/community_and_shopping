@@ -49,6 +49,7 @@ export default {
               timeout: 2000
             });
           }
+          this.$router.push("/");
         })
         .catch(e => {
           this.$log.error(e.response);
