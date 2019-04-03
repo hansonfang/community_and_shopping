@@ -2,6 +2,8 @@ import axios from "axios";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
 import router from "@/router";
+import Vue from "vue";
+
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
@@ -29,6 +31,14 @@ service.interceptors.response.use(
     return Promise.resolve(response);
   },
   error => {
+    if (error.toString().indexOf("timeout") != -1) {
+      //网络超时
+      Vue.prototype.bus.$emit("hint", {
+        color: "error",
+        text: "网络请求超时"
+      });
+      return Promise.reject(error);
+    }
     const res = error.response;
     if (res.data.status === 401 && res.data.message == "Token 已经失效") {
       router.push({
