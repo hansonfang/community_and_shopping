@@ -1,7 +1,9 @@
 <template>
     <div class="service-box"> 
-        <v-card-title class="justify-center">
-          <span class="headline">报修服务</span>
+        <v-card-title class="justify-between">
+          <span class="f-1"></span>
+          <span class="headline f-1">报修服务</span>
+          <v-btn flat to="recordRepair" color="blue">报修记录</v-btn>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>

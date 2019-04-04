@@ -1,0 +1,42 @@
+@media screen and (max-width: 768px) {
+    .mobile table.v-table tr {
+      max-width: 100%;
+      position: relative;
+      display: block;
+    }
+
+    .mobile table.v-table tr:nth-child(odd) {
+      border-left: 6px solid deeppink;
+    }
+
+    .mobile table.v-table tr:nth-child(even) {
+      border-left: 6px solid cyan;
+    }
+
+    .mobile table.v-table tr td {
+      display: flex;
+      width: 100%;
+      border-bottom: 1px solid #f5f5f5;
+      height: auto;
+      padding: 10px;
+    }
+
+    .mobile table.v-table tr td ul li:before {
+      content: attr(data-label);
+      padding-right: .5em;
+      text-align: left;
+      display: block;
+      color: #999;
+
+    }
+    .v-datatable__actions__select
+    {
+      width: 50%;
+      margin: 0px;
+      justify-content: flex-start;
+    }
+    .mobile .theme--light.v-table tbody tr:hover:not(.v-datatable__expand-row) {
+      background: transparent;
+    }
+
+  }

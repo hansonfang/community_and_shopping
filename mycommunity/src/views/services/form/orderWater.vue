@@ -17,7 +17,9 @@
 
     <v-card flat>
       <v-card-title class="justify-center">
-        <span class="headline">预约送水</span>
+        <span class="f-1"></span>
+        <span class="headline f-1">预约送水</span>
+        <v-btn flat color="blue" to="recordWater">送水预约记录</v-btn>
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>

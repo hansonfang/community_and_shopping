@@ -2,36 +2,40 @@
   <div class="mt-3">
     <v-form ref="form" lazy-validation>
       <div class="text-xs-right">
-        <v-btn color="orange" dark v-if="!modify" @click="modify=true" flat>
+        <v-btn color="orange" dark v-if="!modify" @click="modify=true;userTemp=JSON.stringify(user)" flat>
           <v-icon size="18" class="mr-1">fas fa-lock</v-icon>修改资料
         </v-btn>
-        <v-btn color="orange" dark v-else @click="modify=false" flat>
+        <v-btn color="orange" dark v-else @click="modify=false;user=JSON.parse(userTemp)" flat>
           <v-icon size="18" class="mr-1">fas fa-lock-open</v-icon>放弃修改
         </v-btn>
       </div>
       <v-layout>
         <v-flex xs2 class="d-f justify-end mt-3 mr-3">
-          <span>姓名:</span>
+          <span>昵称:</span>
         </v-flex>
         <v-flex xs10>
           <v-text-field
             required
             box
             single-line
-            v-validate="'required|nickname'"
+            v-validate="'required|specialChar'"
             data-vv-name="nickname"
             :error-messages="errors.collect('nickname')"
             :readonly="!modify"
-            v-model="user.username"
+            v-model="user.nickname"
           ></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout>
         <v-flex xs2 class="d-f justify-end mt-3 mr-3">
-          <span>昵称:</span>
+          <span>姓名:</span>
         </v-flex>
         <v-flex xs10>
-          <v-text-field required box single-line :readonly="!modify" v-model="user.nickname"></v-text-field>
+          <v-text-field
+          v-validate="'specialChar'"
+            data-vv-name="username"
+            :error-messages="errors.collect('username')"
+           box single-line :readonly="!modify" v-model="user.username "></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout>
@@ -50,7 +54,11 @@
           <span>邮箱:</span>
         </v-flex>
         <v-flex xs8>
-          <v-text-field required box single-line :readonly="!modify" v-model="user.email"></v-text-field>
+          <v-text-field 
+            v-validate="'email|required'"
+            data-vv-name="email"
+            :error-messages="errors.collect('email')"
+           box single-line :readonly="!modify" v-model="user.email"></v-text-field>
         </v-flex>
         <v-flex xs2>
           <v-btn flat color="primary">发送验证</v-btn>
@@ -62,7 +70,11 @@
           <span>身份证号:</span>
         </v-flex>
         <v-flex xs10>
-          <v-text-field required box single-line :readonly="!modify" v-model="user.idcard"></v-text-field>
+          <v-text-field required 
+             v-validate="'idcard'"
+            data-vv-name="idcard"
+            :error-messages="errors.collect('idcard')"
+          box single-line :readonly="!modify" v-model="user.idcard"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout>
@@ -137,14 +149,15 @@ export default {
       modify: false,
       community_choose_dialog: false,
       user: {
-        username: "Hansonfang",
-        nickname: "hanson",
+        nickname: "Hansonfang",
+        username: "hanson",
         gender: 1,
         email: "1597700958@qq.com",
         idcard: "370123199703121111",
         community: {}
       },
-      communitys: []
+      communitys: [],
+      userTemp:""
     };
   },
   methods: {

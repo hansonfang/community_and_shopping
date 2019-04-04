@@ -44,7 +44,9 @@ const options = {
 
 Vue.use(VueLogger, options);
 Vue.use(VueCarousel);
-Vue.use(VeeValidate);
+Vue.use(VeeValidate,{
+  locale:"zh_CN"
+});
 
 Vue.use(vuetify, {
   theme: {

@@ -31,9 +31,6 @@
         <v-tab to="activities">
           <v-icon size="18" class="mr-2">fas fa-shoe-prints</v-icon>动态
         </v-tab>
-        <v-tab to="services">
-          <v-icon size="18" class="mr-2">fas fa-clipboard-list</v-icon>服务记录
-        </v-tab>
         <v-tab to="info">
           <v-icon size="18" class="mr-2">fas fa-user-cog</v-icon>个人资料
         </v-tab>

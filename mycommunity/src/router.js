@@ -55,7 +55,7 @@ const router = new Router({
     {
       path: "/orderRepair",
       name: "orderRepair",
-      component: resolve => require(["@/views/index/orderRepair"], resolve),
+      component: resolve => require(["@/views/services/form/orderRepair"], resolve),
       meta: {
         requireAuth: true
       }
@@ -63,7 +63,7 @@ const router = new Router({
     {
       path: "/orderWater",
       name: "orderWater",
-      component: resolve => require(["@/views/index/orderWater"], resolve),
+      component: resolve => require(["@/views/services/form/orderWater"], resolve),
       meta: {
         requireAuth: true
       }
@@ -71,7 +71,31 @@ const router = new Router({
     {
       path: "/tellManager",
       name: "tellManager",
-      component: resolve => require(["@/views/index/tellManager"], resolve),
+      component: resolve => require(["@/views/services/form/tellManager"], resolve),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: "/recordRepair",
+      name: "recordRepair",
+      component: resolve => require(["@/views/services/records/Repair"], resolve),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: "/recordWater",
+      name: "recordWater",
+      component: resolve => require(["@/views/services/records/Water"], resolve),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: "/recordManager",
+      name: "recordManager",
+      component: resolve => require(["@/views/services/records/Manager"], resolve),
       meta: {
         requireAuth: true
       }
@@ -145,11 +169,6 @@ const router = new Router({
           component: re => require(["@/views/user/modules/activities"], re)
         },
         {
-          path: "services",
-          name: "services",
-          component: re => require(["@/views/user/modules/services"], re)
-        },
-        {
           path: "info",
           name: "info",
           component: re => require(["@/views/user/modules/info"], re)
@@ -164,7 +183,8 @@ router.beforeEach((to, from, next) => {
   });
   if (to.matched.some(r => r.meta.requireAuth)) {
     if (store.getters.token) next();
-    else next({ path: "/login", query: { needAuth: true } });
+    // else next({ path: "/login", query: { needAuth: true } });
+    else next();
   } else next();
 });
 export default router;

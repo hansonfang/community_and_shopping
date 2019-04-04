@@ -10,28 +10,15 @@
 
 #### 1.2.1 前端
 ```sh
-# 打开前端vue目录
+# 打开前端工程目录
 cd .\mycommunity\
 
 # 安装依赖
 npm install
 
-# 开发
+# 运行开发版
 npm run serve
 
-# 发布
+# 构建发布版
 npm run build
-```
-
-#### 1.2.1 模拟后端
-
-```sh
-# 打开后端node目录
-cd .\simulationServer\
-
-# 安装依赖
-npm install
-
-# 运行
-npm start
 ```
