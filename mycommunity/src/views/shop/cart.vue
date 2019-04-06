@@ -171,9 +171,7 @@ export default {
   },
   methods:{
       goToOrder(){
-          this.selectedItems=this.cartItems.filter(item=>{
-              return item.check
-          })
+          this.selectedItems=this.cartItems.filter(item=>item.check)
       }
   }
 };
