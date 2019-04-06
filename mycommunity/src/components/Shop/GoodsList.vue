@@ -78,14 +78,15 @@
                   >
                     <v-btn
                       absolute
-                      color="red lighten-1"
+                      color="orange lighten-1"
                       class="white--text"
                       fab
                       right
                       top
                       @click="addCart(item.id,$event)"
+                      small
                     >
-                      <v-icon>fas fa-shopping-cart</v-icon>
+                      <v-icon>fas fa-plus</v-icon>
                     </v-btn>
                     <h3 class="body-1 font-weight-light black--text mb-1 goods-title">{{item.title}}</h3>
                     <h4 class="group-price red--text headline">
@@ -186,21 +187,28 @@ export default {
         i.classList.remove("pop");
       }, 300);
 
+      //成功回调
+      this.bus.$emit("addCart")
+      this.bus.$emit("hint",{
+        color:"success",
+        text:"成功添加购物车",
+        timeout:"2000"
+      })
       
     }
   }
 };
 </script>
 <style scoped>
-.v-icon.fa-shopping-cart.pop {
-  animation: btn-pop 0.3s;
+.v-icon.fa-plus.pop {
+  animation: btn-pop 0.4s;
 }
 @keyframes btn-pop {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.3);
+    transform: scale(1.5);
   }
   100% {
     transform: scale(1);

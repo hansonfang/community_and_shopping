@@ -145,6 +145,16 @@ const router = new Router({
           path: "goods",
           name: "goods",
           component: re => require(["@/views/shop/goods"], re)
+        },
+        {
+          path: "order",
+          name: "order",
+          component: re => require(["@/views/shop/order"], re)
+        },
+        {
+          path: "cart",
+          name: "cart",
+          component: re => require(["@/views/shop/cart"], re)
         }
       ]
     },

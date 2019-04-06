@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
+    <v-snackbar top v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
       {{ snackbarText }}
       <v-btn dark flat @click="snackbar = false">关闭</v-btn>
     </v-snackbar>
@@ -21,7 +21,7 @@ export default {
                 _this.snackbar=!data.hide;
             _this.snackbarColor=data.color;
             _this.snackbarText=data.text;
-            _this.snackbarTimeout=data.timeout||0;
+            _this.snackbarTimeout=Number(data.timeout)||0;
         })
     }
 }
