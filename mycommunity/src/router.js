@@ -2,16 +2,13 @@ import Vue from "vue";
 import Router from "vue-router";
 import Post from "./views/main/Post";
 import Shopping from "./views/main/Shopping";
-
+import Error from "@/views/404";
 import store from "@/store";
 /* 引入Post贴吧页面views */
 import PostIndex from "@/views/post/PostIndex";
 import PostBest from "@/views/post/PostBest";
 import PostWrite from "@/views/post/PostWrite";
 import PostPage from "@/views/post/PostPage";
-
-import Login from "./views/Login.vue";
-import Register from "./views/Register.vue";
 
 Vue.use(Router);
 
@@ -21,6 +18,10 @@ const router = new Router({
   routes: [
     {
       path: "/",
+      redirect: "index"
+    },
+    {
+      path: "/index",
       name: "index", //首页
       component: resolve => require(["@/views/main/Index"], resolve),
       meta: {
@@ -55,7 +56,8 @@ const router = new Router({
     {
       path: "/orderRepair",
       name: "orderRepair",
-      component: resolve => require(["@/views/services/form/orderRepair"], resolve),
+      component: resolve =>
+        require(["@/views/services/form/orderRepair"], resolve),
       meta: {
         requireAuth: true
       }
@@ -63,7 +65,8 @@ const router = new Router({
     {
       path: "/orderWater",
       name: "orderWater",
-      component: resolve => require(["@/views/services/form/orderWater"], resolve),
+      component: resolve =>
+        require(["@/views/services/form/orderWater"], resolve),
       meta: {
         requireAuth: true
       }
@@ -71,7 +74,8 @@ const router = new Router({
     {
       path: "/tellManager",
       name: "tellManager",
-      component: resolve => require(["@/views/services/form/tellManager"], resolve),
+      component: resolve =>
+        require(["@/views/services/form/tellManager"], resolve),
       meta: {
         requireAuth: true
       }
@@ -79,7 +83,8 @@ const router = new Router({
     {
       path: "/recordRepair",
       name: "recordRepair",
-      component: resolve => require(["@/views/services/records/Repair"], resolve),
+      component: resolve =>
+        require(["@/views/services/records/Repair"], resolve),
       meta: {
         requireAuth: true
       }
@@ -87,7 +92,8 @@ const router = new Router({
     {
       path: "/recordWater",
       name: "recordWater",
-      component: resolve => require(["@/views/services/records/Water"], resolve),
+      component: resolve =>
+        require(["@/views/services/records/Water"], resolve),
       meta: {
         requireAuth: true
       }
@@ -95,7 +101,8 @@ const router = new Router({
     {
       path: "/recordManager",
       name: "recordManager",
-      component: resolve => require(["@/views/services/records/Manager"], resolve),
+      component: resolve =>
+        require(["@/views/services/records/Manager"], resolve),
       meta: {
         requireAuth: true
       }
@@ -161,12 +168,12 @@ const router = new Router({
     {
       path: "/login",
       name: "login",
-      component: Login //登录，忘记密码页面
+      component: re => require(["@/views/user/Login"], re) //登录，忘记密码页面
     },
     {
       path: "/register",
       name: "register",
-      component: Register //注册页面
+      component: re => require(["@/views/user/Register"], re) //注册页面
     },
     {
       path: "/userinfo",
@@ -184,6 +191,11 @@ const router = new Router({
           component: re => require(["@/views/user/modules/info"], re)
         }
       ]
+    },
+    {
+      path: "*",
+      name: "error404",
+      component: Error
     }
   ]
 });
