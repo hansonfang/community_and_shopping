@@ -8,10 +8,10 @@
         <v-form ref="signupForm">
           <v-container grid-list-md>
             <v-layout row>
-              <v-flex xs12 md3>
+              <v-flex xs3>
                 <div class="text-xs-center pt-3 subheading">头像上传</div>
               </v-flex>
-              <v-flex xs12 md9>
+              <v-flex xs9>
                 <img :src="avatarUrl" height="150" v-if="avatarUrl">
                 <v-text-field
                   label="选择图片"
@@ -29,10 +29,10 @@
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex xs12 md3>
+              <v-flex xs3>
                 <div class="text-xs-center pt-3 subheading">昵称</div>
               </v-flex>
-              <v-flex xs12 md9>
+              <v-flex xs9>
                 <v-text-field
                   ref
                   label="姓名"
@@ -43,10 +43,10 @@
               </v-flex>
             </v-layout>
             <v-layout row>
-              <v-flex xs12 md3>
+              <v-flex xs3>
                 <div class="text-xs-center pt-3 subheading">手机号</div>
               </v-flex>
-              <v-flex xs12 md9>
+              <v-flex xs9>
                 <v-text-field
                   ref
                   label="手机号"
@@ -182,10 +182,10 @@
         </v-form>
         <v-form v-if="more" ref="signupMoreForm">
           <v-layout row>
-            <v-flex xs12 md3>
+            <v-flex xs3>
               <div class="text-xs-center pt-3 subheading">邮箱(可选)</div>
             </v-flex>
-            <v-flex xs12 md9>
+            <v-flex xs9>
               <v-text-field
                 ref="signupEmail"
                 label="邮箱"
@@ -197,10 +197,10 @@
             </v-flex>
           </v-layout>
           <v-layout row>
-            <v-flex xs12 md3>
+            <v-flex xs3>
               <div class="text-xs-center pt-3 subheading">真实姓名</div>
             </v-flex>
-            <v-flex xs12 md9>
+            <v-flex xs9>
               <v-text-field
                 label="姓名"
                 color="success"
@@ -211,10 +211,10 @@
             </v-flex>
           </v-layout>
           <v-layout row>
-            <v-flex xs12 md3>
+            <v-flex xs3>
               <div class="text-xs-center pt-3 subheading">性别</div>
             </v-flex>
-            <v-flex xs12 md9>
+            <v-flex xs9>
               <v-radio-group v-model="gender" row>
                 <v-radio label="男" value="male"></v-radio>
                 <v-radio label="女" value="female"></v-radio>
@@ -222,10 +222,10 @@
             </v-flex>
           </v-layout>
           <v-layout row>
-            <v-flex xs12 md3>
+            <v-flex xs3>
               <div class="text-xs-center pt-3 subheading">身份证号码</div>
             </v-flex>
-            <v-flex xs12 md9>
+            <v-flex xs9>
               <v-text-field
                 label="身份证"
                 color="success"
@@ -250,16 +250,16 @@
                 </v-flex>
           </v-layout>-->
           <v-layout row>
-            <v-flex xs12 md3>
+            <v-flex xs3>
               <div class="text-xs-center pt-3 subheading">个人签名</div>
             </v-flex>
-            <v-flex xs12 md9>
+            <v-flex xs9>
               <v-textarea
                 name="motto"
                 label="记得体现你的个人特点"
                 value
                 v-model="motto"
-                :rules="[motto=>motto.length<=200||'字符限制在200以内']"
+                v-validate="'max:200'"
               ></v-textarea>
             </v-flex>
           </v-layout>
@@ -275,6 +275,7 @@
 <script>
 let _this = null;
 import { mapGetters } from "vuex";
+import {register} from "~/user.js"
 export default {
   name: "register",
   created() {
@@ -338,8 +339,7 @@ export default {
       }
       if (valid) {
         //post
-        this.$axios
-          .post(this.baseUrl + "/user/registry", {
+        register({
             nickname: this.signup_name,
             password: this.signup_confirm_password,
             phone: this.signup_phone,
@@ -350,6 +350,18 @@ export default {
             idcard: this.id_card,
             motto: this.motto
           })
+        // this.$axios
+        //   .post(this.baseUrl + "/user/registry", {
+        //     nickname: this.signup_name,
+        //     password: this.signup_confirm_password,
+        //     phone: this.signup_phone,
+        //     communityId: this.communityId,
+        //     username: this.username,
+        //     avatar: this.avatarRemoteUrl,
+        //     gender: this.gender,
+        //     idcard: this.id_card,
+        //     motto: this.motto
+        //   })
           .then(res => {
             this.$log.debug("Register Post Success!");
             this.bus.$emit("hint", {
@@ -410,7 +422,7 @@ export default {
           param.append("files", this.avatarFile, this.avatarFile.name); //通过append向form对象添加数据
           // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
           this.$store
-            .dispatch("uploadAvatar", param)
+            .dispatch("UploadAvatar", param)
             .then(res => {
               this.avatarRemoteUrl = res.data.data;
               this.bus.$emit("hint", {

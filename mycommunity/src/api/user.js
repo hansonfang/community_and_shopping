@@ -1,5 +1,13 @@
 import request from "@/utils/request";
 
+export function register(user){
+  return request({
+    url:"/user/registry",
+    method:"post",
+    data:user
+  })
+}
+
 export function login(str) {
   return request({
     url: "/user/login",
@@ -9,6 +17,13 @@ export function login(str) {
     },
     data: str
   });
+}
+export function updateUser(user){
+  return request({
+    url:"user/update",
+    method:"put",
+    data:user
+  })
 }
 export function uploadAvatar(formData) {
   return request({

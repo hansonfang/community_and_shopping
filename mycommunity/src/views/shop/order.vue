@@ -4,19 +4,18 @@
     <v-layout column>
       <v-flex xs12>
         <v-subheader>确认收货地址
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue"
-            dark
-            @click="addAddressDialog=true"
-          >
-            <v-icon
-              left
-              small
-            >fas fa-plus</v-icon>
-            添加地址
-          </v-btn>
-        </v-subheader>
+            <v-spacer></v-spacer>
+            <v-btn
+          color="blue"
+          dark
+          @click="addAddressDialog=true"
+        >
+          <v-icon
+            left
+            small
+          >fas fa-plus</v-icon>
+          添加地址
+        </v-btn></v-subheader>
         <v-divider></v-divider>
       </v-flex>
       <v-flex xs12>
@@ -30,11 +29,7 @@
               <div class="receiver">
                 <span>{{item.address}}</span> <span>({{item.name}} 收)</span>
                 <span>{{item.phone}}</span>
-                <v-btn
-                  flat
-                  color="blue"
-                  style="display:none;"
-                >修改此地址</v-btn>
+                <v-btn flat color="blue" style="display:none;">修改此地址</v-btn>
               </div>
 
             </template>
@@ -42,7 +37,7 @@
         </v-radio-group>
       </v-flex>
       <v-flex xs12>
-
+        
       </v-flex>
       <v-dialog
         v-model="addAddressDialog"
@@ -147,12 +142,8 @@
 
     </v-layout>
 
-  <!-- 拼购付款页面 -->
-    <v-layout v-if="from==1" class="red--text">
-      你正在和 <span>{{tempName}}</span>拼单
-    </v-layout>
-    <v-subheader>确认订单信息</v-subheader>
-    <v-divider></v-divider>
+<v-subheader>确认订单信息</v-subheader>
+<v-divider></v-divider>
     <v-layout
       v-for="(item,index) in goods"
       :key="index"
@@ -167,61 +158,31 @@
         ></v-img>
       </v-flex>
       <v-flex xs6>
-        <h4>{{item.title}}</h4>
+          <h4>{{item.title}}</h4>
       </v-flex>
-      <v-flex
-        xs1
-        class="align-center d-f"
-      >
-        <div class="red--text">
-          <span class="caption">￥</span>
-          <span class="body-1">{{item.singlePrice}}</span>
-        </div>
+      <v-flex xs1 class="align-center d-f">
+          <div class="red--text">
+            <span class="caption">￥</span>
+            <span class="body-1">{{item.singlePrice}}</span>
+          </div>
       </v-flex>
       <v-flex xs2>
-        <count v-model="item.goodsCount" />
+          <count v-model="item.goodsCount"/>
       </v-flex>
-      <v-flex
-        xs1
-        class="d-f justify-center align-center"
-      >
-        ￥{{totalPrice(index)}}
+      <v-flex xs1 class="align-center d-f">
+          ￥192
       </v-flex>
-    </v-layout>
-
-    <v-layout
-      row
-      nowrap
-      class="mt-5"
-    >
-      <v-flex
-        xs1
-        md9
-      ></v-flex>
-      <v-flex
-        xs10
-        md2
-        class="text-xs-center"
-      >
-        <v-btn color="orange" dark block>
-          提交订单
-        </v-btn>
-      </v-flex>
-      <v-flex
-        xs1
-        md1
-      ></v-flex>
     </v-layout>
   </v-container>
 
 </template>
 <script>
 import { key } from "@/utils/key";
-import Count from "@/components/Tool/Count";
+import Count from "@/components/Tool/Count"
 export default {
   name: "shopOrder",
-  components: {
-    Count
+  components:{
+      Count
   },
   created() {
     this.from = this.$route.query.from;
@@ -255,7 +216,6 @@ export default {
       goodsId: 0,
       receiver: [],
       receiverCode: 3,
-      tempName:"{{name}}",
       addAddressDialog: false,
       name: "",
       phone: "",
@@ -555,8 +515,7 @@ export default {
           singlePrice: 132, //单买价格
           goodsId: 0,
           goodsCount: 1,
-          goodsLeft: 24,
-          totalPrice: 0
+          goodsLeft: 24
         }
       ]
     };
@@ -624,15 +583,6 @@ export default {
       return `${this.selectedProvince.name}${this.selectedCity.name}${
         this.selectedCounty.name
       }${this.communityAddress}`;
-    },
-    totalPrice() {
-      return function(index) {
-        const total =
-          this.goods[index].singlePrice * this.goods[index].goodsCount;
-        // eslint-disable-next-line
-        this.goods[index].totalPrice = total;
-        return total;
-      };
     }
   }
 };
@@ -643,12 +593,12 @@ export default {
 }
 .accent--text .v-label {
   color: black !important;
-  border: 2px solid #fb8320;
+  border:2px solid #fb8320;
   /* box-shadow: 2px 2px 4px #f05a00; */
   border-radius: 3px;
-  padding: 8px;
+  padding:8px;
 }
-.accent--text .v-label .v-btn {
-  display: inline-block !important;
+.accent--text .v-label .v-btn{
+    display:inline-block!important;
 }
 </style>

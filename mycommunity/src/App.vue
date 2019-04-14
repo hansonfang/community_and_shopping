@@ -1,6 +1,5 @@
 <template>
   <v-app class="app">
-    <Head/>
     <Nav/>
     <transition :name="transitionName">
       <router-view :key="key" class="page"></router-view>
@@ -11,7 +10,6 @@
 
 <script>
 import Nav from "./components/Nav.vue";
-import Head from "./components/Head.vue";
 import Snackbar from "@/components/Snackbar"
 export default {
   name: "App",
@@ -22,7 +20,6 @@ export default {
   },
   components: {
     Nav,
-    Head,
     Snackbar
   },
   watch: {

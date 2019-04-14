@@ -190,7 +190,10 @@ const router = new Router({
           name: "info",
           component: re => require(["@/views/user/modules/info"], re)
         }
-      ]
+      ],
+      meta:{
+        requireAuth:true
+      }
     },
     {
       path: "*",
@@ -205,8 +208,8 @@ router.beforeEach((to, from, next) => {
   });
   if (to.matched.some(r => r.meta.requireAuth)) {
     if (store.getters.token) next();
-    // else next({ path: "/login", query: { needAuth: true } });
-    else next();
+    else next({ path: "/login", query: { needAuth: true } });
+    // else next();
   } else next();
 });
 export default router;

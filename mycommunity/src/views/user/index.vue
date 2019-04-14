@@ -1,38 +1,56 @@
 <template>
   <v-container>
-    <v-layout row nowrap class="info-wrapper py-5">
-      <v-flex xs4 class="justify-end d-f">
+    <v-layout
+      row
+      nowrap
+      class="info-wrapper py-5"
+    >
+      <v-flex
+        xs4
+        class="justify-end d-f"
+      >
         <div style="position:relative;">
-          <v-avatar size="160" color="grey lighten-2">
-            <img src="https://picsum.photos/180/180?random" alt>
+          <v-avatar
+            size="160"
+            color="grey lighten-2"
+          >
+            <img
+              src="https://picsum.photos/180/180?random"
+              alt
+            >
           </v-avatar>
-          <v-icon class="avatar-indacater" size="30">fas fa-pen</v-icon>
+          <v-icon
+            class="avatar-indacater"
+            size="30"
+          >fas fa-pen</v-icon>
         </div>
       </v-flex>
-      <v-flex xs8 class="justify-space-between d-f f-col ml-5">
+      <v-flex
+        xs8
+        class="justify-space-between d-f f-col ml-5"
+      >
         <h3 class="display-1">Hansonfang</h3>
         <p class="title grey--text lighten-2 my-3">男 | 中北路社区</p>
-        <div v-if="!modifyMotto" style="position:relative;">
-          <v-btn flat @click="modifyMotto=true" style="position:absolute;right:-30px;top:-30px;">
-            <v-icon color="orange">fas fa-edit</v-icon>
-          </v-btn>
-          <p class="subheading grey--text lighten-2">{{user.motto}}</p>
-        </div>
-        <div v-else style="position:relative;">
-          <v-btn flat @click="modifyMotto=false" style="position:absolute;right:-30px;top:-30px;">
-            <v-icon color="primary">fas fa-check</v-icon>
-          </v-btn>
-          <v-textarea v-model="user.motto"></v-textarea>
-        </div>
+        <p class="subheading grey--text lighten-2">{{user.motto}}</p>
+
       </v-flex>
     </v-layout>
     <div class="content-wrapper">
-      <v-tabs fixed-tabs centered>
+      <v-tabs
+        fixed-tabs
+        centered
+      >
         <v-tab to="activities">
-          <v-icon size="18" class="mr-2">fas fa-shoe-prints</v-icon>动态
+          <v-icon
+            size="18"
+            class="mr-2"
+          >fas fa-shoe-prints</v-icon>动态
         </v-tab>
         <v-tab to="info">
-          <v-icon size="18" class="mr-2">fas fa-user-cog</v-icon>个人资料
+          <v-icon
+            size="18"
+            class="mr-2"
+          >fas fa-user-cog</v-icon>个人资料
         </v-tab>
       </v-tabs>
 
@@ -43,13 +61,15 @@
 <script>
 export default {
   name: "userIndex",
+  created(){
+    this.user.motto=JSON.parse(localStorage.getItem("user_info")).motto;
+  },
   data() {
     return {
       modifyMotto: false,
       user: {
         motto:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta veritatis modi quae officiis praesentium? Accusantium nihil placeat beatae magni inventore numquam ipsam illo ex odit voluptate. Fugiat soluta at error?"
-      }
+          ""      }
     };
   }
 };
