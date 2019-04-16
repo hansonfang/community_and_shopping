@@ -1,9 +1,6 @@
 <template>
   <div class="mt-3">
-    <v-form
-      ref="form"
-      lazy-validation
-    >
+    <v-form ref="form" lazy-validation>
       <div class="text-xs-right">
         <v-btn
           color="orange"
@@ -12,46 +9,22 @@
           @click="modify=true;userTemp=JSON.stringify(user)"
           flat
         >
-          <v-icon
-            size="18"
-            class="mr-1"
-          >fas fa-lock</v-icon>修改资料
+          <v-icon size="18" class="mr-1">fas fa-lock</v-icon>修改资料
         </v-btn>
-        <v-btn
-          color="orange"
-          dark
-          v-else
-          @click="modify=false;user=JSON.parse(userTemp)"
-          flat
-        >
-          <v-icon
-            size="18"
-            class="mr-1"
-          >fas fa-lock-open</v-icon>放弃修改
+        <v-btn color="orange" dark v-else @click="modify=false;user=JSON.parse(userTemp)" flat>
+          <v-icon size="18" class="mr-1">fas fa-lock-open</v-icon>放弃修改
         </v-btn>
       </div>
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-3 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
           <span>昵称:</span>
         </v-flex>
         <v-flex xs10>
-          <v-text-field
-            required
-            box
-            single-line
-            readonly
-            :value="user.nickname"
-          ></v-text-field>
+          <v-text-field required single-line disabled :value="user.nickname"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-3 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-3 mr-3">
           <span>姓名:</span>
         </v-flex>
         <v-flex xs10>
@@ -67,10 +40,7 @@
         </v-flex>
       </v-layout>
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-3 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-3 mr-3">
           <span>个性签名:</span>
         </v-flex>
         <v-flex xs10>
@@ -85,40 +55,21 @@
         </v-flex>
       </v-layout>
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-4 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
           <span>性别:</span>
         </v-flex>
         <v-flex xs10>
-          <v-radio-group
-            v-model="user.gender"
-            row
-            :readonly="!modify"
-          >
-            <v-radio
-              label="男"
-              value="male"
-            ></v-radio>
-            <v-radio
-              label="女"
-              value="female"
-            ></v-radio>
+          <v-radio-group v-model="user.gender" row :readonly="!modify">
+            <v-radio label="男" value="male"></v-radio>
+            <v-radio label="女" value="female"></v-radio>
           </v-radio-group>
         </v-flex>
       </v-layout>
       <v-layout nowrap>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-4 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
           <span>邮箱:</span>
         </v-flex>
-        <v-flex
-          xs8
-          v-if="modify"
-        >
+        <v-flex xs8 v-if="modify">
           <v-text-field
             v-validate="'email|required'"
             data-vv-name="email"
@@ -129,10 +80,7 @@
             v-model="user.email"
           ></v-text-field>
         </v-flex>
-        <v-flex
-          xs10
-          v-if="!modify"
-        >
+        <v-flex xs10 v-if="!modify">
           <v-text-field
             v-validate="'email|required'"
             data-vv-name="email"
@@ -143,22 +91,13 @@
             v-model="user.email"
           ></v-text-field>
         </v-flex>
-        <v-flex
-          xs2
-          v-if="modify"
-        >
-          <v-btn
-            flat
-            color="primary"
-          >发送验证</v-btn>
+        <v-flex xs2 v-if="modify">
+          <v-btn flat color="primary">发送验证</v-btn>
         </v-flex>
       </v-layout>
 
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-4 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
           <span>身份证号:</span>
         </v-flex>
         <v-flex xs10>
@@ -175,10 +114,7 @@
         </v-flex>
       </v-layout>
       <v-layout>
-        <v-flex
-          xs2
-          class="d-f justify-end mt-4 mr-3"
-        >
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
           <span>社区:</span>
         </v-flex>
         <v-flex xs10>
@@ -198,24 +134,13 @@
             transition="dialog-bottom-transition"
           >
             <v-card>
-              <v-toolbar
-                dark
-                color="primary"
-              >
-                <v-btn
-                  icon
-                  dark
-                  @click="community_choose_dialog = false"
-                >
+              <v-toolbar dark color="primary">
+                <v-btn icon dark @click="community_choose_dialog = false">
                   <v-icon>fas fa-times</v-icon>
                 </v-btn>
                 <v-toolbar-title>选择社区</v-toolbar-title>
               </v-toolbar>
-              <v-list
-                subheader
-                v-if="this.communitys.length"
-                class="pa-5"
-              >
+              <v-list subheader v-if="this.communitys.length" class="pa-5">
                 <v-subheader>社区信息</v-subheader>
                 <v-list-tile
                   avatar
@@ -227,10 +152,7 @@
                   <v-list-tile-content>
                     <v-list-tile-title>{{item.name}}</v-list-tile-title>
                     <v-list-tile-sub-title>
-                      <v-layout
-                        row
-                        wrap
-                      >
+                      <v-layout row wrap>
                         <v-flex xs2>
                           <span>书记:{{item.admin}}</span>
                         </v-flex>
@@ -249,12 +171,16 @@
           </v-dialog>
         </v-flex>
       </v-layout>
+      <v-layout>
+        <v-flex xs2 class="d-f justify-end mt-4 mr-3">
+          <span>注册时间:</span>
+        </v-flex>
+        <v-flex xs10>
+          <v-text-field single-line disabled v-model="user.signUp"></v-text-field>
+        </v-flex>
+      </v-layout>
       <div class="text-xs-center">
-        <v-btn
-          color="success"
-          @click="submit"
-          v-if="modify"
-        >提交</v-btn>
+        <v-btn color="success" @click="submit" v-if="modify">提交</v-btn>
       </div>
     </v-form>
   </div>
@@ -264,18 +190,6 @@ import { updateUser } from "~/user.js";
 export default {
   name: "info",
   created() {
-    this.$store
-      .dispatch("getCommunityList")
-      .then(res => {
-        res.data.data.forEach(community => {
-          if (community.id === Number(localUser.communityId)) {
-            this.user.community = community;
-          }
-        });
-      })
-      .catch(e => {
-        this.$log.error(e);
-      });
     const localUser = JSON.parse(localStorage.getItem("user_info"));
     this.user.nickname = localUser.nickname;
     this.user.username = localUser.username;
@@ -285,6 +199,7 @@ export default {
     this.user.email = localUser.email;
     this.user.phone = localUser.phone;
     this.user.signUp = this.functions.formatTime(localUser.signUp).toDay;
+    this.user.community = localUser.community;
   },
   data() {
     return {
@@ -298,7 +213,8 @@ export default {
         gender: "",
         email: "",
         idcard: "",
-        community: {}
+        community: {},
+        signUp: ""
       },
       communitys: [],
       userTemp: ""
@@ -332,11 +248,11 @@ export default {
           this.user[key] === "" ||
           this.user[key] === null
         ) {
-          this.bus.$emit("hint",{
-            text:"请填完整表单",
-            color:"error",
-            timeout:"2000"
-          })
+          this.bus.$emit("hint", {
+            text: "请填完整表单",
+            color: "error",
+            timeout: "2000"
+          });
           return;
         }
       }
@@ -359,15 +275,16 @@ export default {
               });
               setTimeout(() => {
                 this.$store.dispatch("FedLogout");
-                this.$router.push({name:"login"});
+                this.$router.push({ name: "login" });
               }, 2000);
             })
             .catch(e => {
               this.bus.$emit("hint", {
-                text: e.response,
+                text: "发生错误",
                 color: "error",
                 timeout: 2000
               });
+              this.$log.error(e.response);
             });
         } else {
           this.bus.$emit("hint", {

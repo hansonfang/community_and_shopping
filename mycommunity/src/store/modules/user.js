@@ -15,7 +15,7 @@ const user = {
     name: "",
     avatar: "",
     nickname: "",
-    communityId: "",
+    community: {},
     user: getObject("user_info"),
     communityList: []
   },
@@ -30,8 +30,8 @@ const user = {
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar;
     },
-    SET_COMMUNITY: (state, id) => {
-      state.communityId = id;
+    SET_COMMUNITY: (state, community) => {
+      state.community = community;
     },
     SET_USER: (state, payload) => {
       state.user = payload;
@@ -81,9 +81,20 @@ const user = {
             const info = response.data.data.base_info;
             commit("SET_NICKNAME", info.nickname);
             commit("SET_AVATAR", info.avatar);
-            commit("SET_COMMUNITY", info.communityId);
-            commit("SET_USER", info);
-            setObject("user_info", info);
+
+            getCommunityList()
+              .then(res => {
+                res.data.data.forEach(community => {
+                  if (community.id === Number(info.communityId)) {
+                    info.community = community;
+                    commit("SET_USER", info);
+                    setObject("user_info", info);
+                  }
+                });
+              })
+              .catch(e => {
+                this.$log.error(e);
+              });
             resolve(response);
           })
           .catch(error => {

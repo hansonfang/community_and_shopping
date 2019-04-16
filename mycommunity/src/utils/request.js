@@ -7,8 +7,8 @@ import Vue from "vue";
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  // baseURL: "http://192.168.123.50:8585/chengfeng", // api 的 base_url
-  baseURL: "http://www.fangxiaosong.me:8080/chengfeng", // api 的 base_url
+  baseURL: "http://192.168.123.50:8585/chengfeng", // api 的 base_url
+  // baseURL: "http://www.fangxiaosong.me:8080/chengfeng", // api 的 base_url
   timeout: 5000 // 请求超时时间
 });
 
@@ -44,7 +44,7 @@ service.interceptors.response.use(
       return Promise.reject(error);
     }
     const res = error.response;
-    if (res.data.status === 401 || res.data.message.indexOf("401")!=-1) {
+    if (res.data.status === 401 || res.data.message.indexOf("401") != -1) {
       router.push({
         path: "/login",
         query: { needAuth: true, message: "Token 已经失效" }

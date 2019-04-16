@@ -1,51 +1,42 @@
 <template>
   <div>
-  <div id="head" style="position:relative;z-index:99" @mouseleave="list=false">
-    <v-toolbar
-      color="grey lighten-3"
-      height="28"
-      
-    >
-      <v-toolbar-title class="body-2">
-        <v-icon
-          size="20"
-          color
-        >fas fa-map-marker-alt</v-icon>&nbsp;&nbsp;中北路社区
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
+    <div id="head" style="position:relative;z-index:99">
+      <v-toolbar color="grey lighten-3" height="28">
+        <v-toolbar-title class="body-2">
+          <v-icon size="20" color>fas fa-map-marker-alt</v-icon>&nbsp;&nbsp;中北路社区
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
 
-      <v-toolbar-items v-if="username.length===0">
-        <v-btn
-          flat
-          to="/login"
-        >登录</v-btn>
-        <v-btn
-          flat
-          to="/register"
-        >注册</v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items v-else style="position:relative;">
-        <v-btn
-          color="primary"
-          dark
-          flat
-          @click="list=!list"
-          style="text-transform:unset;"
-        >{{username}}</v-btn>
-        <v-list v-if="list" style="position:absolute;margin-top:27px;right:0;z-index:99">
-          <v-list-tile to="/userinfo" @click="list=false">
-            <v-list-tile-title white>个人中心</v-list-tile-title>
-          </v-list-tile>
+        <v-toolbar-items v-if="username.length===0">
+          <v-btn flat to="/login">登录</v-btn>
+          <v-btn flat to="/register">注册</v-btn>
+        </v-toolbar-items>
+        <v-toolbar-items v-else style="position:relative;">
+          <v-btn
+            color="primary"
+            dark
+            flat
+            @click="list=!list"
+            style="text-transform:unset;position:absolute;right:0;width:88px;"
+          >
+            {{username}}&nbsp;
+            <v-icon size="15" v-if="!list">fas fa-chevron-down</v-icon>
+            <v-icon size="15" v-else>fas fa-chevron-up</v-icon>
+          </v-btn>
+          <v-list v-if="list" style="position:absolute;margin-top:27px;right:0;z-index:99">
+            <v-list-tile to="/userinfo" @click="list=false">
+              <v-list-tile-title white>个人中心</v-list-tile-title>
+            </v-list-tile>
 
-          <v-list-tile @click="logout();list=false">
-            <v-list-tile-title>
-              <v-icon class="mr-1">fas fa-sign-out-alt</v-icon>退出
-            </v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar-items>
-    </v-toolbar>
-  </div>
+            <v-list-tile @click="logout();list=false">
+              <v-list-tile-title>
+                <v-icon class="mr-1">fas fa-sign-out-alt</v-icon>退出
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-toolbar-items>
+      </v-toolbar>
+    </div>
 
     <v-toolbar flat color="white">
       <v-layout row fill-height justify-center>
@@ -71,8 +62,8 @@
 <script>
 export default {
   name: "navbar",
-  created(){
-    this.list=false;
+  created() {
+    this.list = false;
   },
   data() {
     return {
@@ -85,7 +76,7 @@ export default {
       ]
     };
   },
-  methods:{
+  methods: {
     logout() {
       this.$store
         .dispatch("LogOut")
@@ -104,7 +95,7 @@ export default {
         });
     }
   },
-  computed:{
+  computed: {
     username() {
       if (this.$store.getters.user) {
         return this.$store.getters.user.nickname;

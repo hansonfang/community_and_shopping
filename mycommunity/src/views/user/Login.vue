@@ -55,10 +55,9 @@
                   v-model="password"
                   type="password"
                   :rules="[rules.password]"
-                  validate-on-blur
-                  clearable
                   counter
                   maxlength="20"
+                  @keyup.enter="loginSubmit()"
                 ></v-text-field>
               </v-flex>
               <v-flex xs3 class="justify-center">
@@ -186,7 +185,7 @@ export default {
       username: "",
       password: "",
       autoLoginCheckbox: false,
-      hasCaptcha: true,
+      hasCaptcha: false,
       login_captcha: "",
       resetpwd_dialog: false,
       resetpwd_phone: "",
@@ -263,9 +262,10 @@ export default {
               .catch(e => {
                 this.$log.error("获取用户信息失败", e.response);
               });
+
             setTimeout(() => {
               this.$router.push({ path: "/" });
-            }, 2000);
+            }, 1500);
           })
           .catch(e => {
             this.$log.error(e.response);
