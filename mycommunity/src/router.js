@@ -191,8 +191,8 @@ const router = new Router({
           component: re => require(["@/views/user/modules/info"], re)
         }
       ],
-      meta:{
-        requireAuth:true
+      meta: {
+        requireAuth: true
       }
     },
     {
@@ -203,9 +203,6 @@ const router = new Router({
   ]
 });
 router.beforeEach((to, from, next) => {
-  Vue.prototype.bus.$emit("hint", {
-    hide: true
-  });
   if (to.matched.some(r => r.meta.requireAuth)) {
     if (store.getters.token) next();
     else next({ path: "/login", query: { needAuth: true } });

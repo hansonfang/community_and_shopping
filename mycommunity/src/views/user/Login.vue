@@ -247,12 +247,7 @@ export default {
             username: this.username,
             password: this.password
           })
-          .then(res => {
-            this.$log.debug(res);
-            this.bus.$emit("hint", {
-              color: "success",
-              text: "登录成功 正在跳转首页..."
-            });
+          .then(() => {
             //获取用户信息
             this.$store
               .dispatch("GetInfo")
@@ -262,16 +257,16 @@ export default {
               .catch(e => {
                 this.$log.error("获取用户信息失败", e.response);
               });
-
-            setTimeout(() => {
-              this.$router.push({ path: "/" });
-            }, 1500);
+            this.$snackbar({ text: "登录成功 正在跳转首页..." }).then(() => {
+              this.$log.debug("snackbar close!");
+              this.$router.push({ name: "index" });
+            });
           })
           .catch(e => {
             this.$log.error(e.response);
-            this.bus.$emit("hint", {
-              color: "error",
+            this.$snackbar({
               text: "登录失败:" + e.response.data.message,
+              color: "error",
               timeout: 3000
             });
           });

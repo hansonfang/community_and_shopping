@@ -11,7 +11,7 @@ import axios from "axios";
 import VueCarousel from "vue-carousel";
 import VueLogger from "vuejs-logger";
 import VeeValidate from "@/validator";
-
+import snackbar from "./plugins/snackbar";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
@@ -44,8 +44,8 @@ const options = {
 
 Vue.use(VueLogger, options);
 Vue.use(VueCarousel);
-Vue.use(VeeValidate,{
-  locale:"zh_CN"
+Vue.use(VeeValidate, {
+  locale: "zh_CN"
 });
 
 Vue.use(vuetify, {
@@ -55,6 +55,7 @@ Vue.use(vuetify, {
   iconfont: "fa"
 });
 
+Vue.use(snackbar);
 new Vue({
   router,
   store,

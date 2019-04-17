@@ -1,6 +1,6 @@
 <template>
   <div class="service-box">
-    <v-card-title primary-title class="mb-5">
+    <v-card-title primary-title class="mb-3">
       <div style="width:100%;height:270px">
         <h3 class="headline mb-0 text-xs-center">价格</h3>
 
@@ -128,7 +128,6 @@
           <span v-for="(item,i) in selectedInfo" :key="i">{{item.brand}} {{item.count}}桶,</span>
           价格共
           <span class="red--text subheading">￥{{totalPrice}}</span>
-
           元
         </v-card-text>
 
@@ -153,10 +152,21 @@
 </template>
 <script>
 import Count from "@/components/Tool/Count";
+import { getWaterBrands, orderWater } from "~/services";
 export default {
   name: "orderWater",
   components: {
     Count
+  },
+  created() {
+    getWaterBrands()
+      .then(() => {
+        // bug
+        // this.brands=JSON.parse(JSON.stringify(res.data.data))
+      })
+      .catch(e => {
+        this.$log.error(e);
+      });
   },
   data() {
     return {
@@ -202,7 +212,17 @@ export default {
   },
   methods: {
     sendWaterSubmit() {
-      this.$log("post");
+      this.$snackbar({ text: "提交成功，正在转到送水记录页面" });
+
+      /*  this.$log("post");
+      orderWater({})
+        .then(() => {
+          this.$snackbar({ text: "提交成功，正在转到送水记录页面" });
+        })
+        .catch(e => {
+          this.$snackbar({ text: "发生错误" });
+          this.$log.error(e);
+        }); */
     }
   },
   watch: {
@@ -222,8 +242,13 @@ export default {
           }
         });
       },
-      deep:true
-    },
+      deep: true
+    }
   }
 };
 </script>
+<style scoped>
+.service-box {
+  padding-top: 20px;
+}
+</style>

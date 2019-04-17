@@ -275,7 +275,7 @@
 <script>
 let _this = null;
 import { mapGetters } from "vuex";
-import {register} from "~/user.js"
+import { register } from "~/user.js";
 export default {
   name: "register",
   created() {
@@ -340,55 +340,50 @@ export default {
       if (valid) {
         //post
         register({
-            nickname: this.signup_name,
-            password: this.signup_confirm_password,
-            phone: this.signup_phone,
-            communityId: this.communityId,
-            username: this.username,
-            avatar: this.avatarRemoteUrl,
-            gender: this.gender,
-            idcard: this.id_card,
-            motto: this.motto
-          })
-        // this.$axios
-        //   .post(this.baseUrl + "/user/registry", {
-        //     nickname: this.signup_name,
-        //     password: this.signup_confirm_password,
-        //     phone: this.signup_phone,
-        //     communityId: this.communityId,
-        //     username: this.username,
-        //     avatar: this.avatarRemoteUrl,
-        //     gender: this.gender,
-        //     idcard: this.id_card,
-        //     motto: this.motto
-        //   })
-          .then(res => {
+          nickname: this.signup_name,
+          password: this.signup_confirm_password,
+          phone: this.signup_phone,
+          communityId: this.communityId,
+          username: this.username,
+          avatar: this.avatarRemoteUrl,
+          gender: this.gender,
+          idcard: this.id_card,
+          motto: this.motto
+        })
+          // this.$axios
+          //   .post(this.baseUrl + "/user/registry", {
+          //     nickname: this.signup_name,
+          //     password: this.signup_confirm_password,
+          //     phone: this.signup_phone,
+          //     communityId: this.communityId,
+          //     username: this.username,
+          //     avatar: this.avatarRemoteUrl,
+          //     gender: this.gender,
+          //     idcard: this.id_card,
+          //     motto: this.motto
+          //   })
+          .then(() => {
             this.$log.debug("Register Post Success!");
-            this.bus.$emit("hint", {
-              color: "success",
+            this.$snackbar({
               text: "注册成功 正在跳转登录界面...",
               timeout: 1000
-            });
-            this.functions.formatTime(res.data.data.signUp).toDay;
-            const _this = this;
-            setTimeout(() => {
-              _this.$router.push({
+            }).then(() => {
+              this.$router.push({
                 name: "login",
                 params: {
                   nickname: _this.signup_name,
                   password: _this.signup_confirm_password
                 }
               });
-            }, 1000);
+            });
           })
           .catch(e => {
             this.log(e.response.data);
             if (e.response) {
               // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-
-              this.bus.$emit("hint", {
-                color: "error",
+              this.$snackbar({
                 text: "注册失败:" + e.response.data.data.error,
+                color: "error",
                 timeout: 3000
               });
             } else {
@@ -425,18 +420,17 @@ export default {
             .dispatch("UploadAvatar", param)
             .then(res => {
               this.avatarRemoteUrl = res.data.data;
-              this.bus.$emit("hint", {
-                color: "success",
+
+              this.$snackbar({
                 text: `图片${this.avatarFile.name}上传成功`,
                 timeout: 1500
               });
             })
             .catch(e => {
               this.$log.error(e.response);
-              this.bus.$emit("hint", {
-                color: "error",
-                text: `头像上传失败`,
-                timeout: 2000
+              this.$snackbar({
+                text: `头像上传失败,错误请见控制台`,
+                color: "error"
               });
             });
         });

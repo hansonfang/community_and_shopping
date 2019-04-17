@@ -1,5 +1,5 @@
-function formatTime(time) {
-  let unixtime = time;
+function formatTime(t) {
+  let unixtime = t;
   let unixTimestamp = new Date(unixtime);
   let Y = unixTimestamp.getFullYear();
   let M =
@@ -10,12 +10,19 @@ function formatTime(time) {
     unixTimestamp.getDate() > 10
       ? unixTimestamp.getDate()
       : "0" + unixTimestamp.getDate();
+  let hour = unixTimestamp.getHours();
+  let min = unixTimestamp.getMinutes();
+  let time = hour + ":" + min;
   let toDay = Y + "-" + M + "-" + D;
   return {
     year: Y,
     month: M,
     day: D,
-    toDay: toDay
+    toDay: toDay,
+    hour,
+    min,
+    time,
+    dayTime: toDay + " " + time
   };
 }
 export { formatTime };

@@ -248,11 +248,7 @@ export default {
           this.user[key] === "" ||
           this.user[key] === null
         ) {
-          this.bus.$emit("hint", {
-            text: "请填完整表单",
-            color: "error",
-            timeout: "2000"
-          });
+          this.$snackbar({ text: "请填完整表单", color: "error" });
           return;
         }
       }
@@ -268,30 +264,17 @@ export default {
           })
             .then(res => {
               this.$log.debug(res);
-              this.bus.$emit("hint", {
-                text: "修改成功，请重新登录",
-                color: "success",
-                timeout: 2000
-              });
-              setTimeout(() => {
+              this.$snackbar({ text: "修改成功，请重新登录" }).then(() => {
                 this.$store.dispatch("FedLogout");
                 this.$router.push({ name: "login" });
-              }, 2000);
+              });
             })
             .catch(e => {
-              this.bus.$emit("hint", {
-                text: "发生错误",
-                color: "error",
-                timeout: 2000
-              });
+              this.$snackbar({ text: "发生错误", color: "error" });
               this.$log.error(e.response);
             });
         } else {
-          this.bus.$emit("hint", {
-            text: "请修改表单错误",
-            color: "error",
-            timeout: 2000
-          });
+          this.$snackbar({ text: "请修改表单错误", color: "error" });
         }
       });
     }

@@ -28,7 +28,7 @@
               <v-list-tile-title white>个人中心</v-list-tile-title>
             </v-list-tile>
 
-            <v-list-tile @click="logout();list=false">
+            <v-list-tile @click="logout()">
               <v-list-tile-title>
                 <v-icon class="mr-1">fas fa-sign-out-alt</v-icon>退出
               </v-list-tile-title>
@@ -81,18 +81,16 @@ export default {
       this.$store
         .dispatch("LogOut")
         .then(res => {
+          this.$log.debug(res.data);
           if (res.data.status === 200) {
-            this.bus.$emit("hint", {
-              color: "success",
-              text: res.data.message,
-              timeout: 2000
-            });
+            this.$snackbar({ text: res.data.message });
           }
           this.$router.push("/");
         })
         .catch(e => {
           this.$log.error(e.response);
         });
+      this.list = false;
     }
   },
   computed: {

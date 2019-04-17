@@ -13,7 +13,14 @@
           </v-flex>
 
           <v-flex xs12>
-            <v-text-field label="电话" required v-model="telephone">{{telephone}}</v-text-field>
+            <v-text-field
+              label="电话"
+              required
+              v-model="telephone"
+              v-validate="'phone'"
+              data-vv-name="phone"
+              :error-messages="errors.collect('phone')"
+            >{{telephone}}</v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-menu
@@ -75,7 +82,15 @@
             </v-menu>
           </v-flex>
           <v-flex xs12>
-            <v-textarea solo name="detail" label="描述内容" v-model="detail"></v-textarea>
+            <v-textarea
+              solo
+              name="detail"
+              label="描述内容"
+              v-model="detail"
+              v-validate="'max:200'"
+              data-vv-name="detail"
+              :error-messages="errors.collect('detail')"
+            ></v-textarea>
           </v-flex>
         </v-layout>
       </v-container>
@@ -88,6 +103,7 @@
   </div>
 </template>
 <script>
+import { repair } from "~/services.js";
 export default {
   name: "orderRepair",
   created() {
@@ -117,7 +133,53 @@ export default {
       } else time = this.timenow;
       date = date.replace(/-/g, "/");
       const timestamp = new Date(date + " " + time + ":00").getTime();
-      this.$log.debug(timestamp);
+
+      this.$validator
+        .validateAll()
+        .then(v => {
+          if (
+            this.address === "" ||
+            this.telephone === "" ||
+            this.expectedDate === "" ||
+            time === "" ||
+            this.detail === "" ||
+            !v
+          ) {
+            return new Promise((resolve, reject) => {
+              reject();
+            });
+          } else {
+            return new Promise(resolve => {
+              resolve();
+            });
+          }
+        })
+        .then(() => {
+          repair({
+            telephone: this.telephone,
+            address: this.address,
+            detail: this.detail,
+            timestamp
+          })
+            .then(() => {
+              this.$snackbar({
+                text: "报修信息提交成功,即将跳转报修历史"
+              }).then(() => {
+                this.$router.push({ name: "recordRepair" });
+              });
+            })
+            .catch(e => {
+              this.$log.error(e.response);
+            });
+        })
+        .catch(() => {
+          this.$snackbar({
+            text: "请把信息填写完整规范",
+            color: "warning"
+          }).then(() => {
+            this.$log.debug("snackbar close!");
+          });
+        });
     }
   }
 };

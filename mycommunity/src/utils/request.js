@@ -37,9 +37,10 @@ service.interceptors.response.use(
       error.toString().indexOf("Network Error") != -1
     ) {
       //网络超时
-      Vue.prototype.bus.$emit("hint", {
+      Vue.prototype.$snackbar({
+        text: "网络请求错误",
         color: "error",
-        text: "网络请求错误"
+        timeout: 10 * 1000
       });
       return Promise.reject(error);
     }
