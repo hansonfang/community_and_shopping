@@ -34,6 +34,38 @@ export function orderWater(obj) {
   return request({
     url: "/portal/book/water",
     method: "post",
-    data: {}
+    data: {
+      phone: obj.telephone,
+      address: obj.address,
+      description: obj.detail,
+      hopeTime: obj.timestamp,
+      detailsList: obj.waterList
+    }
+  });
+}
+export function getWater({ pageNum, pageSize }) {
+  return request({
+    url: "/portal/get/water",
+    method: "get",
+    params: { pageNum, pageSize }
+  });
+}
+export function tellManager(obj) {
+  return request({
+    url: "/portal/book/secretary",
+    method: "post",
+    data: {
+      phone: obj.telephone,
+      email: obj.email,
+      description: obj.detail
+    }
+  });
+}
+
+export function getTellManager({ pageNum, pageSize }) {
+  return request({
+    url: "/portal/get/secretary",
+    method: "get",
+    params: { pageNum, pageSize }
   });
 }

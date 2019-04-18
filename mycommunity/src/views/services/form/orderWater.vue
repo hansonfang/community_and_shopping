@@ -1,7 +1,7 @@
 <template>
   <div class="service-box">
-    <v-card-title primary-title class="mb-3">
-      <div style="width:100%;height:270px">
+    <v-card-title primary-title class="pb-0">
+      <div style="width:100%;">
         <h3 class="headline mb-0 text-xs-center">价格</h3>
 
         <!-- 送水 -->
@@ -15,19 +15,22 @@
     </v-card-title>
     <v-divider></v-divider>
 
-    <v-card flat>
-      <v-card-title class="justify-center">
+    <v-card flat class="mt-3">
+      <v-card-title class="justify-center pb-0">
         <span class="f-1"></span>
         <span class="headline f-1">预约送水</span>
         <v-btn flat color="blue" to="recordWater">送水预约记录</v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="pt-0">
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12>
               <v-select
                 v-model="selectedValue"
-                :items="waterBrandPrice"
+                :items="brands"
+                item-text="desc"
+                item-value="id"
+                return-object
                 attach
                 chips
                 label="选择品牌"
@@ -40,13 +43,21 @@
                     <Count v-model="item.count"/>
                   </v-list-tile-action>
                 </v-list-tile>
+                <div class="text-xs-right red--text title pa-3">总价:￥{{totalPrice}}</div>
               </v-list>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="电话" value="取默认用户注册时的电话" required>{{telephone}}</v-text-field>
+              <v-text-field
+                label="电话"
+                required
+                v-model="telephone"
+                v-validate="'phone'"
+                data-vv-name="phone"
+                :error-messages="errors.collect('phone')"
+              >{{telephone}}</v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="地址" required value="取默认用户注册时的地址">{{address}}</v-text-field>
+              <v-text-field label="地址" required v-model="address">{{address}}</v-text-field>
             </v-flex>
             <v-flex xs6>
               <v-menu
@@ -95,6 +106,7 @@
                   slot="activator"
                   v-model="expectedTime"
                   label="期望上门时间"
+                  :placeholder="timenow"
                   prepend-icon="fa-clock"
                   readonly
                 ></v-text-field>
@@ -108,7 +120,7 @@
               </v-menu>
             </v-flex>
             <v-flex xs12>
-              <v-textarea solo name="repairText" label="备注信息" v-model="orderText"></v-textarea>
+              <v-textarea solo name="repairText" label="备注信息" v-model="detail"></v-textarea>
             </v-flex>
           </v-layout>
         </v-container>
@@ -159,6 +171,14 @@ export default {
     Count
   },
   created() {
+    const user = JSON.parse(localStorage.getItem("user_info"));
+    this.address = user.community.address;
+    this.telephone = user.phone;
+    this.timenow = new Date().toTimeString().substr(0, 5);
+    this.brands.forEach(element => {
+      element["count"] = 1;
+      element["desc"] = `${element.brand} - ￥${element.price}`;
+    });
     getWaterBrands()
       .then(() => {
         // bug
@@ -177,70 +197,107 @@ export default {
       ],
       selectedValue: [],
       selectedInfo: [],
-      orderText: "", //预约送水备注信息
+      detail: "", //预约送水备注信息
       address: "",
       telephone: "",
       expectedDate: new Date().toISOString().substr(0, 10),
       expectedTime: null,
       dateMenu: false,
       timeMenu: false,
+      timenow: "",
       confirm_dialog: false,
       brands: [
-        { brand: "农夫山泉", price: 24, id: "001" },
-        { brand: "百脉泉", price: 16, id: "002" },
-        { brand: "娃哈哈", price: 20, id: "003" },
-        { brand: "雀巢纯水", price: 22, id: "004" }
+        { brand: "农夫山泉", price: 24, id: "4" },
+        { brand: "百岁山", price: 41, id: "1" },
+        { brand: "娃哈哈矿泉水", price: 25, id: "5" },
+        { brand: "雀巢纯水", price: 23, id: "2" },
+        { brand: "怡宝纯净水", price: 20, id: "3" }
       ]
     };
   },
-  mounted() {
-    this.brands.forEach(element => {
-      element["count"] = 1;
-    });
-  },
   computed: {
-    waterBrandPrice() {
-      return this.brands.map(value => `${value.brand} - ${value.price}`);
-    },
     totalPrice() {
-      return this.selectedInfo
-        .map(item => item.count * item.price)
-        .reduce((sum, curr) => {
-          return sum + curr;
+      if (this.selectedInfo.length) {
+        let sum = 0;
+        this.selectedInfo.forEach(item => {
+          sum += item.price * item.count;
         });
+        return sum;
+      } else {
+        return 0;
+      }
     }
   },
   methods: {
     sendWaterSubmit() {
-      this.$snackbar({ text: "提交成功，正在转到送水记录页面" });
+      let date = this.expectedDate;
+      let time = "";
+      if (this.expectedTime) {
+        time = this.expectedTime;
+      } else time = this.timenow;
+      date = date.replace(/-/g, "/");
+      const timestamp = new Date(date + " " + time + ":00").getTime();
 
-      /*  this.$log("post");
-      orderWater({})
-        .then(() => {
-          this.$snackbar({ text: "提交成功，正在转到送水记录页面" });
+      this.$validator
+        .validateAll()
+        .then(v => {
+          if (
+            this.address === "" ||
+            this.telephone === "" ||
+            this.expectedDate === "" ||
+            time === "" ||
+            !v
+          ) {
+            return new Promise((resolve, reject) => {
+              reject();
+            });
+          } else {
+            return new Promise(resolve => {
+              resolve();
+            });
+          }
         })
-        .catch(e => {
-          this.$snackbar({ text: "发生错误" });
-          this.$log.error(e);
-        }); */
+        .then(() => {
+          const waterlist = this.selectedInfo.map(item => {
+            return {
+              brandId: item.id,
+              waterNums: item.count
+            };
+          });
+          const data = {
+            telephone: this.telephone,
+            address: this.address,
+            detail: this.detail,
+            timestamp,
+            waterList: waterlist
+          };
+          orderWater(data)
+            .then(() => {
+              this.$snackbar({ text: "提交成功，正在转到送水记录页面" }).then(
+                () => {
+                  this.$router.push({ name: "recordWater" });
+                }
+              );
+            })
+            .catch(e => {
+              this.$snackbar({ text: "发生错误", color: "error" });
+              this.$log.error(e.response);
+            });
+        })
+        .catch(() => {
+          this.$snackbar({
+            text: "请把信息填写完整规范",
+            color: "warning"
+          }).then(() => {
+            this.$log.debug("snackbar close!");
+          });
+        });
     }
   },
   watch: {
-    selectedValue() {
-      const temp = [];
-      this.selectedValue.forEach(value => {
-        const arr = value.split(" -");
-        temp.push({ brand: arr[0], price: arr[1], count: 1 });
-      });
-      this.selectedInfo = temp;
-    },
-    selectedInfo: {
-      handler(now) {
-        now.forEach((value, index) => {
-          if (value.count === 0) {
-            now.splice(index, 1);
-          }
-        });
+    selectedValue: {
+      handler(val) {
+        this.selectedInfo = JSON.parse(JSON.stringify(val));
       },
       deep: true
     }

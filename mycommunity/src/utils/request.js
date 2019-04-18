@@ -3,12 +3,12 @@ import store from "@/store";
 import { getToken } from "@/utils/auth";
 import router from "@/router";
 import Vue from "vue";
-
+import { baseUrl } from "@/config";
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  baseURL: "http://192.168.123.50:8585/chengfeng", // api 的 base_url
-  // baseURL: "http://www.fangxiaosong.me:8080/chengfeng", // api 的 base_url
+  baseURL: baseUrl, // api 的 base_url
+  // baseURL: , // api 的 base_url
   timeout: 5000 // 请求超时时间
 });
 

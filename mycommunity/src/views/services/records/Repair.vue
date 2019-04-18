@@ -47,6 +47,7 @@ export default {
     getRepair({ pageNum: this.$route.query.pageNum || 1 })
       .then(res => {
         const messages = res.data.data;
+        if (!messages) return;
         messages.forEach(val => {
           this.items.push({
             address: val.address,
@@ -59,7 +60,33 @@ export default {
       .catch(e => {
         this.$log.error(e || e.response);
       });
-    this.pagination.page = this.$route.query.pageNum;
+    this.pagination.page = Number(this.$route.query.pageNum) || 1;
+    this.$watch(
+      "pagination",
+      () => {
+        this.loading = true;
+        this.$router.push({ query: { pageNum: this.pagination.page } });
+        getRepair({ pageNum: this.pagination.page })
+          .then(res => {
+            this.loading = false;
+            const messages = res.data.data;
+            this.items = [];
+            if (!messages) return;
+            messages.forEach(val => {
+              this.items.push({
+                address: val.address,
+                tel: val.telephone,
+                description: val.description,
+                date: this.functions.formatTime(val.hopeTime).dayTime
+              });
+            });
+          })
+          .catch(e => {
+            this.$log.error(e.response || e);
+          });
+      },
+      { deep: true }
+    );
   },
   data() {
     return {
@@ -118,33 +145,6 @@ export default {
     deleteItem(item) {
       this.$log.debug("delete", item);
     }
-  },
-  watch: {
-    pagination: {
-      handler() {
-        this.loading = true;
-        getRepair({ pageNum: this.pagination.page })
-          .then(res => {
-            this.loading = false;
-            const messages = res.data.data;
-            this.items = [];
-            if (!messages) return;
-            messages.forEach(val => {
-              this.items.push({
-                address: val.address,
-                tel: val.telephone,
-                description: val.description,
-                date: this.functions.formatTime(val.hopeTime).dayTime
-              });
-            });
-            this.$router.push({ query: { pageNum: this.pagination.page } });
-          })
-          .catch(e => {
-            this.$log.error(e.response || e);
-          });
-      },
-      deep: true
-    }
   }
 };
 </script>
@@ -168,10 +168,5 @@ export default {
   padding: 5px;
   width: 50%;
   font-weight: bold;
-}
-
-table.v-table tbody td {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
 }
 </style>

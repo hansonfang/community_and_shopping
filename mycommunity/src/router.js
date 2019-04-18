@@ -199,6 +199,11 @@ const router = new Router({
       path: "*",
       name: "error404",
       component: Error
+    },
+    {
+      path: "/api",
+      name: "api",
+      component: re => require(["@/views/api"], re) //注册页面
     }
   ]
 });

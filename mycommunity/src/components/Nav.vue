@@ -4,6 +4,7 @@
       <v-toolbar color="grey lighten-3" height="28">
         <v-toolbar-title class="body-2">
           <v-icon size="20" color>fas fa-map-marker-alt</v-icon>&nbsp;&nbsp;中北路社区
+          <router-link to="/api">API</router-link>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
