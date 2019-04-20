@@ -43,9 +43,7 @@ export default {
 };
 </script>
 <style>
-a {
-  text-decoration: none;
-}
+@import url("./style/style.css");
 .page{
   position: absolute;
   top:93px;
@@ -55,9 +53,7 @@ a {
     margin: 0 auto;
     -webkit-overflow-scrolling: touch;
 }
-.theme--light.application{
-  background: none;
-}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -87,59 +83,4 @@ a {
   transform: translate(100%, 0);
 }
 
-.v-dialog .v-card__title {
-  justify-content: center;
-  padding-bottom: 0;
-}
-
-.theme--light.v-pagination .v-pagination__navigation .v-icon{
-    font-size: 1.3rem!important;
-}
-.sel-none{
-  user-select: none!important;
-}
-.d-f{
-  display: flex!important;
-}
-.min-h{
-    min-height:150px!important;
-}
-.f-col{
-  flex-direction: column;
-}
-.f-row{
-  flex-direction: row;
-}
-.align-bottom{
-  align-items: flex-end;
-}
-.justify-right{
-  justify-content: right;
-}
-.justify-between{
-  justify-content: space-between;
-}
-.f-1{
-  flex:1;
-}
-.box-shadow{
-  box-shadow:0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-  
-}
-.application--wrap{
-  /* overflow: hidden; */
-
-}
-li{
-  list-style-type: none;
-}
-.paragraph{
-  text-indent: 2rem;
-  line-height: 1.9rem;
-  font-size: 1.2rem;
-}
-.service-box{
-  max-width: 860px;
-  padding-top:80px;
-}
 </style>

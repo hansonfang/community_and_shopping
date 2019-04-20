@@ -175,7 +175,6 @@ export default {
 };
 </script>
 <style scoped>
-@import url("../../../style/table.css");
 .repair-table {
   max-width: 1200px;
   margin: 20px auto;

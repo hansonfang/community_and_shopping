@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import {environment} from "@/config"
 import Post from "./views/main/Post";
 import Shopping from "./views/main/Shopping";
 import Error from "@/views/404";
@@ -208,7 +209,7 @@ const router = new Router({
   ]
 });
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(r => r.meta.requireAuth)) {
+  if (to.matched.some(r => r.meta.requireAuth)&&environment!=="home") {
     if (store.getters.token) next();
     else next({ path: "/login", query: { needAuth: true } });
     // else next();

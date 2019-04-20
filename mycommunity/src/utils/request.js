@@ -40,8 +40,9 @@ service.interceptors.response.use(
       Vue.prototype.$snackbar({
         text: "网络请求错误",
         color: "error",
-        timeout: 10 * 1000
+        duration: 10 * 1000
       });
+      store.dispatch("FedLogout");
       return Promise.reject(error);
     }
     const res = error.response;
