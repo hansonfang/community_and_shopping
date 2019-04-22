@@ -1,33 +1,27 @@
 <template>
-  <div class="detail">
+  <div class="detail mb-3">
     <!-- 头像区 -->
-    <v-flex xs2>
-      <div class="box-shadow avatar-wrapper">
+    <v-layout class="box-shadow">
+      <v-flex xs2>
         <div class="d-f f-col align-center" style="position:relative;">
           <div class="triangle" v-if="detail.isPoster"></div>
           <v-avatar color="grey lighten-4" class="mt-3" size="80">
             <img :src="detail.avatar" alt="avatar">
           </v-avatar>
           <h4 class="my-2">{{detail.name}}</h4>
-          <v-btn flat color="info" v-if="!detail.hasFollow">
-            <v-icon small>fa-plus</v-icon>&nbsp;
-            关注此人
-          </v-btn>
-
-          <v-btn flat v-else>取消关注</v-btn>
         </div>
-      </div>
-    </v-flex>
-    <!-- 信息区 -->
-    <v-flex xs10 class="post-info">
-      <div class="d-f box-shadow msg-wrapper f-col" style="position:relative;">
-        <div class="pa-2 min-h">
+      </v-flex>
+      <!-- 信息区 -->
+      <v-flex xs10 class="post-info d-f">
+        <div class="d-f msg-wrapper f-col" style="position:relative;">
           <p class="pa-4">{{detail.msg}}</p>
           <img src alt>
 
           <!-- 投票区 -->
           <v-container class="poll" v-if="detail.floor===1&&detail.poll">
-            <h4 class="text-xs-center grey--text pt-0 mt-0 mb-3">{{`${detail.poll.multi?"多项选择":"单项选择"}`}}</h4>
+            <h4
+              class="text-xs-center grey--text pt-0 mt-0 mb-3"
+            >{{`${detail.poll.multi?"多项选择":"单项选择"}`}}</h4>
             <v-layout
               no-wrap
               row
@@ -46,18 +40,14 @@
               <v-flex xs2>
                 <!-- 单选时显示 -->
                 <v-checkbox
-                v-if="!detail.poll.multi"
+                  v-if="!detail.poll.multi"
                   v-model="checkbox"
                   :value="option.id"
                   :disabled="disableAttr(option.id)"
                 ></v-checkbox>
 
                 <!-- 多选时显示 -->
-                <v-checkbox
-                v-if="detail.poll.multi"
-                  v-model="checkbox"
-                  :value="option.id"
-                ></v-checkbox>
+                <v-checkbox v-if="detail.poll.multi" v-model="checkbox" :value="option.id"></v-checkbox>
               </v-flex>
             </v-layout>
             <div class="d-f justify-center pt-3">
@@ -66,46 +56,13 @@
           </v-container>
         </div>
 
-        <div class="msg-footer ma-1">
+        <div class="msg-footer ma-1 pt-5">
           <div class="d-f grey--text" style="justify-content:flex-end;align-items:center;">
             <span style="display:inline-block;">{{detail.floor}}楼 {{detail.dateTime}}</span>
-            <v-btn
-              flat
-              small
-              color="info"
-              style="line-height:unset;"
-              @click="toggleReply=!toggleReply"
-            >
-              <span v-if="toggleReply">收起</span>
-              回复{{replyCount}}
-            </v-btn>
           </div>
         </div>
-        <transition name="slide">
-          <div v-if="toggleReply">
-            <div class="replys">
-              <div class="reply" v-for="(reply,index) in detail.replys" :key="index">
-                <p class="reply-msg">
-                  <a href="#">{{reply.name}}</a>回复
-                  <a href="#">{{reply.to}}</a>
-                  :{{reply.msg}}
-                </p>
-                <div class="reply-foot caption blue-grey--text text--lighten-1">
-                  <span>{{reply.dateTime}}</span>
-                  <v-btn small flat>回复</v-btn>
-                </div>
-              </div>
-            </div>
-            <div>
-              <v-textarea class="mx-3" outline name label="回复小仙女:" value></v-textarea>
-              <div class="text-xs-right">
-                <v-btn color="info">确定</v-btn>
-              </div>
-            </div>
-          </div>
-        </transition>
-      </div>
-    </v-flex>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 <script>
@@ -126,7 +83,6 @@ export default {
         return {
           avatar: "",
           name: "",
-          hasFollow: false,
           msg: "",
           isPoster: false,
           floor: 1,
@@ -146,16 +102,12 @@ export default {
       this.detail.poll.sum = optionsSum;
     }
   },
-  mounted() {},
   computed: {
-    replyCount() {
-      return this.detail.replys ? `(${this.detail.replys.length})` : "";
-    },
     disableAttr() {
       return function(id) {
         if (this.checkbox && this.checkbox[0] === id) {
           return false;
-        } else if (this.checkbox.length!==0) {
+        } else if (this.checkbox.length !== 0) {
           return true;
         } else return false;
       };
@@ -173,6 +125,10 @@ export default {
 }
 .msg-footer {
   /* padding-bottom:20px; */
+}
+.post-info {
+  flex-direction: column;
+  justify-content: space-between;
 }
 .detail {
   display: flex;

@@ -2,52 +2,22 @@
   <v-container class="max-width">
     <v-layout row>
       <h2 class="sel-none">
-        <v-icon
-          color="orange lighten-1"
-          large
-        >far fa-edit</v-icon>
-        发表新帖
+        <v-icon color="orange lighten-1" large>far fa-edit</v-icon>发表新帖
       </h2>
     </v-layout>
     <v-layout column>
       <h3 class="text-xs-right">你还能输入{{left}}个字</h3>
-      <v-text-field
-        label="帖子标题"
-        type="input"
-        :maxlength="titleMax"
-        v-model="title"
-      ></v-text-field>
+      <v-text-field label="帖子标题" type="input" :maxlength="titleMax" v-model="title"></v-text-field>
     </v-layout>
-    <v-layout
-      row
-      d-flex
-    >
-      <v-flex
-        xs1
-        align-center
-        class="emoji-wrapper"
-      >
+    <v-layout row d-flex>
+      <v-flex xs1 align-center class="emoji-wrapper">
         <v-icon small>far fa-smile</v-icon>
-        <span
-          @click="toggleEmoji=!toggleEmoji"
-          style="cursor:pointer;"
-        >表情</span>
-        <VEmojiPicker
-          :pack="pack"
-          @select="selectEmoji"
-          v-if="toggleEmoji"
-        />
+        <span @click="toggleEmoji=!toggleEmoji" style="cursor:pointer;">表情</span>
+        <VEmojiPicker :pack="pack" @select="selectEmoji" v-if="toggleEmoji"/>
       </v-flex>
-      <v-flex
-        xs1
-        align-center
-      >
+      <v-flex xs1 align-center>
         <v-icon small>far fa-image</v-icon>
-        <span
-          @click="$refs.uploadImg.click()"
-          style="cursor:pointer;"
-          class="pl-1"
-        >图片</span>
+        <span @click="$refs.uploadImg.click()" style="cursor:pointer;" class="pl-1">图片</span>
         <input
           accept="image/*"
           name="img"
@@ -58,44 +28,30 @@
         >
       </v-flex>
     </v-layout>
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex
-        md3
-        xs6
-        v-for="(img,index) in images"
-        :key="index"
-      >
+    <v-layout row wrap>
+      <v-flex md3 xs6 v-for="(img,index) in images" :key="index">
         <v-img :src="img.src"></v-img>
       </v-flex>
     </v-layout>
-    <v-layout
-      row
-      class="mt-3"
-    >
+    <v-layout row class="mt-3">
       <v-textarea
         v-model="text"
         :maxlength="textMax"
         solo
-        height=250
+        height="250"
         no-resize
         :hint="`你还能输入${textLeft}个字`"
       ></v-textarea>
     </v-layout>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-btn color="info">发表</v-btn>
+    <v-layout row justify-center>
+      <v-btn color="info" @click="submit">发表</v-btn>
     </v-layout>
   </v-container>
 </template>
 <script>
 import VEmojiPicker from "v-emoji-picker";
 import packData from "v-emoji-picker/data/emojis.json";
-
+import { createPost } from "~/post";
 export default {
   name: "postwrite",
   components: {
@@ -109,7 +65,7 @@ export default {
       textMax: 2000,
       pack: packData,
       toggleEmoji: false,
-      images: [],
+      images: []
     };
   },
   computed: {
@@ -129,7 +85,7 @@ export default {
     },
     onImagePicked(e) {
       const files = e.target.files;
-      const _this=this;
+      const _this = this;
       if (files[0] !== undefined) {
         if (files[0].name.lastIndexOf(".") <= 0) {
           return;
@@ -142,14 +98,31 @@ export default {
           //   this.images[0].src = fr.result;
           //   this.images[0].file = files[0]; // this is an image file that can be sent to server...
           /* 上传图片 */
-          const param= new FormData();
+          const param = new FormData();
           param.append("file", files[0], files[0].name); //通过append向form对象添加数据
           // this.$axios.post()
         });
       }
+    },
+    submit() {
+      const data = {
+        title: this.title,
+        description: this.text
+      };
+      createPost(data)
+        .then(res => {
+          this.$log.debug(res.data);
+          this.$snackbar({ text: "发送成功，正在转向帖子页面。。" }).then(
+            () => {
+              this.$router.push({ name: "postindex" });
+            }
+          );
+        })
+        .catch(e => {
+          this.$snackbar({ text: "发送失败", color: "error", duration: 5000 });
+          this.$log.error(e);
+        });
     }
-  },
-  created(){
   }
 };
 </script>
@@ -167,5 +140,4 @@ export default {
   top: -5vw;
   z-index: 99;
 }
-
 </style>

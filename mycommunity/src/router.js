@@ -1,15 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import {environment} from "@/config"
+import { environment } from "@/config";
 import Post from "./views/main/Post";
 import Shopping from "./views/main/Shopping";
 import Error from "@/views/404";
 import store from "@/store";
 /* 引入Post贴吧页面views */
-import PostIndex from "@/views/post/PostIndex";
-import PostBest from "@/views/post/PostBest";
-import PostWrite from "@/views/post/PostWrite";
-import PostPage from "@/views/post/PostPage";
 
 Vue.use(Router);
 
@@ -114,14 +110,28 @@ const router = new Router({
       children: [
         //贴吧子路由
         { path: "", redirect: "index" },
-        { path: "index", component: PostIndex },
-        { path: "best", component: PostBest },
-        { path: "write", component: PostWrite },
+        {
+          path: "index",
+          name: "postindex",
+          component: resolve => require(["@/views/post/PostIndex"], resolve)
+        },
+        {
+          path: "best",
+          name: "postbest",
+          component: resolve => require(["@/views/post/PostBest"], resolve)
+        },
+        {
+          path: "write",
+          component: resolve => require(["@/views/post/PostWrite"], resolve)
+        },
         {
           path: "poll",
           component: resolve => require(["@/views/post/PostPoll"], resolve)
         },
-        { path: ":id", component: PostPage }
+        {
+          path: ":id",
+          component: resolve => require(["@/views/post/PostPage"], resolve)
+        }
       ]
     },
     {
@@ -209,7 +219,7 @@ const router = new Router({
   ]
 });
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(r => r.meta.requireAuth)&&environment!=="home") {
+  if (to.matched.some(r => r.meta.requireAuth) && environment !== "home") {
     if (store.getters.token) next();
     else next({ path: "/login", query: { needAuth: true } });
     // else next();
