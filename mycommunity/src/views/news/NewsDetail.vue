@@ -34,15 +34,12 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <Footer/>
   </div>
 </template>
 <script>
-import Footer from "@/components/Footer";
 export default {
   name: "news-detail",
   components: {
-    Footer
   },
   data() {
     return {

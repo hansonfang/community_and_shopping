@@ -265,16 +265,23 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <Footer />
+
+           <v-footer height="80" class="d-f justify-center footer">
+      <div></div>
+      <div class="text-xs-center">使用MIT License开源，基于
+        <a href="https://vuetifyjs.com/zh-Hans/">Vuetify</a>
+        <br>Copyright © 2016-2019 Hanson
+      </div>
+      <div class="text-xs-right">Twitter</div>
+    </v-footer>
   </div>
 </template>
 <script>
 import Announcement from "@/components/CommonItems/Annoucements";
-import Footer from "@/components/Footer";
 import { getIndex } from "@/api/information";
 export default {
   name: "index",
-  components: { Announcement, Footer },
+  components: { Announcement },
   created() {
     const _this = this;
     getIndex()
@@ -531,5 +538,9 @@ export default {
 .group {
   width: 100%;
   justify-content: space-between;
+}
+
+.footer div{
+  flex:1;
 }
 </style>
