@@ -1,14 +1,27 @@
 <template>
   <div>
-    <v-tabs centered icons-and-text>
-      <v-tab v-for="(item,index) in drawerItem" :key="index" :to="item.to">
+    <v-tabs
+      centered
+      icons-and-text
+    >
+      <v-tab
+        v-for="(item,index) in drawerItem"
+        :key="index"
+        :to="item.to"
+      >
         {{item.title}}
         <v-icon :color="item.color">{{item.icon}}</v-icon>
       </v-tab>
       <!-- 发帖或投票菜单 -->
       <v-tab key="3">
-        <v-menu bottom class="v-tabs__div">
-          <a slot="activator" class="v-tabs__item">
+        <v-menu
+          bottom
+          class="v-tabs__div"
+        >
+          <a
+            slot="activator"
+            class="v-tabs__item"
+          >
             <span>发帖</span>
             <v-icon color="green darken-1">fa-edit</v-icon>
           </a>
@@ -37,7 +50,7 @@ export default {
         {
           title: "投票贴",
           icon: "fa-poll",
-          to: "/post/best",
+          to: "/post/polllist",
           color: "deep-orange"
         }
       ]

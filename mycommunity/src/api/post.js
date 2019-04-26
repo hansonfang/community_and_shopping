@@ -3,6 +3,7 @@
 
 */
 import request from "@/utils/request";
+import requestNode from "@/utils/requestNode";
 
 export function createPost(obj) {
   return request({
@@ -53,6 +54,19 @@ export function createPoll(data) {
 export function getPostDetail(id) {
   return request({
     url: `/news/detail/${id}`,
+    method: "get"
+  });
+}
+export function getPollList() {
+  return requestNode({
+    url: "/vote/all",
+    method: "get"
+  });
+}
+
+export function getPollDetail(id) {
+  return requestNode({
+    url: `/vote/${id}`,
     method: "get"
   });
 }

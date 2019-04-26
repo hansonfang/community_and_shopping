@@ -53,8 +53,7 @@ const router = new Router({
     {
       path: "/orderRepair",
       name: "orderRepair",
-      component: resolve =>
-        require(["@/views/services/form/orderRepair"], resolve),
+      component: resolve => require(["@/views/services/form/orderRepair"], resolve),
       meta: {
         requireAuth: true
       }
@@ -62,8 +61,7 @@ const router = new Router({
     {
       path: "/orderWater",
       name: "orderWater",
-      component: resolve =>
-        require(["@/views/services/form/orderWater"], resolve),
+      component: resolve => require(["@/views/services/form/orderWater"], resolve),
       meta: {
         requireAuth: true
       }
@@ -71,8 +69,7 @@ const router = new Router({
     {
       path: "/tellManager",
       name: "tellManager",
-      component: resolve =>
-        require(["@/views/services/form/tellManager"], resolve),
+      component: resolve => require(["@/views/services/form/tellManager"], resolve),
       meta: {
         requireAuth: true
       }
@@ -80,8 +77,7 @@ const router = new Router({
     {
       path: "/recordRepair",
       name: "recordRepair",
-      component: resolve =>
-        require(["@/views/services/records/Repair"], resolve),
+      component: resolve => require(["@/views/services/records/Repair"], resolve),
       meta: {
         requireAuth: true
       }
@@ -89,8 +85,7 @@ const router = new Router({
     {
       path: "/recordWater",
       name: "recordWater",
-      component: resolve =>
-        require(["@/views/services/records/Water"], resolve),
+      component: resolve => require(["@/views/services/records/Water"], resolve),
       meta: {
         requireAuth: true
       }
@@ -98,8 +93,7 @@ const router = new Router({
     {
       path: "/recordManager",
       name: "recordManager",
-      component: resolve =>
-        require(["@/views/services/records/Manager"], resolve),
+      component: resolve => require(["@/views/services/records/Manager"], resolve),
       meta: {
         requireAuth: true
       }
@@ -116,9 +110,9 @@ const router = new Router({
           component: resolve => require(["@/views/post/PostIndex"], resolve)
         },
         {
-          path: "best",
-          name: "postbest",
-          component: resolve => require(["@/views/post/PostBest"], resolve)
+          path: "polllist",
+          name: "postPollList",
+          component: resolve => require(["@/views/post/PostPollList"], resolve)
         },
         {
           path: "write",

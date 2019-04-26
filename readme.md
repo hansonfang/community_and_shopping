@@ -23,3 +23,12 @@ npm run serve
 # 构建发布版
 npm run build
 ```
+#### 1.2.2
+>Server 用于服务后端某些不支持的接口
+```sh
+cd .\Server\
+
+npm install 
+
+npm start
+```
