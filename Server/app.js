@@ -13,4 +13,6 @@ onerror(app);
 app.use(logger());
 
 app.use(Routers.routes()).use(Routers.allowedMethods());
-app.listen("8088");
+app.listen("8088", () => {
+  console.log("listen on 8088");
+});

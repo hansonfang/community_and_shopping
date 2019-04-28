@@ -141,6 +141,44 @@
       </v-dialog>
 
     </v-layout>
+<div v-if="Number(from)===1">
+  <v-subheader>确认拼购信息</v-subheader>
+<v-divider></v-divider>
+
+ <v-layout
+            row
+            class="py-2 pt-4"
+          >
+            <v-flex
+              xs12
+            >
+              <div class="group pa-1 mb-4">
+                <div class="grey--text pa-1">
+                  <p class="mb-0 text-xs-left">剩余时间23:32:18</p>
+                </div>
+                <div>
+                  <div class="text-xs-left">
+                    <v-chip>
+                      <v-avatar class="teal">
+                        <img
+                          src="https://picsum.photos/200/200?random"
+                          alt="avatar"
+                          width="120"
+                          height="120"
+                        >
+                      </v-avatar>Jason Smith
+                    </v-chip>
+                    <v-chip>
+                      <v-avatar class="teal">A</v-avatar>ANZ Bank
+                    </v-chip>
+                  </div>
+                </div>
+              </div>
+            </v-flex>
+          </v-layout>
+
+</div>
+
 
 <v-subheader>确认订单信息</v-subheader>
 <v-divider></v-divider>
@@ -173,6 +211,13 @@
           ￥192
       </v-flex>
     </v-layout>
+
+      <div class="text-xs-center mt-5 pt-5">
+        <v-btn color="primary">
+          提交订单
+        </v-btn>
+        
+        </div>  
   </v-container>
 
 </template>

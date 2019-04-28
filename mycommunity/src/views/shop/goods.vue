@@ -98,20 +98,20 @@
               <v-btn-toggle v-model="text">
                 <v-btn
                   flat
-                  value="left"
-                >Left</v-btn>
+                  value="1"
+                >厚切</v-btn>
                 <v-btn
                   flat
-                  value="center"
-                >Center</v-btn>
+                  value="2"
+                >精品</v-btn>
                 <v-btn
                   flat
-                  value="right"
-                >Right</v-btn>
+                  value="3"
+                >偏肥</v-btn>
                 <v-btn
                   flat
-                  value="justify"
-                >Justify</v-btn>
+                  value="4"
+                >火锅用</v-btn>
               </v-btn-toggle>
             </v-flex>
           </v-layout>
@@ -300,9 +300,9 @@ export default {
   data() {
     return {
       image: [
-        { src: "https://picsum.photos/500/600/?random" },
-        { src: "https://picsum.photos/500/600/?random" },
-        { src: "https://picsum.photos/500/600/?random" }
+        { src: "https://img11.360buyimg.com/n1/jfs/t1/28298/39/602/324413/5c0b662bE82592146/588fe63de4eb7d7f.jpg" },
+        { src: "https://img11.360buyimg.com/n1/jfs/t1/28110/2/615/427184/5c0b662aEa4cab457/23198fcf68ca53d4.jpg" },
+        { src: "https://img11.360buyimg.com/n1/jfs/t1/22394/33/645/327993/5c0b662aEcb396e48/7fd913ec7d04ec13.jpg" }
       ],
       title: "元盛 进口整切 牛排套餐 自营生鲜 牛肉生鲜 8连包（西冷*4 眼肉*4）",
       groupNumber: 2, //拼团的人数

@@ -186,7 +186,7 @@ export default {
         .then(() => {
           this.$snackbar({ text: "发送成功，正在转向帖子页面。。" }).then(
             () => {
-              this.$router.push({ name: "postbest" });
+              this.$router.push({ name: "postPollList" });
             }
           );
         })

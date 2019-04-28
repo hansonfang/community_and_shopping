@@ -3,7 +3,7 @@
     <div class="banner py-4">
       <v-container>
         <v-layout>
-          <h2 class="headline blue--text text--darken-2">学校举行女教职工建功立业先优表彰大会暨庆“三八”趣味运动会</h2>
+          <h2 class="headline blue--text text--darken-2">{{title}}</h2>
         </v-layout>
       </v-container>
     </div>
@@ -11,13 +11,10 @@
       <v-layout>
         <h5 class="body-1 grey--text detail">
           <span class="date">
-            <v-icon size="16">fas fa-calendar-day</v-icon>&nbsp;2019年03月08日
+            <v-icon size="16">fas fa-calendar-day</v-icon>&nbsp;{{date}}
           </span>
           <span>
-            <v-icon size="16">fas fa-user</v-icon>&nbsp;作者:校工会
-          </span>
-          <span>
-            <v-icon size="16">far fa-eye</v-icon>&nbsp;点击数:1290
+            <v-icon size="16">fas fa-user</v-icon>&nbsp;作者:{{author}}
           </span>
         </h5>
       </v-layout>
@@ -37,12 +34,19 @@
   </div>
 </template>
 <script>
+import {  getNewsDetail} from "~/news";
 export default {
   name: "news-detail",
-  components: {
+  async created(){
+      const id=Number(this.$route.params.id);
+      const {data}=(await getNewsDetail(id)).data;
+      this.title=data.title;
   },
   data() {
     return {
+      title:"2019中国（山东）在线教育及教育培训博览会",
+      date:"2019年10月1日",
+      author:"居委会",
       paragraphs: [
         {
           p:

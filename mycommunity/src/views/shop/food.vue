@@ -45,38 +45,38 @@ export default {
       ],
       goods: [
         {
-          image: "https://picsum.photos/500/600?random",
+          image: "https://img11.360buyimg.com/n7/jfs/t1/28298/39/602/324413/5c0b662bE82592146/588fe63de4eb7d7f.jpg",
           title:
             "元盛 进口整切 牛排套餐 自营生鲜 牛肉生鲜 8连包（西冷*4 眼肉*4）",
-          groupPrice: 9,
+          groupPrice: 80,
           singlePrice: 12,
           sales: 90,
           comments: 4,
           id: "000009"
         },
         {
-          image: "https://picsum.photos/500/600?random",
+          image: "https://img10.360buyimg.com/n7/jfs/t14992/271/2228757619/212296/d2eeafab/5a7916a2N73162aa2.jpg",
           title:
             "四川春见耙耙柑 丑柑橘子 精选优级大果2kg装 单果约150-250g 新鲜",
-          groupPrice: 9,
+          groupPrice: 35,
           singlePrice: 12,
           sales: 123,
           comments: 6,
           id: "000012"
         },
         {
-          image: "https://picsum.photos/500/600?random",
+          image: "https://img11.360buyimg.com/n7/jfs/t22957/350/2331533887/547797/e0c3ca7d/5b7cb524N1908eeb6.jpg",
           title: "烟台红富士苹果 12个 净重2.6kg以上 单果190-240g 一二级混装 ",
-          groupPrice: 9,
+          groupPrice: 24,
           singlePrice: 12,
           sales: 3456,
           comments: 64,
           id: "000010"
         },
         {
-          image: "https://picsum.photos/500/600?random",
+          image: "https://img12.360buyimg.com/n7/jfs/t1/3640/33/118/197897/5b8f7f1bE3daefc2f/b50df7a982ac6ee7.jpg",
           title: "恒都 澳洲羊排 1200g/袋 进口羊肉 烧烤食材 生鲜自营",
-          groupPrice: 9,
+          groupPrice: 120,
           singlePrice: 12,
           sales: 154,
           comments: 98,

@@ -28,7 +28,7 @@
           <v-layout row wrap class="goods-list">
             <v-flex xs12 sm6 md4 lg3 v-for="(item,index) in goods" :key="index">
               <v-hover>
-                <v-card slot-scope="{ hover }" class="mx-auto good-card" color="grey lighten-4">
+                <v-card slot-scope="{ hover }" class="mx-auto good-card">
                   <router-link :to="`goods?goods_id=${item.id}&category=${fromView}`">
                     <v-img :aspect-ratio="5/6" :src="item.image" contain min-height="200"></v-img>
                   </router-link>
