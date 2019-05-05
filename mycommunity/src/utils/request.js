@@ -3,7 +3,6 @@ import store from "@/store";
 import { getToken } from "@/utils/auth";
 import router from "@/router";
 import Vue from "vue";
-// eslint-disable-next-line
 import { baseUrl } from "@/config";
 
 // 创建axios实例

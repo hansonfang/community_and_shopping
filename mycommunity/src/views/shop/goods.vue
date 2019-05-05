@@ -45,7 +45,7 @@
                   outline
                   color="red body-2"
                 >{{groupNumber}}人拼</v-chip>
-                <span class="group-price red--text text--darken-1 headline">￥{{groupPrice}}</span>
+                <span class="group-price red--text text--darken-1 headline">￥{{price}}</span>
                 &nbsp;
                 <span class="single-price grey--text text--lighten-1">￥{{singlePrice}}</span>
               </div>
@@ -96,22 +96,14 @@
               md10
             >
               <v-btn-toggle v-model="text">
-                <v-btn
-                  flat
-                  value="1"
-                >厚切</v-btn>
-                <v-btn
-                  flat
-                  value="2"
-                >精品</v-btn>
-                <v-btn
-                  flat
-                  value="3"
-                >偏肥</v-btn>
-                <v-btn
-                  flat
-                  value="4"
-                >火锅用</v-btn>
+                <template v-for="item in itemGroup">
+                  <v-btn
+                    flat
+                    :value="item.id"
+                    :key="item.id"
+                  >{{item.text}}</v-btn>
+                </template>
+
               </v-btn-toggle>
             </v-flex>
           </v-layout>
@@ -131,25 +123,18 @@
               md10
             >
               <div class="group pa-1 mb-4">
-                <div class="grey--text pa-1">
-                  <p class="mb-0 text-xs-left">剩余时间23:32:18</p>
-                </div>
-                <div>
-                  <div class="text-xs-left">
-                    <v-chip>
-                      <v-avatar class="teal">
-                        <img
-                          src="https://picsum.photos/200/200?random"
-                          alt="avatar"
-                          width="120"
-                          height="120"
-                        >
-                      </v-avatar>Jason Smith
-                    </v-chip>
-                    <v-chip>
-                      <v-avatar class="teal">A</v-avatar>ANZ Bank
-                    </v-chip>
-                  </div>
+
+                <div class="text-xs-left">
+                  <v-chip>
+                    <v-avatar class="teal">
+                      <img
+                        src="https://picsum.photos/200/200?random"
+                        alt="avatar"
+                        width="120"
+                        height="120"
+                      >
+                    </v-avatar>{{groupPersonName}}
+                  </v-chip>
                 </div>
               </div>
             </v-flex>
@@ -192,7 +177,7 @@
         v-model="tab"
       >
         <v-tab>商品详情</v-tab>
-        <v-tab>评价({{commentCount}})</v-tab>
+        <v-tab>评价</v-tab>
       </v-tabs>
 
       <v-layout
@@ -212,36 +197,6 @@
         class="mx-auto"
         style="max-width:980px"
       >
-        <v-layout
-          nowrap
-          class="px-4 pt-4"
-        >
-          <v-flex
-            xs1
-            md2
-          ></v-flex>
-          <v-flex
-            xs2
-            md2
-            class="d-f f-col"
-          >
-            <span class="percent-tip">好评度</span>
-            <div class="red--text percent-num">
-              <span>98</span>
-              <span class="headline">%</span>
-            </div>
-          </v-flex>
-          <v-flex
-            xs8
-            class="d-f align-bottom"
-          >
-            <v-tabs v-model="commentTab">
-              <v-tab>好评({{comment.goodCommentCount}})</v-tab>
-              <v-tab>中评({{comment.mediumCommentCount}})</v-tab>
-              <v-tab>差评({{comment.badCommentCount}})</v-tab>
-            </v-tabs>
-          </v-flex>
-        </v-layout>
 
         <div>
           <v-layout
@@ -296,35 +251,85 @@ export default {
   created() {
     this.tab = parseInt(this.$route.query.tab);
     this.goodsId = this.$route.query.goods_id;
+    if (String(this.goodsId) === "000012") {
+      this.image = [
+        {
+          src:
+            "https://img10.360buyimg.com/n1/jfs/t14992/271/2228757619/212296/d2eeafab/5a7916a2N73162aa2.jpg"
+        },
+        {
+          src:
+            "https://img10.360buyimg.com/n1/jfs/t17074/292/148425921/297786/ea024d8b/5a5f233aN71b70fea.jpg"
+        },
+        {
+          src:
+            "https://img10.360buyimg.com/n1/jfs/t16687/365/425463270/140424/fe9bcc08/5a7916aaNdba51b47.jpg"
+        }
+      ];
+      (this.title =
+        "四川春见耙耙柑 丑柑橘子 精选优级大果2kg装 单果约150-250g 新鲜"),
+        (this.groupPrice = 23),
+        (this.singlePrice = 30),
+        (this.goodsLeft = 12),
+        (this.groupPersonName = "江爱英"),
+        (this.goodComments = [
+          {
+            avatar: "https://picsum.photos/200/200?random",
+            name: "Jason Smith",
+            content: "好意思才评价，重点推荐非常好，虽然稍微贵了点7块多一斤吧",
+            date: "2018-08-21"
+          },
+          {
+            avatar: "https://picsum.photos/200/200?random",
+            name: "Jason Smith",
+            content:
+              "哇，真的好大一个柚子，从来没有吃过这么大的，对比下沃柑，真的夸张了。不过不得不说包装真的很不错，箱子质量很好，感觉也还满新鲜的，还没有吃，不知道味道怎么样，明天早上开一个先。另外说一句，京东物流也很快，次日达。",
+            date: "2018-08-21"
+          }
+        ]);
+      this.itemGroup = [
+        { id: 1, text: "大号", price: "25" },
+        { id: 2, text: "小号", price: "18" }
+      ];
+    }
   },
   data() {
     return {
       image: [
-        { src: "https://img11.360buyimg.com/n1/jfs/t1/28298/39/602/324413/5c0b662bE82592146/588fe63de4eb7d7f.jpg" },
-        { src: "https://img11.360buyimg.com/n1/jfs/t1/28110/2/615/427184/5c0b662aEa4cab457/23198fcf68ca53d4.jpg" },
-        { src: "https://img11.360buyimg.com/n1/jfs/t1/22394/33/645/327993/5c0b662aEcb396e48/7fd913ec7d04ec13.jpg" }
+        {
+          src:
+            "https://img11.360buyimg.com/n1/jfs/t1/28298/39/602/324413/5c0b662bE82592146/588fe63de4eb7d7f.jpg"
+        },
+        {
+          src:
+            "https://img11.360buyimg.com/n1/jfs/t1/28110/2/615/427184/5c0b662aEa4cab457/23198fcf68ca53d4.jpg"
+        },
+        {
+          src:
+            "https://img11.360buyimg.com/n1/jfs/t1/22394/33/645/327993/5c0b662aEcb396e48/7fd913ec7d04ec13.jpg"
+        }
       ],
       title: "元盛 进口整切 牛排套餐 自营生鲜 牛肉生鲜 8连包（西冷*4 眼肉*4）",
       groupNumber: 2, //拼团的人数
       groupPrice: 112, //拼团价格
       singlePrice: 132, //单买价格
       goodsId: 0,
-      text: "left",
+      text: "",
       goodsCount: 1,
       goodsLeft: 24,
       tab: 0,
+      groupPersonName: "李爱国",
       goodsDetailImage: [
         "https://picsum.photos/1520/600/?random",
         "https://picsum.photos/1786/800/?random",
         "https://picsum.photos/1920/600/?random",
         "https://picsum.photos/1280/700/?random"
       ],
-      commentCount: 231,
-      comment: {
-        goodCommentCount: 213,
-        mediumCommentCount: 23,
-        badCommentCount: 2
-      },
+      itemGroup: [
+        { id: 1, text: "偏肥", price: 70 },
+        { id: 2, text: "偏瘦", price: 85 },
+        { id: 3, text: "适中", price: 80 }
+      ],
       goodComments: [
         {
           avatar: "https://picsum.photos/200/200?random",
