@@ -7,13 +7,13 @@
     </v-layout>
     <v-layout row class="mt-3">
       <v-flex xs12 class="text-xs-center">
-        <!-- <v-pagination
+        <v-pagination
           v-model="pagination"
           :length="7"
           circle
           next-icon="fa-chevron-right"
           prev-icon="fa-chevron-left"
-        ></v-pagination>-->
+        ></v-pagination>
       </v-flex>
     </v-layout>
   </v-container>

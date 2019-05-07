@@ -5,7 +5,7 @@
         <v-flex xs1 lg2></v-flex>
         <v-flex xs10 lg8>
           <!-- 排序导航按钮 -->
-          <v-layout>
+          <!-- <v-layout>
             <v-flex>
               <v-btn-toggle v-model="icon" active-class="active-btn" mandatory>
                 <v-btn flat value="sales">
@@ -22,7 +22,7 @@
                 </v-btn>
               </v-btn-toggle>
             </v-flex>
-          </v-layout>
+          </v-layout>-->
 
           <!-- 商品列表 -->
           <v-layout row wrap class="goods-list">
@@ -133,7 +133,7 @@ export default {
       }, 300);
 
       //成功回调
-      this.bus.$emit("addCart");
+      // this.bus.$emit("addCart");
       this.$snackbar({ text: "成功添加购物车" });
     }
   }

@@ -23,7 +23,7 @@ export function getPostList(param) {
     method: "get",
     params: {
       pageNum: param.pageNum || 1,
-      pageSize: param.pageSize || 100
+      pageSize: param.pageSize || 6
     }
   });
 }

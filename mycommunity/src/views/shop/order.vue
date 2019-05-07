@@ -1,49 +1,35 @@
 <template>
   <v-container>
-
     <v-layout column>
       <v-flex xs12>
-        <v-subheader>确认收货地址
-            <v-spacer></v-spacer>
-            <v-btn
-          color="blue"
-          dark
-          @click="addAddressDialog=true"
-        >
-          <v-icon
-            left
-            small
-          >fas fa-plus</v-icon>
-          添加地址
-        </v-btn></v-subheader>
+        <v-subheader>
+          确认收货地址
+          <v-spacer></v-spacer>
+          <v-btn color="blue" dark @click="popAddressDialog('add',$event)">
+            <v-icon left small>fas fa-plus</v-icon>添加地址
+          </v-btn>
+        </v-subheader>
         <v-divider></v-divider>
       </v-flex>
       <v-flex xs12>
         <v-radio-group v-model="receiverCode">
-          <v-radio
-            v-for="(item,index) in receiver"
-            :key="index"
-            :value="item.id"
-          >
+          <v-radio v-for="(item,index) in receiver" :key="index" :value="item.id">
             <template v-slot:label>
               <div class="receiver">
-                <span>{{item.address}}</span> <span>({{item.name}} 收)</span>
+                <span>{{item.address}}</span>
+                <span>({{item.name}} 收)</span>
                 <span>{{item.phone}}</span>
-                <v-btn flat color="blue" style="display:none;">修改此地址</v-btn>
               </div>
-
+              <div>
+                <v-btn flat color="blue" @click="popAddressDialog('update',$event,item)">修改地址</v-btn>
+                <v-btn flat color="red" @click="deleteAddress(item.id)">删除地址</v-btn>
+              </div>
             </template>
           </v-radio>
         </v-radio-group>
       </v-flex>
-      <v-flex xs12>
-        
-      </v-flex>
-      <v-dialog
-        v-model="addAddressDialog"
-        persistent
-        max-width="600px"
-      >
+      <v-flex xs12></v-flex>
+      <v-dialog v-model="addAddressDialog" persistent max-width="600px">
         <v-card>
           <v-card-title>
             <span class="headline">添加地址</span>
@@ -52,17 +38,10 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field
-                    label="姓名"
-                    required
-                    v-model="name"
-                  ></v-text-field>
+                  <v-text-field label="姓名" required v-model="name"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
-                    label="手机号"
-                    v-model="phone"
-                  ></v-text-field>
+                  <v-text-field label="手机号" v-model="phone"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-layout>
@@ -97,163 +76,105 @@
                   </v-layout>
                 </v-flex>
                 <v-flex xs3>
-                  <v-text-field
-                    label="邮编"
-                    v-model="zipCode"
-                  ></v-text-field>
+                  <v-text-field label="邮编" v-model="zipCode"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                  <v-text-field
-                    label="街道地址"
-                    v-model="communityAddress"
-                  ></v-text-field>
+                  <v-text-field label="街道地址" v-model="communityAddress"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
-                    readonly
-                    :value="address"
-                  ></v-text-field>
+                  <v-text-field readonly :value="address"></v-text-field>
                 </v-flex>
-
               </v-layout>
-              <v-alert
-                :value="alert"
-                type="error"
-              >
-                请将信息填写完整
-              </v-alert>
+              <v-alert :value="alert" type="error">请将信息填写完整</v-alert>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="grey darken-1"
-              flat
-              @click="addAddressDialog = false"
-            >关闭</v-btn>
-            <v-btn
-              color="blue darken-1"
-              flat
-              @click="addAddress"
-            >提交</v-btn>
+            <v-btn color="grey darken-1" flat @click="addAddressDialog = false">关闭</v-btn>
+            <v-btn color="blue darken-1" flat @click="addAddress">提交</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-
     </v-layout>
-<div v-if="Number(from)===1">
-  <v-subheader>确认拼购信息</v-subheader>
-<v-divider></v-divider>
+    <div v-if="Number(from)===1">
+      <v-subheader>确认拼购信息</v-subheader>
+      <v-divider></v-divider>
 
- <v-layout
-            row
-            class="py-2 pt-4"
-          >
-            <v-flex
-              xs12
-            >
-              <div class="group pa-1 mb-4">
-                <div class="grey--text pa-1">
-                  <p class="mb-0 text-xs-left">剩余时间23:32:18</p>
-                </div>
-                <div>
-                  <div class="text-xs-left">
-                    <v-chip>
-                      <v-avatar class="teal">
-                        <img
-                          src="https://picsum.photos/200/200?random"
-                          alt="avatar"
-                          width="120"
-                          height="120"
-                        >
-                      </v-avatar>Jason Smith
-                    </v-chip>
-                    <v-chip>
-                      <v-avatar class="teal">A</v-avatar>ANZ Bank
-                    </v-chip>
-                  </div>
-                </div>
+      <v-layout row class="py-2 pt-4">
+        <v-flex xs12>
+          <div class="group pa-1 mb-4">
+            <div class="grey--text pa-1">
+              <p class="mb-0 text-xs-left">剩余时间23:32:18</p>
+            </div>
+            <div>
+              <div class="text-xs-left">
+                <v-chip>
+                  <v-avatar class="teal">
+                    <img
+                      src="https://picsum.photos/200/200?random"
+                      alt="avatar"
+                      width="120"
+                      height="120"
+                    >
+                  </v-avatar>Jason Smith
+                </v-chip>
+                <v-chip>
+                  <v-avatar class="teal">A</v-avatar>ANZ Bank
+                </v-chip>
               </div>
-            </v-flex>
-          </v-layout>
+            </div>
+          </div>
+        </v-flex>
+      </v-layout>
+    </div>
 
-</div>
-
-
-<v-subheader>确认订单信息</v-subheader>
-<v-divider></v-divider>
-    <v-layout
-      v-for="(item,index) in goods"
-      :key="index"
-      style="max-height:100px;"
-      class="mt-3"
-    >
+    <v-subheader>确认订单信息</v-subheader>
+    <v-divider></v-divider>
+    <v-layout v-for="(item,index) in goods" :key="index" style="max-height:100px;" class="mt-3">
       <v-flex xs2>
-        <v-img
-          :src="item.image"
-          max-height="80"
-          contain
-        ></v-img>
+        <v-img :src="item.image" max-height="80" contain></v-img>
       </v-flex>
       <v-flex xs6>
-          <h4>{{item.title}}</h4>
+        <h4>{{item.title}}</h4>
       </v-flex>
       <v-flex xs1 class="align-center d-f">
-          <div class="red--text">
-            <span class="caption">￥</span>
-            <span class="body-1">{{item.singlePrice}}</span>
-          </div>
+        <div class="red--text">
+          <span class="caption">￥</span>
+          <span class="body-1">{{item.singlePrice}}</span>
+        </div>
       </v-flex>
       <v-flex xs2>
-          <count v-model="item.goodsCount"/>
+        <count v-model="item.goodsCount"/>
       </v-flex>
-      <v-flex xs1 class="align-center d-f">
-          ￥192
-      </v-flex>
+      <v-flex xs1 class="align-center d-f">￥192</v-flex>
     </v-layout>
 
-      <div class="text-xs-center mt-5 pt-5">
-        <v-btn color="primary">
-          提交订单
-        </v-btn>
-        
-        </div>  
+    <div class="text-xs-center mt-5 pt-5">
+      <v-btn color="primary">提交订单</v-btn>
+    </div>
   </v-container>
-
 </template>
 <script>
 import { key } from "@/utils/key";
-import Count from "@/components/Tool/Count"
+import Count from "@/components/Tool/Count";
+import {
+  createAddress,
+  getAllAddress,
+  deleteAddress,
+  updateAddress
+} from "~/shopping";
 export default {
   name: "shopOrder",
-  components:{
-      Count
+  components: {
+    Count
   },
   created() {
     this.from = this.$route.query.from;
     this.goodsId = this.$route.query.id;
-    this.receiver.push({
-      id: 3,
-      userId: 44,
-      name: "hanson24",
-      phone: "17864195311",
-      province: "山东省",
-      city: "济南市",
-      district: "长清区",
-      address: "山东省济南市长清区山东师范大学",
-      zip: "250358"
-    });
-    this.receiver.push({
-      id: 4,
-      userId: 45,
-      name: "hanson26",
-      phone: "17864195311",
-      province: "山东省",
-      city: "济南市",
-      district: "历下区",
-      address: "山东省济南市历下区省实验中学",
-      zip: "250358"
-    });
+    this.user = JSON.parse(localStorage.getItem("user_info"));
+    this.name = this.user.username;
+    this.phone = this.user.phone;
+    this.getAddressList();
   },
   data() {
     return {
@@ -265,6 +186,7 @@ export default {
       name: "",
       phone: "",
       alert: false,
+      user: null,
       selectedProvince: {
         name: ""
       },
@@ -552,6 +474,7 @@ export default {
       county: [],
       communityAddress: "",
       zipCode: "",
+      dialogType: "", //"add" and "update"
       goods: [
         {
           image: "https://picsum.photos/600/500/?random",
@@ -612,7 +535,42 @@ export default {
         this.zipCode = this.selectedCounty.adcode;
       }
     },
-    addAddress() {
+    getAddressList() {
+      getAllAddress()
+        .then(res => {
+          if (res.data.data.length) {
+            this.receiver = [];
+            res.data.data.forEach(item => {
+              this.receiver.push({
+                id: item.id,
+                userId: item.userId,
+                name: item.receiverName,
+                phone: item.receiverPhone,
+                province: item.receiverProvince,
+                city: item.receiverCity,
+                district: item.receiverDistrict,
+                address: item.receiverAddress,
+                zip: item.receiverZip
+              });
+            });
+          }
+        })
+        .catch(e => {
+          this.$log.error(e);
+        });
+    },
+    popAddressDialog(type, e, item) {
+      if (type === "update" && e.target.tagName.toLowerCase() === "div") {
+        this.addAddressDialog = true;
+        this.dialogType = type;
+        this.name = item.name;
+        this.phone = item.phone;
+      } else if (type === "add") {
+        this.addAddressDialog = true;
+        this.dialogType = type;
+      }
+    },
+    async addAddress() {
       if (
         !this.name ||
         !this.phone ||
@@ -620,6 +578,59 @@ export default {
         !this.communityAddress
       ) {
         this.alert = true;
+      }
+      const info = {
+        name: this.name,
+        phone: this.phone,
+        address: this.address,
+        zip: this.zipCode,
+        province: this.selectedProvince.name,
+        city: this.selectedCity.name,
+        district: this.selectedCounty.name
+      };
+
+      if (this.dialogType === "add") {
+        try {
+          const res = await createAddress(info);
+          this.$log.debug(res);
+          this.getAddressList();
+          this.$snackbar({ text: "添加地址成功！", duration: "1000" });
+        } catch (error) {
+          this.$log.error(error);
+          this.$snackbar({
+            text: "添加地址失败",
+            color: "error",
+            duration: "1000"
+          });
+        }
+      } else if (this.dialogType === "update") {
+        try {
+          const res = await updateAddress(this.receiverCode, info);
+          this.$snackbar({ text: res.data.message, duration: "1000" });
+          this.getAddressList();
+        } catch (error) {
+          this.$log.error(error);
+          this.$snackbar({
+            text: error.data.message,
+            color: "error",
+            duration: "1000"
+          });
+        }
+      }
+      this.addAddressDialog = false;
+    },
+    async deleteAddress(id) {
+      try {
+        const res = await deleteAddress(id);
+        this.$log.debug(res);
+        this.getAddressList();
+        this.$snackbar({ text: "删除地址成功！", duration: "1000" });
+      } catch (error) {
+        this.$log.error(error.response);
+        this.$snackbar({
+          text: "删除地址失败",
+          color: "error"
+        });
       }
     }
   },
@@ -638,12 +649,10 @@ export default {
 }
 .accent--text .v-label {
   color: black !important;
-  border:2px solid #fb8320;
+  border: 2px solid #fb8320;
   /* box-shadow: 2px 2px 4px #f05a00; */
   border-radius: 3px;
-  padding:8px;
-}
-.accent--text .v-label .v-btn{
-    display:inline-block!important;
+  padding: 8px;
+  position: relative;
 }
 </style>
