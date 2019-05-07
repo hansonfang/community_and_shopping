@@ -3,12 +3,16 @@ import store from "@/store";
 import { getToken } from "@/utils/auth";
 import router from "@/router";
 import Vue from "vue";
-import { baseUrl } from "@/config";
+import { baseUrl, nodeBaseUrl, run_env } from "@/config";
 
+let url = "";
+if (run_env === "node") {
+  url = nodeBaseUrl;
+} else url = baseUrl;
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  baseURL: baseUrl, // api 的 base_url
+  baseURL: url, // api 的 base_url
   timeout: 5000 // 请求超时时间
 });
 
