@@ -9,8 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
 label {
@@ -76,4 +75,57 @@ a:hover {
 
 .app-container {
   padding: 20px;
+}
+
+.pt-5 {
+  padding-top: 30px;
+}
+.mx-6 {
+  margin-right: 120px;
+  margin-left: 120px;
+}
+.mx-4 {
+  margin-right: 80px;
+  margin-left: 80px;
+}
+.my-5 {
+  margin-top: 75px;
+  margin-bottom: 75px;
+}
+.mb-1 {
+  margin-bottom: 15px;
+}
+.mb-2 {
+  margin-bottom: 30px;
+}
+.mt-2 {
+  margin-top: 30px;
+}
+.mb-5 {
+  margin-bottom: 75px;
+}
+.flex {
+  display: flex;
+}
+.justify-center {
+  justify-content: center;
+}
+.align-center {
+  align-items: center;
+}
+.space-between {
+  justify-content: space-between;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.block {
+  display: block;
+  width: 100%;
 }

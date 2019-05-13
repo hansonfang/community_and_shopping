@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
-const env = "lab";
-// const env = "";
+// const env = "lab";
+const env = "";
 let ip = "192.168.123.50";
 // const
 let dbname = "chengfeng1_5";

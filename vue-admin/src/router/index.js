@@ -29,6 +29,12 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: "/setting",
+    component: Layout,
+    children: [{ path: "/", name: "setting", component: () => import("@/views/setting/index") }],
+    hidden: true
+  },
+  {
     path: "/404",
     component: () => import("@/views/404"),
     hidden: true
@@ -69,16 +75,24 @@ export const constantRouterMap = [
       }
     ]
   },
-
   {
-    path: "/form",
+    path: "/news",
     component: Layout,
+    redirect: "/news/list",
+    name: "news",
+    meta: { title: "新闻", icon: "form" },
     children: [
       {
-        path: "index",
-        name: "Form",
-        component: () => import("@/views/form/index"),
-        meta: { title: "Form", icon: "form" }
+        path: "list",
+        name: "newsList",
+        component: () => import("@/views/news/index"),
+        meta: { title: "新闻列表", icon: "table" }
+      },
+      {
+        path: "create",
+        name: "newsCreate",
+        component: () => import("@/views/news/create"),
+        meta: { title: "编辑新闻", icon: "tree" }
       }
     ]
   },
@@ -113,15 +127,13 @@ export const constantRouterMap = [
             children: [
               {
                 path: "menu1-2-1",
-                component: () =>
-                  import("@/views/nested/menu1/menu1-2/menu1-2-1"),
+                component: () => import("@/views/nested/menu1/menu1-2/menu1-2-1"),
                 name: "Menu1-2-1",
                 meta: { title: "Menu1-2-1" }
               },
               {
                 path: "menu1-2-2",
-                component: () =>
-                  import("@/views/nested/menu1/menu1-2/menu1-2-2"),
+                component: () => import("@/views/nested/menu1/menu1-2/menu1-2-2"),
                 name: "Menu1-2-2",
                 meta: { title: "Menu1-2-2" }
               }
