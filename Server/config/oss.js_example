@@ -1,0 +1,8 @@
+const OSS = require("ali-oss");
+const client = new OSS({
+  region: "",
+  accessKeyId: "",
+  accessKeySecret: "",
+  bucket: ""
+});
+module.exports = client;
