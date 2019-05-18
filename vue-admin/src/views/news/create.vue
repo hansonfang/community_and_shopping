@@ -164,7 +164,7 @@ export default {
         this.isUpdateStatus = false;
         this.title = "";
         this.desc = "";
-        this.sections = [{ id: 1, content: "", image: "" }];
+        this.sections = [];
       }
     } catch (error) {
       console.error(error);
@@ -185,13 +185,7 @@ export default {
       author: "",
       isUpdateStatus: false,
       hasSubmit: false,
-      sections: [
-        {
-          id: 1,
-          content: "",
-          image: ""
-        }
-      ],
+      sections: [],
       newsID: ""
     };
   },
@@ -218,13 +212,16 @@ export default {
     },
     async submit() {
       try {
-        if (this.sections instanceof Array) {
-          await updateContent({
-            newsID: this.newsID,
-            title: this.title,
-            description: this.desc,
-            author: this.author
-          });
+        if (this.sections instanceof Array && this.sections.length >= 1) {
+          await updateContent(
+            {
+              newsID: this.newsID,
+              title: this.title,
+              description: this.desc,
+              author: this.author
+            },
+            this.sections
+          );
           this.hasSubmit = true;
         }
       } catch (error) {
