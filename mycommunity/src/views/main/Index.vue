@@ -177,7 +177,12 @@
         <a href="https://vuetifyjs.com/zh-Hans/">Vuetify</a>
         <br>Copyright © 2016-2019 Hanson
       </div>
-      <div class="text-xs-right">Twitter</div>
+      <div class="text-xs-right pr-3">
+        <a href="https://github.com/hansonfang/community_and_shopping">
+          &nbsp;
+          <v-icon>fab fa-github</v-icon>项目地址
+        </a>
+      </div>
     </v-footer>
   </div>
 </template>
@@ -206,7 +211,14 @@ export default {
         });
 
         //新闻5条
-        data.journalisms.forEach(news => {
+        for (let index in data.journalisms) {
+          if (
+            !data.journalisms[index].description &&
+            !data.journalisms[index].images
+          ) {
+            continue;
+          }
+          const news = data.journalisms[index];
           this.news.push({
             title: news.title,
             image: news.images,
@@ -217,6 +229,16 @@ export default {
               news.authorAvatar || "https://picsum.photos/180/180?image=113",
             watchCount: news.starNums,
             id: news.id
+          });
+        }
+
+        data.products.forEach((goods, index) => {
+          this.goods.push({
+            image: goods.mainImage,
+            title: goods.name,
+            id: goods.id,
+            groupPrice: Math.floor(((index + 1) * 88 - 67 * (index + 1)) * 2),
+            singlePrice: Math.floor(((index + 1) * 88 - 64 * (index + 1)) * 2)
           });
         });
       })
@@ -232,78 +254,24 @@ export default {
         {
           title: "2月份补缴水费通知",
           date: "2019/02/03",
-          detail:
-            "没法直视他的舞蹈，令人反胃。性感的顶胯动作可以为舞蹈增添魅力，可是性感不等于骚，他做出来的动作，不是让我脸红心跳，是反胃想吐，明白吗？",
+          detail: "请各位业主按时缴纳物业费以及卫生费，逾期不交者停水停电。",
           dialog_show: false
         },
         {
           title: "1月份补缴水费通知",
           date: "2019/01/03",
-          detail:
-            "这是淘宝造物节走红毯的蔡徐坤，视觉中国拍的图，都说能经过视觉中国检验的才是真帅哥，蔡徐坤显然脸塌下来了，这身材五五分，脸上油腻腻，他嘴巴本来就很厚，香肠嘴，又没气质，这图还没脖子？看起来好猥琐。",
+          detail: "受大风天气影响，明天全区停电半天",
           dialog_show: false
         },
         {
           title: "12月份补缴水费通知",
           date: "2018/12/03",
-          detail:
-            "基本上是不会同意的，但是就算心理建设时候可以做到以后和家人一刀两断因为够独立，但是请不要说或者做，因为我们是社会人，父母的感情真的不能断，是可以有能力而不能切断的感情，各个层次都是。",
+          detail: "请各位业主按时缴纳物业费以及卫生费，逾期不交者停水停电",
           dialog_show: false
         }
       ],
-      communityNoticeVos: [
-        {
-          notice: "东门社区党群服务中心3月份活动预告",
-          date: "2019/03/05",
-          description:
-            "社区居民可前来参与会议，特此公告。地址：解放路2003号金世界六楼东门社区工作站",
-          dialog_show: false
-        }
-      ],
-      goods: [
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "海天生抽",
-          groupPrice: 9,
-          singlePrice: 12,
-          id: "000001"
-        },
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "海天蚝油",
-          groupPrice: 8,
-          singlePrice: 13,
-          id: "000002"
-        },
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "鲁花花生油",
-          groupPrice: 56,
-          singlePrice: 68,
-          id: "000003"
-        },
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "家家乐味精",
-          groupPrice: 5,
-          singlePrice: 8,
-          id: "000004"
-        },
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "团圆速冻水饺",
-          groupPrice: 17,
-          singlePrice: 21,
-          id: "000005"
-        },
-        {
-          image: "https://picsum.photos/300/400?random",
-          title: "湾仔码头速冻馄饨",
-          groupPrice: 15,
-          singlePrice: 23,
-          id: "000006"
-        }
-      ]
+      communityNoticeVos: [],
+      goods: []
     };
   },
   mounted() {},
