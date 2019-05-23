@@ -55,5 +55,27 @@ class VoteController {
       };
     }
   }
+  static async postVote(ctx) {
+    const { postid } = ctx.params;
+    const contentid = ctx.request.body.contentid;
+    console.log(postid, contentid);
+    try {
+      const result = await VoteModel.postVote(postid, contentid);
+      ctx.response.status = 200;
+      ctx.body = {
+        code: 200,
+        message: "投票成功",
+        data: result
+      };
+    } catch (error) {
+      console.error(error);
+      ctx.response.status = 500;
+      ctx.body = {
+        code: 500,
+        message: "投票失败",
+        data: error
+      };
+    }
+  }
 }
 module.exports = VoteController;

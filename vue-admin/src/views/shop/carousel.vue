@@ -1,23 +1,15 @@
 <template>
   <div class="mx-4">
-    <el-select
-      v-model="cateID"
-      placeholder="请选择"
-      @change="fetchCarousels()"
-    >
+    <el-select v-model="cateID" placeholder="请选择" @change="fetchCarousels()">
       <el-option
         v-for="item in options"
         :key="item.cateID"
         :label="item.label"
         :value="item.cateID"
-      >
-      </el-option>
+      ></el-option>
     </el-select>
 
-    <el-tabs
-      v-model="activeName"
-      @tab-click="handleTabClick"
-    >
+    <el-tabs v-model="activeName" @tab-click="handleTabClick">
       <el-tab-pane
         v-for="(item,index) in carousels"
         :key="index"
@@ -26,7 +18,7 @@
       >
         <div class="text-center">
           <el-image
-            style="width: 300px; height: 150px;cursor:pointer;"
+            style="height: 300px;cursor:pointer;"
             :src="item.url"
             fit="contain"
             @click.native="handleClick(index)"
@@ -41,27 +33,16 @@
         </div>
         <div style="padding-top:10px;">
           <el-row :gutter="10">
-            <el-col :span=4>
-              关键词：
+            <el-col :span="4">关键词：</el-col>
+            <el-col :span="16">
+              <el-input v-model="item.keyword" placeholder="请输入内容"></el-input>
             </el-col>
-            <el-col :span=16>
-              <el-input
-                v-model="item.keyword"
-                placeholder="请输入内容"
-              ></el-input>
-            </el-col>
-            <el-col :span=4>
-              <el-button
-                type="success"
-                @click="submitKeyword(index)"
-              >
-                确认修改
-              </el-button>
+            <el-col :span="4">
+              <el-button type="success" @click="submitKeyword(index)">确认修改</el-button>
             </el-col>
           </el-row>
         </div>
       </el-tab-pane>
-
     </el-tabs>
   </div>
 </template>

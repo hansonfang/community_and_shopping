@@ -1,20 +1,12 @@
 <template>
   <div class="mx-4">
     <h2>{{headline}}</h2>
-    <el-row
-      :gutter="10"
-      class="mb-1"
-    >
+    <el-row :gutter="10" class="mb-1">
       <el-col :span="4">
         <h3 class="text-right">主图:</h3>
       </el-col>
-      <el-col :span="20">
-        <el-image
-          :src="mainImage"
-          fit="contain"
-          @click.native="pickImage('mainImage')"
-          style="cursor:pointer;height:200px;"
-        ></el-image>
+      <el-col :span="20" @click.native="pickImage('mainImage')">
+        <el-image :src="mainImage" fit="contain" style="cursor:pointer;height:200px;"></el-image>
         <input
           type="file"
           style="display: none"
@@ -26,47 +18,32 @@
       <el-col :span="4">
         <h3 class="text-right">商品图:</h3>
       </el-col>
-      <el-col
-        :span="20"
-        class="flex flex-row subimage"
-      >
-        <div
-          class="subimage-wrapper"
-          v-for="(src,index) in subImages"
-          :key="index"
-        >
+      <el-col :span="20" class="flex flex-row subimage">
+        <div class="subimage-wrapper" v-for="(src,index) in subImages" :key="index">
           <el-image
             :src="src"
             fit="contain"
             style="cursor:pointer;height:250px; margin-bottom:15px;"
           ></el-image>
           <div>
-
-            <el-button
-              size="mini"
-              @click.native="pickImage(index)"
-            >编辑 <input
+            <el-button size="mini" @click.native="pickImage(index)">
+              编辑
+              <input
                 type="file"
                 style="display: none"
                 :ref="`image${index}`"
                 accept="image/*"
                 @change="handleUpdateSubImage(index,$event)"
-              ></el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="deleteSubImage(index)"
-            >删除</el-button>
+              >
+            </el-button>
+            <el-button size="mini" type="danger" @click="deleteSubImage(index)">删除</el-button>
           </div>
-
         </div>
         <el-button
           class="subimage-wrapper"
           style="align-items:center;justify-content:center;"
           @click="$refs.subImage.click()"
-        >
-          添加图片
-        </el-button>
+        >添加图片</el-button>
         <input
           type="file"
           style="display: none"
@@ -82,10 +59,7 @@
         <h3 class="text-right">标题:</h3>
       </el-col>
       <el-col :span="20">
-        <el-input
-          v-model="title"
-          placeholder="请输入内容"
-        ></el-input>
+        <el-input v-model="title" placeholder="请输入内容"></el-input>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -93,10 +67,7 @@
         <h3 class="text-right">副标题:</h3>
       </el-col>
       <el-col :span="20">
-        <el-input
-          v-model="subtitle"
-          placeholder="请输入内容"
-        ></el-input>
+        <el-input v-model="subtitle" placeholder="请输入内容"></el-input>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -104,62 +75,41 @@
         <h3 class="text-right">状态:</h3>
       </el-col>
       <el-col :span="20">
-        <el-select
-          v-model="status"
-          placeholder="请选择"
-        >
+        <el-select v-model="status" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.status"
             :label="item.label"
             :value="item.status"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
-
       </el-col>
     </el-row>
-    <el-row
-      v-if="isCreate"
-      :gutter="10"
-    >
+    <el-row v-if="isCreate" :gutter="10">
       <el-col :span="4">
         <h3 class="text-right">商品类别:</h3>
       </el-col>
 
       <el-col :span="20">
-        <el-select
-          v-model="cateID"
-          placeholder="请选择"
-        >
+        <el-select v-model="cateID" placeholder="请选择">
           <el-option
             v-for="item in cateOptions"
             :key="item.cateID"
             :label="item.label"
             :value="item.cateID"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
-
       </el-col>
     </el-row>
     <div class="text-center">
-      <el-button
-        type="primary"
-        @click="submitGoods"
-      >
-        确认修改商品信息
-      </el-button>
+      <el-button type="primary" @click="submitGoods">确认修改商品信息</el-button>
     </div>
     <el-divider></el-divider>
     <el-row :gutter="10">
       <el-col :span="4">
         <h3 class="text-right">规格:</h3>
       </el-col>
-      <el-col
-        :span="20"
-        style="padding:0 0 10px 20px;"
-      >
+      <el-col :span="20" style="padding:0 0 10px 20px;">
         <el-collapse
           v-model="activeName"
           v-if="this.productSku.length"
@@ -178,10 +128,7 @@
               </el-col>
 
               <el-col :span="20">
-                <el-input
-                  v-model="item.name"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="item.name" placeholder="请输入内容"></el-input>
               </el-col>
             </el-row>
             <el-row>
@@ -190,10 +137,7 @@
               </el-col>
 
               <el-col :span="20">
-                <el-input
-                  v-model="item.groupPrice"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="item.groupPrice" placeholder="请输入内容"></el-input>
               </el-col>
             </el-row>
             <el-row>
@@ -202,10 +146,7 @@
               </el-col>
 
               <el-col :span="20">
-                <el-input
-                  v-model="item.price"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="item.price" placeholder="请输入内容"></el-input>
               </el-col>
             </el-row>
             <el-row>
@@ -214,10 +155,7 @@
               </el-col>
 
               <el-col :span="20">
-                <el-input
-                  v-model="item.sales"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="item.sales" placeholder="请输入内容"></el-input>
               </el-col>
             </el-row>
             <el-row>
@@ -226,89 +164,40 @@
               </el-col>
 
               <el-col :span="20">
-                <el-input
-                  v-model="item.stock"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="item.stock" placeholder="请输入内容"></el-input>
               </el-col>
             </el-row>
 
-            <el-button
-              @click="updateSku(index)"
-              type="success"
-            >
-              确认修改
-            </el-button>
-            <el-button
-              @click="deleteSku(item.id)"
-              type="danger"
-            >
-              删除规格
-            </el-button>
+            <el-button @click="updateSku(index)" type="success">确认修改</el-button>
+            <el-button @click="deleteSku(item.id)" type="danger">删除规格</el-button>
           </el-collapse-item>
         </el-collapse>
 
-        <el-button @click="addSku">
-          添加规格
-        </el-button>
-
+        <el-button @click="addSku">添加规格</el-button>
       </el-col>
     </el-row>
-    <el-row
-      :gutter="10"
-      v-if="commentsData.length"
-    >
+    <el-row :gutter="10" v-if="commentsData.length">
       <el-col :span="4">
         <h3 class="text-right">评价:</h3>
       </el-col>
       <el-col :span="20">
-
-        <el-table
-          :data="commentsData"
-          stripe
-          style="width: 100%"
-        >
-          <el-table-column
-            prop="date"
-            label="日期"
-            width="180"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="nickname"
-            label="姓名"
-            width="180"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="skuName"
-            label="购买规格"
-            width="180"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="content"
-            label="评价内容"
-          >
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            width="60"
-          >
+        <el-table :data="commentsData" stripe style="width: 100%">
+          <el-table-column prop="date" label="日期" width="180"></el-table-column>
+          <el-table-column prop="nickname" label="姓名" width="180"></el-table-column>
+          <el-table-column prop="skuName" label="购买规格" width="180"></el-table-column>
+          <el-table-column prop="content" label="评价内容"></el-table-column>
+          <el-table-column label="操作" width="60">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="danger"
                 @click="deleteComment(scope.$index, scope.row)"
-              >
-                删除
-              </el-button>
+              >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-col>
     </el-row>
-
   </div>
 </template>
 <script>
@@ -388,6 +277,7 @@ export default {
       subImages: [],
       activeName: "",
       status: -1,
+      hasSubmit: false,
       cateOptions: [],
       options: [
         {
@@ -406,10 +296,11 @@ export default {
   },
   methods: {
     pickImage(ref) {
-      const name = `image${ref}`;
-      try {
-        this.$refs[name].click();
-      } catch (error) {
+      if (typeof ref === "number") {
+        const name = `image${ref}`;
+        console.log(this.$refs[name]);
+        this.$refs[name][0].click();
+      } else {
         this.$refs[ref].click();
       }
     },
@@ -509,7 +400,8 @@ export default {
           status: this.status,
           categoryID: this.cateID
         });
-        setTimeout(() => this.$router.go(0), 1000);
+        if (this.isCreate) this.hasSubmit = true;
+        setTimeout(() => this.$router.push({ name: "shopCheck" }), 1000);
       } catch (error) {
         console.error(error);
       }
@@ -551,10 +443,14 @@ export default {
     }
   },
   async beforeDestroy() {
-    try {
-      await deleteGoods(this.goodsID);
-    } catch (error) {
-      console.error(error);
+    if (this.isCreate) {
+      if (!this.hasSubmit) {
+        try {
+          await deleteGoods(this.goodsID);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   }
 };

@@ -40,5 +40,13 @@ class VoteModel {
   static async getAllVoteList() {
     return await Vote.findAll();
   }
+
+  static async postVote(postid, contentid) {
+    contentid.forEach(id => {
+      sequelize.query(
+        `update tb_vote_option set vote_nums=vote_nums+1 where id=${id}`
+      );
+    });
+  }
 }
 module.exports = VoteModel;

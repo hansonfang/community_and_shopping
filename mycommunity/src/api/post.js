@@ -70,3 +70,12 @@ export function getPollDetail(id) {
     method: "get"
   });
 }
+export function postVote(id, contentid) {
+  return requestNode({
+    url: `/vote/${id}`,
+    method: "post",
+    data: {
+      contentid
+    }
+  });
+}

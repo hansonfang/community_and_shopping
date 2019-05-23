@@ -5,27 +5,17 @@
       <v-layout row>
         <v-flex xs12>
           <div class="v-card d-f align-center">
-            <h3
-              style
-              class="pl-5"
-            >{{title}}</h3>
+            <h3 style class="pl-5">{{title}}</h3>
             <v-spacer></v-spacer>
-            <v-btn flat>只看楼主</v-btn>
-            <v-btn flat>收藏</v-btn>
+            <!-- <v-btn flat>只看楼主</v-btn>
+            <v-btn flat>收藏</v-btn> -->
           </div>
         </v-flex>
       </v-layout>
-      <v-layout
-        row
-        v-for="(detail,index) in details"
-        :key="index"
-      >
+      <v-layout row v-for="(detail,index) in details" :key="index">
         <post-detail :detail="detail"></post-detail>
       </v-layout>
-      <v-layout
-        row
-        class="mt-5 reply-wrapper"
-      >
+      <v-layout row class="mt-5 reply-wrapper">
         <v-textarea
           v-model="replyText"
           v-validate="'max:300'"
@@ -43,10 +33,7 @@
           <span @click="toggleEmoji=!toggleEmoji" style="cursor:pointer;">表情</span>
           <VEmojiPicker :pack="pack" @select="selectEmoji" v-if="toggleEmoji"/>-->
         </div>
-        <v-btn
-          color="info"
-          @click="reply"
-        >回复</v-btn>
+        <v-btn color="info" @click="reply">回复</v-btn>
       </div>
     </v-container>
   </div>
@@ -68,8 +55,8 @@ export default {
           this.title = data.post_news.title;
           let floor = 1;
           this.details.push({
-            avatar: "https://picsum.photos/180/180/?random=1",
-            name: "hanson" + Math.floor(Math.random() * 100),
+            avatar: "https://picsum.photos/180/180/?image=113",
+            name: "hanson",
             msg: data.post_news.description,
             isPoster: true,
             floor: floor++,
@@ -78,8 +65,8 @@ export default {
           data.post_replys.forEach(item => {
             this.$log.debug(item);
             this.details.push({
-              avatar: `https://picsum.photos/id/${item.id}/180/180/`,
-              name: "hanson" + item.id,
+              avatar: `https://picsum.photos/180/180/?image=113`,
+              name: "hanson",
               msg: item.content,
               floor: floor++,
               dateTime: this.functions.formatTime(item.replyTime).dayTime
@@ -134,18 +121,13 @@ export default {
       replyText: "",
       details: [],
       temp: {
-        avatar: "https://vuetifyjs.com/apple-touch-icon-180x180.png",
-        name: "小仙女",
-        msg:
-          "秦翰才的《满宫残照记》里说，溥仪非常喜欢拍各种搞怪的照片。挂灯的那张，为什么我年前进去的时候没有看到阿",
+        avatar: "",
+        name: "",
+        msg: "",
         isPoster: true,
         poll: {
           multi: false,
-          options: [
-            { id: "98743", desc: "故宫晚间应该开放", count: 300 },
-            { id: "45863", desc: "故宫晚间不应该开放", count: 28 },
-            { id: "21348", desc: "无所谓故宫晚间开不开放", count: 119 }
-          ]
+          options: [{ id: "98743", desc: "故宫晚间应该开放", count: 300 }]
         },
         floor: 1,
         dateTime: "2019-02-27 16:01"

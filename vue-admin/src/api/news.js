@@ -56,3 +56,10 @@ export function createNews(comID) {
     data: { comID }
   });
 }
+export function setCarousel(newsID, carouselID) {
+  return request({
+    url: "/news/setCarousel",
+    method: "put",
+    data: { newsID, carouselID }
+  });
+}

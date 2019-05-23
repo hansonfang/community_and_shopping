@@ -10,13 +10,13 @@ const registerRouter = require("./routes");
 app.use(cors());
 app.use(
   BodyParser({
-    formLimit: "50mb",
-    jsonLimit: "50mb",
-    textLimit: "50mb",
+    formLimit: "1mb",
+    jsonLimit: "1mb",
+    textLimit: "1mb",
     parsedMethods: ["POST", "PUT", "DELETE"],
     multipart: true,
     formidable: {
-      maxFieldsSize: 50 * 1024 * 1024
+      maxFieldsSize: 1024
     }
   })
 );
@@ -24,6 +24,10 @@ onerror(app);
 app.use(logger());
 
 app.use(registerRouter());
+
+app.on("error", e => {
+  console.error("koa app error!", e);
+});
 app.listen("8088", () => {
   console.log("listen on 8088");
 });

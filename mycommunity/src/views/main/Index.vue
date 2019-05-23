@@ -2,21 +2,9 @@
   <div>
     <div class="bg-decoration">
       <v-container>
-        <v-layout
-          row
-          wrap
-        >
-
-          <v-flex
-            xs12
-            md8
-            class="mb-2"
-          >
-            <v-carousel
-              cycle
-              max="100%"
-              hide-delimiters
-            >
+        <v-layout row wrap>
+          <v-flex xs12 md8 class="mb-2">
+            <v-carousel cycle max="100%" hide-delimiters>
               <v-carousel-item
                 v-for="(item,i) in carousals"
                 :key="i"
@@ -30,16 +18,9 @@
               </v-carousel-item>
             </v-carousel>
           </v-flex>
-          <v-flex
-            xs12
-            md4
-            class="mb-2 d-f"
-          >
+          <v-flex xs12 md4 class="mb-2 d-f">
             <v-layout column>
-              <v-flex
-                style="width:100%;flex-grow:1;margin-top:4px;"
-                class="pa-2 mb-2"
-              >
+              <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2">
                 <Announcement
                   :announcements="propertyAnnounces"
                   title="物业公告"
@@ -47,10 +28,7 @@
                 />
               </v-flex>
               <v-divider></v-divider>
-              <v-flex
-                style="width:100%;flex-grow:1;margin-top:4px;"
-                class="pa-2 mb-2"
-              >
+              <v-flex style="width:100%;flex-grow:1;margin-top:4px;" class="pa-2 mb-2">
                 <Announcement
                   :announcements="communityNoticeVos"
                   title="社区公告"
@@ -59,20 +37,12 @@
               </v-flex>
             </v-layout>
           </v-flex>
-
         </v-layout>
-
       </v-container>
     </div>
     <v-container>
-
       <v-layout row wrap>
-        <v-flex
-          xs12
-          md7
-          class="d-f f-col py-5 px-2"
-          style="flex-wrap:no-wrap;"
-        >
+        <v-flex xs12 md7 class="d-f f-col py-5 px-2" style="flex-wrap:no-wrap;">
           <!-- 新闻列表 -->
           <div class="d-f f-row align-center justify-space-between">
             <h4 class="py-2 index-title">
@@ -89,51 +59,23 @@
             style="flex-grow:1"
           >
             <v-layout row>
-              <v-flex
-                xs4
-                class="v-sheet"
-              >
-                <v-img
-                  :src="item.image"
-                  aspect-ratio="1"
-                  max-height="190"
-                  max-width="300"
-                ></v-img>
+              <v-flex xs4 class="v-sheet">
+                <v-img :src="item.image" aspect-ratio="1" max-height="190" max-width="300"></v-img>
               </v-flex>
-              <v-flex
-                xs8
-                class="sel-none content-container d-f pt-4 px-3 pb-2"
-              >
-                <router-link
-                  :to="'news/'+item.id"
-                  style="flex:1 1 auto;"
-                >
+              <v-flex xs8 class="sel-none content-container d-f pt-4 px-3 pb-2">
+                <router-link :to="'news/'+item.id" style="flex:1 1 auto;">
                   <h4>{{item.title}}</h4>
                   <p class="grey--text text--darken-1 mb-0 mt-2">{{item.brief}}</p>
                 </router-link>
-                <footer
-                  class="d-f align-center content-footer mb-1"
-                  style="flex:0 0 auto;"
-                >
-                  <v-avatar
-                    size="40"
-                    color="grey lighten-4"
-                    class="mr-3"
-                  >
-                    <img
-                      :src="item.authorAvatar"
-                      alt="avatar"
-                    >
+                <footer class="d-f align-center content-footer mb-1" style="flex:0 0 auto;">
+                  <v-avatar size="40" color="grey lighten-4" class="mr-3">
+                    <img :src="item.authorAvatar" alt="avatar">
                   </v-avatar>
                   <span class="grey--text text--darken-1 mr-3">{{item.author}}</span>
                   <span class="grey--text text--lighten-1">{{item.dateTime}}</span>
                   <v-spacer></v-spacer>
                   <span class="mr-2 grey--text text--lighten-1">
-                    <v-icon
-                      size="16"
-                      class="mr-1"
-                      color="grey lighten-1"
-                    >far fa-eye</v-icon>
+                    <v-icon size="16" class="mr-1" color="grey lighten-1">far fa-eye</v-icon>
                     <span>{{item.watchCount}}</span>
                   </span>
                 </footer>
@@ -141,32 +83,18 @@
             </v-layout>
           </div>
         </v-flex>
-        <v-flex
-          xs12
-          md5
-          class="py-5 d-f f-col px-2"
-        >
+        <v-flex xs12 md5 class="py-5 d-f f-col px-2">
           <v-layout column>
-            <v-flex
-              style="width:100%;margin-top:4px;"
-              class
-            >
+            <v-flex style="width:100%;margin-top:4px;" class>
               <h4 class="py-2 index-title">
                 常用功能
                 <span>community services</span>
               </h4>
-              <v-layout
-                row
-                no-wrap
-                class="interactive-wrapper"
-              >
+              <v-layout row no-wrap class="interactive-wrapper">
                 <v-flex xs4>
                   <router-link to="/orderRepair">
                     <div class="interactive">
-                      <v-icon
-                        size="30"
-                        color="info"
-                      >fas fa-tools</v-icon>
+                      <v-icon size="30" color="info">fas fa-tools</v-icon>
                       <span>立刻报修</span>
                     </div>
                   </router-link>
@@ -174,10 +102,7 @@
                 <v-flex xs4>
                   <router-link to="/orderWater">
                     <div class="interactive">
-                      <v-icon
-                        size="30"
-                        color="info"
-                      >fas fa-tint</v-icon>
+                      <v-icon size="30" color="info">fas fa-tint</v-icon>
                       <span>预约送水</span>
                     </div>
                   </router-link>
@@ -185,20 +110,14 @@
                 <v-flex xs4>
                   <router-link to="/tellManager">
                     <div class="interactive">
-                      <v-icon
-                        size="30"
-                        color="info"
-                      >fas fa-user-tie</v-icon>
+                      <v-icon size="30" color="info">fas fa-user-tie</v-icon>
                       <span>找书记</span>
                     </div>
                   </router-link>
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex
-              style="width:100%;margin-top:4px;"
-              class="pa-2 mt-4"
-            >
+            <v-flex style="width:100%;margin-top:4px;" class="pa-2 mt-4">
               <!-- 购物推荐 -->
               <div class="d-f f-row align-center justify-space-between">
                 <h4 class="py-2 index-title">
@@ -208,28 +127,13 @@
                 <router-link to="/shopping">拼购商城>>></router-link>
               </div>
 
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md4
-                  xs6
-                  v-for="(item,index) in goods"
-                  :key="index"
-                >
+              <v-layout row wrap>
+                <v-flex md4 xs6 v-for="(item,index) in goods" :key="index">
                   <v-card class="ma-1">
-                    <v-img
-                      :src="item.image"
-                      aspect-ratio="2.75"
-                      height="150"
-                    ></v-img>
-
-                    <v-card-title
-                      primary-title
-                      class="py-2 text-truncate"
-                      style="overflow:hidden;"
-                    >
+                    <router-link :to="{name:'goods',query:{goods_id:item.id}}">
+                      <v-img :src="item.image" aspect-ratio="2.75" height="150"></v-img>
+                    </router-link>
+                    <v-card-title primary-title class="py-2 text-truncate" style="overflow:hidden;">
                       <div>
                         <h3 class="headline mb-0 subheading">{{item.title}}</h3>
                       </div>
@@ -254,7 +158,7 @@
                             round
                             dark
                           >立刻拼团</v-btn>
-                        </div> -->
+                        </div>-->
                       </div>
                     </v-card-actions>
                   </v-card>
@@ -266,9 +170,10 @@
       </v-layout>
     </v-container>
 
-           <v-footer height="80" class="d-f justify-center footer">
+    <v-footer height="80" class="d-f justify-center footer">
       <div></div>
-      <div class="text-xs-center">使用MIT License开源，基于
+      <div class="text-xs-center">
+        使用MIT License开源，基于
         <a href="https://vuetifyjs.com/zh-Hans/">Vuetify</a>
         <br>Copyright © 2016-2019 Hanson
       </div>
@@ -282,16 +187,16 @@ import { getIndex } from "@/api/information";
 export default {
   name: "index",
   components: { Announcement },
-  created() {
+  async created() {
     const _this = this;
     getIndex()
       .then(res => {
-        const data = res.data;
+        const data = res.data.data;
         //轮播图
-        _this.carousals = data.data.carousals;
+        _this.carousals = data.carousals;
 
         //社区3条
-        _this.communityNoticeVos = data.data.communityNoticeVos.map(item => {
+        _this.communityNoticeVos = data.communityNoticeVos.map(item => {
           return {
             title: item.notice,
             detail: item.description,
@@ -301,6 +206,19 @@ export default {
         });
 
         //新闻5条
+        data.journalisms.forEach(news => {
+          this.news.push({
+            title: news.title,
+            image: news.images,
+            brief: news.description,
+            dateTime: new Date(news.publishTime).toLocaleDateString(),
+            author: news.author,
+            authorAvatar:
+              news.authorAvatar || "https://picsum.photos/180/180?image=113",
+            watchCount: news.starNums,
+            id: news.id
+          });
+        });
       })
       .catch(e => {
         this.$log.error(e || e.response);
@@ -308,87 +226,8 @@ export default {
   },
   data() {
     return {
-      carousals: [
-        {
-          imageUrl: "https://picsum.photos/500/1920?random",
-          journalismId: "1"
-        },
-        {
-          imageUrl: "https://picsum.photos/500/1920?random",
-          journalismId: "2"
-        },
-        {
-          imageUrl: "https://picsum.photos/500/1920?random",
-          journalismId: "3"
-        },
-        { imageUrl: "https://picsum.photos/500/1920?random", journalismId: "4" }
-      ],
-      news: [
-        {
-          title: "汪洋：对外讲好中国故事，推动构建人类命运共同体",
-          image: "https://picsum.photos/400/500?random",
-          brief:
-            "中共中央政治局常委、全国政协主席汪洋3日在全国政协常委会工作报告中提出，对外讲好中国故事，维护国家主权、安全和发展利益，推动构建人类命运共同体。",
-          dateTime: "2019-03-04",
-          author: "中国新闻网",
-          authorAvatar: "https://picsum.photos/150/150?random",
-          watchCount: 325,
-          id: "00002"
-        },
-        {
-          title: "伊拉克欲加入“一带一路”和亚投行与中国合作海陆运输",
-          image: "https://picsum.photos/400/500?random",
-          brief:
-            "当地时间3月3日，伊拉克运输部召开会议，探讨加入中国主导的“一带一路”经济带相关事宜。运输部媒体办公室表示，将启动与中方的合作，并为此建立有效的规划机制。",
-          dateTime: "2019-03-04",
-          author: "央视网",
-          authorAvatar: "https://picsum.photos/150/150?random",
-          watchCount: 5697,
-          id: "00005"
-        },
-        {
-          title: "民航局：“一带一路”航线五年客运量超一亿",
-          image: "https://picsum.photos/400/500?random",
-          brief:
-            "10月恰逢“一带一路”倡议提出五周年。12日，在中国民用航空局新闻发布会上，民航局发展计划司副巡视员张清介绍，“一带一路”航线五年客运量超一亿，五年来，共完成旅客运输量达到1.02亿人次。",
-          dateTime: "2018-10-13",
-          author: "高艺宁",
-          authorAvatar: "https://picsum.photos/150/150?random",
-          watchCount: 873,
-          id: "00006"
-        },
-        {
-          title: "15天1万公里，“卡车航班”从德国一路开往中国",
-          image: "https://picsum.photos/400/500?random",
-          brief:
-            "当地时间2月28日，一辆满载精密仪器、航空航天材料以及电子产品的卡车已从德国多特蒙德出发，穿过波兰、白俄罗斯、俄罗斯、哈萨克斯坦等国，在我国新疆霍尔果斯口岸换车，行驶近1万公里，计划3月15日前抵达上海。",
-          dateTime: "2019-03-01",
-          author: "王力",
-          authorAvatar: "https://picsum.photos/150/150?random",
-          watchCount: 497,
-          id: "00007"
-        },
-        {
-          title: "15天1万公里，“卡车航班”从德国一路开往中国",
-          image: "https://picsum.photos/400/500?random",
-          brief:
-            "当地时间2月28日，一辆满载精密仪器、航空航天材料以及电子产品的卡车已从德国多特蒙德出发，穿过波兰、白俄罗斯、俄罗斯、哈萨克斯坦等国，在我国新疆霍尔果斯口岸换车，行驶近1万公里，计划3月15日前抵达上海。",
-          dateTime: "2019-03-01",
-          author: "王力",
-          authorAvatar: "https://picsum.photos/150/150?random",
-          watchCount: 497,
-          id: "00008"
-        }
-      ],
-      repair_dialog: false,
-      image: require("../../assets/images/wuye.jpg"),
-      repairText: "",
-      address: "",
-      telephone: "",
-      expectedDate: new Date().toISOString().substr(0, 10),
-      expectedTime: null,
-      dateMenu: false,
-      timeMenu: false,
+      carousals: [],
+      news: [],
       propertyAnnounces: [
         {
           title: "2月份补缴水费通知",
@@ -540,7 +379,7 @@ export default {
   justify-content: space-between;
 }
 
-.footer div{
-  flex:1;
+.footer div {
+  flex: 1;
 }
 </style>

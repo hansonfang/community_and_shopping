@@ -1,9 +1,21 @@
 const seq = require("../config/db");
 const News = seq.import("../schema/News/NewsSchema");
 const NewsContent = seq.import("../schema/News/NewsContentSchema");
+const IndexCarousel = seq.import("../schema/News/IndexCarouselSchema");
 
-News.hasMany(NewsContent, { foreignKey: "newsID", sourceKey: "id", onDelete: "cascade", hooks: true });
-NewsContent.belongsTo(News, { foreignKey: "newsID", targetKey: "id", onDelete: "cascade", hooks: true });
+IndexCarousel.belongsTo(News, { foreignKey: "newsID" });
+News.hasMany(NewsContent, {
+  foreignKey: "newsID",
+  sourceKey: "id",
+  onDelete: "cascade",
+  hooks: true
+});
+NewsContent.belongsTo(News, {
+  foreignKey: "newsID",
+  targetKey: "id",
+  onDelete: "cascade",
+  hooks: true
+});
 
 News.sync({ force: false });
 NewsContent.sync({ force: false });
@@ -20,6 +32,15 @@ class NewsModel {
   static async getNewsDetail(newsID) {
     return await News.findOne({
       include: [NewsContent],
+      where: {
+        id: newsID
+      }
+    });
+  }
+  static async getNewsMainImage(newsID) {
+    return await News.findOne({
+      raw: true,
+      attributes: ["images"],
       where: {
         id: newsID
       }
@@ -68,6 +89,16 @@ class NewsModel {
       {
         where: {
           id: sectionID
+        }
+      }
+    );
+  }
+  static async setCarousel(carouselID, url, newsID) {
+    return await IndexCarousel.update(
+      { imageURL: url, newsID },
+      {
+        where: {
+          id: carouselID
         }
       }
     );

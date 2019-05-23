@@ -16,3 +16,9 @@ export function getNewsDetail(id) {
     method: "get"
   });
 }
+export function getHotNews() {
+  return request({
+    url: "/headline/hot",
+    method: "get"
+  });
+}

@@ -2,75 +2,34 @@
   <div>
     <v-container>
       <v-layout wrap>
-        <v-flex
-          xs12
-          md6
-          order-xs2
-          order-md1
-          class="px-5"
-        >
+        <v-flex xs12 md6 order-xs2 order-md1 class="px-5">
           <v-carousel height="500">
-            <v-carousel-item
-              v-for="(item,i) in image"
-              :key="i"
-              :src="item.src"
-            ></v-carousel-item>
+            <v-carousel-item v-for="(item,i) in image" :key="i" :src="item.src"></v-carousel-item>
           </v-carousel>
         </v-flex>
-        <v-flex
-          xs12
-          md6
-          order-xs1
-          order-md2
-        >
+        <v-flex xs12 md6 order-xs1 order-md2>
           <h3 class="my-2 headline font-weight-bold">{{title}}</h3>
-          <v-layout
-            row
-            class="py-2"
-          >
-            <v-flex
-              xs12
-              md2
-              class="justify-center d-f align-center"
-            >
+          <v-layout row class="py-2">
+            <v-flex xs12 md2 class="justify-center d-f align-center">
               <span>商品价格</span>
             </v-flex>
-            <v-flex
-              xs12
-              md10
-            >
+            <v-flex xs12 md10>
               <div class="price d-f">
-                <v-chip
-                  small
-                  outline
-                  color="red body-2"
-                >{{groupNumber}}人拼</v-chip>
-                <span class="group-price red--text text--darken-1 headline">￥{{price}}</span>
+                <span class="group-price red--text text--darken-1 headline">￥{{groupPrice}}</span>
                 &nbsp;
-                <span class="single-price grey--text text--lighten-1">￥{{singlePrice}}</span>
+                <span
+                  class="single-price grey--text text--lighten-1"
+                >￥{{singlePrice}}</span>
               </div>
             </v-flex>
           </v-layout>
-          <v-layout
-            row
-            class="py-2"
-          >
-            <v-flex
-              xs12
-              md2
-              class="justify-center d-f align-center"
-            >
+          <v-layout row class="py-2">
+            <v-flex xs12 md2 class="justify-center d-f align-center">
               <span>选择数量</span>
             </v-flex>
-            <v-flex
-              xs12
-              md10
-            >
+            <v-flex xs12 md10>
               <div class="my-2 d-f align-baseline count">
-                <Count
-                  v-model="goodsCount"
-                  :max="goodsLeft"
-                />
+                <Count v-model="goodsCount" :max="goodsLeft"/>
                 <p class="grey--text text--lighten-1">
                   剩余库存
                   <span>{{goodsLeft-goodsCount}}</span>
@@ -80,124 +39,113 @@
               </div>
             </v-flex>
           </v-layout>
-          <v-layout
-            row
-            class="py-2"
-          >
-            <v-flex
-              xs12
-              md2
-              class="justify-center d-f align-center"
-            >
+          <v-layout row class="py-2">
+            <v-flex xs12 md2 class="justify-center d-f align-center">
               <span>选择分类</span>
             </v-flex>
-            <v-flex
-              xs12
-              md10
-            >
-              <v-btn-toggle v-model="text">
+            <v-flex xs12 md10>
+              <v-btn-toggle v-model="text" @change="skuChange">
                 <template v-for="item in itemGroup">
-                  <v-btn
-                    flat
-                    :value="item.id"
-                    :key="item.id"
-                  >{{item.text}}</v-btn>
+                  <v-btn flat :value="item.id" :key="item.id">{{item.text}}</v-btn>
                 </template>
-
               </v-btn-toggle>
             </v-flex>
           </v-layout>
-          <v-layout
-            row
-            class="py-2 pt-4"
-          >
-            <v-flex
-              xs12
-              md2
-              class="justify-center d-f align-center"
-            >
-              <span>正在拼团</span>
-            </v-flex>
-            <v-flex
-              xs12
-              md10
-            >
-              <div class="group pa-1 mb-4">
+          <div v-if="assemble">
+            <v-layout row class="py-2 pt-4" v-for="item in group" :key="item.id">
+              <v-flex xs12 md2 class="justify-center d-f align-center">
+                <span>正在拼团</span>
+              </v-flex>
+              <v-flex xs12 md8>
+                <div class="group pa-1 mb-4">
+                  <div class="d-f justify-between align-center">
+                    <v-chip>
+                      <v-avatar class="teal">
+                        <img
+                          src="https://picsum.photos/200/200?random"
+                          alt="avatar"
+                          width="120"
+                          height="120"
+                        >
+                      </v-avatar>
+                      {{item.nickname}}
+                    </v-chip>
 
-                <div class="text-xs-left">
-                  <v-chip>
-                    <v-avatar class="teal">
-                      <img
-                        src="https://picsum.photos/200/200?random"
-                        alt="avatar"
-                        width="120"
-                        height="120"
-                      >
-                    </v-avatar>{{groupPersonName}}
-                  </v-chip>
+                    <span>{{item.deadline}}</span>
+                  </div>
                 </div>
-              </div>
-            </v-flex>
-          </v-layout>
+              </v-flex>
+              <v-flex xs12 md2>
+                <v-btn color="error" block @click="pickAddGroupAddressDialog=true">加入团</v-btn>
+                <v-dialog v-model="pickAddGroupAddressDialog" max-width="550">
+                  <v-card>
+                    <v-card-title class="headline">选择地址</v-card-title>
 
-          <div
-            class="button d-f row"
-            style="position:relative;"
-          >
-            <v-btn
-              block
-              color="red white--text mr-2"
-              :to="`/shopping/order?from=1&id=${goodsId}`"
-            >
-              <span class="caption">￥</span>132&nbsp;立刻拼购
+                    <v-card-text>
+                      <RecevierAddress @addressChange="handleAddressChange"/>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn
+                        color="darken-1"
+                        flat="flat"
+                        @click="pickAddGroupAddressDialog = false"
+                      >取消</v-btn>
+
+                      <v-btn color="green darken-1" flat="flat" @click="joinGroup(item.id)">确定</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+          </div>
+
+          <div class="button d-f row" style="position:relative;">
+            <v-btn block color="red white--text mr-2" @click="pickAddressDialog=true">
+              <span class="caption">￥</span>
+              {{groupPrice}}&nbsp;创建拼购
             </v-btn>
-            <v-btn
-              block
-              :to="`/shopping/order?from=0&id=${goodsId}`"
-            >
-              <span class="body-1">￥</span>198&nbsp;单价购买
+            <v-dialog v-model="pickAddressDialog" max-width="550">
+              <v-card>
+                <v-card-title class="headline">选择地址</v-card-title>
+
+                <v-card-text>
+                  <RecevierAddress @addressChange="handleAddressChange"/>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn color="darken-1" flat="flat" @click="pickAddressDialog = false">取消</v-btn>
+
+                  <v-btn color="green darken-1" flat="flat" @click="createGroup">确定</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-btn block :to="`/shopping/order?from=0&id=${goodsId}&skuid=${text}`">
+              <span class="body-1">￥</span>
+              {{singlePrice}}&nbsp;单价购买
             </v-btn>
-            <v-btn
-              color="red"
-              fab
-              dark
-              small
-              absolute
-              bottom
-              right
-            >
+            <v-btn color="red" fab dark small absolute bottom right @click="addCart">
               <v-icon>fas fa-cart-plus</v-icon>
             </v-btn>
           </div>
         </v-flex>
       </v-layout>
 
-      <v-tabs
-        fixed-tabs
-        v-model="tab"
-      >
+      <v-tabs fixed-tabs v-model="tab">
         <v-tab>商品详情</v-tab>
         <v-tab>评价</v-tab>
       </v-tabs>
 
-      <v-layout
-        v-if="tab===0"
-        wrap
-      >
-        <v-flex
-          xs12
-          v-for="(image,index) in goodsDetailImage"
-          :key="index"
-        >
-          <v-img :src="image"></v-img>
+      <v-layout v-if="tab===0" wrap>
+        <v-flex xs12 v-for="(image,index) in goodsDetailImage" :key="index">
+          <v-img :src="image" contain></v-img>
         </v-flex>
       </v-layout>
-      <div
-        v-else-if="tab===1"
-        class="mx-auto"
-        style="max-width:980px"
-      >
-
+      <div v-else-if="tab===1" class="mx-auto" style="max-width:980px">
         <div>
           <v-layout
             row
@@ -207,20 +155,11 @@
             :key="index"
           >
             <v-flex xs1>
-              <v-avatar
-                color="grey lighten-4"
-                size="60"
-              >
-                <img
-                  :src="item.avatar"
-                  alt="avatar"
-                >
+              <v-avatar color="grey lighten-4" size="60">
+                <img :src="item.avatar" alt="avatar">
               </v-avatar>
             </v-flex>
-            <v-flex
-              xs11
-              class="d-f f-col"
-            >
+            <v-flex xs11 class="d-f f-col">
               <div class="d-f row mb-2">
                 <span class="font-weight-bold">{{item.name}}</span>
                 <v-spacer></v-spacer>
@@ -229,10 +168,7 @@
               <p>{{item.content}}</p>
             </v-flex>
           </v-layout>
-          <v-btn
-            block
-            @click="loadMoreComment('good')"
-          >
+          <v-btn block @click="loadMoreComment()">
             <v-icon size="15">fas fa-angle-double-down</v-icon>&nbsp;加载更多
           </v-btn>
         </div>
@@ -242,143 +178,181 @@
 </template>
 <script>
 import Count from "@/components/Tool/Count";
+import RecevierAddress from "@/components/Shop/Address";
 
+import {
+  getGoodsDetail,
+  getAssemble,
+  addCart,
+  createGroup,
+  joinGroup
+} from "~/shopping";
 export default {
   name: "goods",
   components: {
-    Count
+    Count,
+    RecevierAddress
   },
-  created() {
-    this.tab = parseInt(this.$route.query.tab);
+  async created() {
     this.goodsId = this.$route.query.goods_id;
-    if (String(this.goodsId) === "000012") {
-      this.image = [
-        {
-          src:
-            "https://img10.360buyimg.com/n1/jfs/t14992/271/2228757619/212296/d2eeafab/5a7916a2N73162aa2.jpg"
-        },
-        {
-          src:
-            "https://img10.360buyimg.com/n1/jfs/t17074/292/148425921/297786/ea024d8b/5a5f233aN71b70fea.jpg"
-        },
-        {
-          src:
-            "https://img10.360buyimg.com/n1/jfs/t16687/365/425463270/140424/fe9bcc08/5a7916aaNdba51b47.jpg"
-        }
-      ];
-      (this.title =
-        "四川春见耙耙柑 丑柑橘子 精选优级大果2kg装 单果约150-250g 新鲜"),
-        (this.groupPrice = 23),
-        (this.singlePrice = 30),
-        (this.goodsLeft = 12),
-        (this.groupPersonName = "江爱英"),
-        (this.goodComments = [
-          {
-            avatar: "https://picsum.photos/200/200?random",
-            name: "Jason Smith",
-            content: "好意思才评价，重点推荐非常好，虽然稍微贵了点7块多一斤吧",
-            date: "2018-08-21"
-          },
-          {
-            avatar: "https://picsum.photos/200/200?random",
-            name: "Jason Smith",
-            content:
-              "哇，真的好大一个柚子，从来没有吃过这么大的，对比下沃柑，真的夸张了。不过不得不说包装真的很不错，箱子质量很好，感觉也还满新鲜的，还没有吃，不知道味道怎么样，明天早上开一个先。另外说一句，京东物流也很快，次日达。",
-            date: "2018-08-21"
-          }
-        ]);
-      this.itemGroup = [
-        { id: 1, text: "大号", price: "25" },
-        { id: 2, text: "小号", price: "18" }
-      ];
-    }
+    const res = await getGoodsDetail(this.goodsId);
+    const data = res.data.data;
+    const subImage = data.subImages.split(",");
+    this.image.push({
+      src: data.mainImage
+    });
+    subImage.forEach(image => {
+      this.image.push({
+        src: image
+      });
+    });
+    this.title = data.name;
+    this.goodsDetailImage = subImage;
+
+    this.pickSku(data.product_skus[0]);
+    data.comments.forEach(comment => {
+      this.goodComments.push({
+        avatar: "https://picsum.photos/200/200?random",
+        name: comment.nickname,
+        content: comment.content,
+        date: new Date(comment.commentTime).toLocaleDateString()
+      });
+    });
+    data.product_skus.forEach(skus => {
+      this.itemGroup.push({
+        id: skus.id,
+        text: skus.name,
+        singlePrice: skus.price,
+        price: skus.price,
+        stock: skus.stock,
+        groupPrice: skus.groupPrice
+      });
+    });
+
+    this.refreshAssemble();
+
+    this.groupPersonName = "江爱英";
   },
   data() {
     return {
-      image: [
-        {
-          src:
-            "https://img11.360buyimg.com/n1/jfs/t1/28298/39/602/324413/5c0b662bE82592146/588fe63de4eb7d7f.jpg"
-        },
-        {
-          src:
-            "https://img11.360buyimg.com/n1/jfs/t1/28110/2/615/427184/5c0b662aEa4cab457/23198fcf68ca53d4.jpg"
-        },
-        {
-          src:
-            "https://img11.360buyimg.com/n1/jfs/t1/22394/33/645/327993/5c0b662aEcb396e48/7fd913ec7d04ec13.jpg"
-        }
-      ],
-      title: "元盛 进口整切 牛排套餐 自营生鲜 牛肉生鲜 8连包（西冷*4 眼肉*4）",
-      groupNumber: 2, //拼团的人数
-      groupPrice: 112, //拼团价格
-      singlePrice: 132, //单买价格
+      image: [],
+      title: "",
+      groupNumber: "", //拼团的人数
+      groupPrice: "", //拼团价格
+      singlePrice: "", //单买价格
       goodsId: 0,
       text: "",
+      assemble: false,
       goodsCount: 1,
-      goodsLeft: 24,
+      goodsLeft: 0,
       tab: 0,
-      groupPersonName: "李爱国",
+      textComment: "",
+      groupPersonName: "",
       goodsDetailImage: [
         "https://picsum.photos/1520/600/?random",
         "https://picsum.photos/1786/800/?random",
         "https://picsum.photos/1920/600/?random",
         "https://picsum.photos/1280/700/?random"
       ],
-      itemGroup: [
-        { id: 1, text: "偏肥", price: 70 },
-        { id: 2, text: "偏瘦", price: 85 },
-        { id: 3, text: "适中", price: 80 }
-      ],
-      goodComments: [
-        {
-          avatar: "https://picsum.photos/200/200?random",
-          name: "Jason Smith",
-          content:
-            "下午买的，今天中午就到了，物流不用说，超级快，这是京东的最大特点，优点！锅的质量感觉很不错，摸起来手感也很好，希望晚上第一次用它做饭，能给我好印象，做出更好吃的饭！毕竟大品牌，值得信赖！苏泊尔球釜智能电饭煲，外观大气漂亮，按键操作简单，4升容量足够家庭日常使用，球釜锅体厚度适中，好用不粘，容易清洗，烧出的米饭香，好吃。",
-          date: "2018-08-21"
-        },
-        {
-          avatar: "https://picsum.photos/200/200?random",
-          name: "jd_156140rvz",
-          content: "非常好用的手机不错是正品的手机 很好",
-          date: "2018-08-22"
-        },
-        {
-          avatar: "https://picsum.photos/200/200?random",
-          name: "宏刚闫",
-          content: "刚拿到手电池不知道撑几天，拍照挺清晰的 用几天再来评价",
-          date: "2018-08-22"
-        }
-      ],
-      commentTab: 0
+      itemGroup: [],
+      goodComments: [],
+      commentTab: 0,
+      addressID: 0,
+      pickAddressDialog: false,
+      pickAddGroupAddressDialog: false,
+      group: []
     };
   },
   computed: {
     query() {
       //商品id由查询参数传入
       return this.$route.query;
+    },
+    price() {
+      return "9";
     }
   },
   methods: {
-    loadMoreComment(comment) {
-      switch (comment) {
-        case "good": {
-          // fetch more good comment
-          this.log("good");
-          break;
-        }
-        case "medium": {
-          // fetch more medium comment
-          this.log("medium");
-          break;
-        }
-        case "bad": {
-          // fetch more bad comment
-          this.log("bad");
-          break;
-        }
+    loadMoreComment() {},
+    pickSku(sku) {
+      this.groupPrice = sku.groupPrice;
+      this.singlePrice = sku.price;
+      this.goodsLeft = sku.stock;
+      this.text = sku.id;
+    },
+    skuChange(v) {
+      const sku = this.itemGroup.filter(skus => skus.id === v);
+      this.pickSku(sku[0]);
+    },
+
+    async addCart() {
+      try {
+        const res = await addCart({
+          skuID: this.text,
+          count: this.goodsCount
+        });
+        this.$log.debug(res);
+        this.$snackbar({ text: "添加购物车成功" });
+      } catch (error) {
+        this.$log.error(error);
       }
+    },
+    async goToOrder() {
+      try {
+        const res = await addCart({
+          skuID: this.text,
+          count: this.goodsCount
+        });
+        this.$log.debug(res);
+        this.$snackbar({ text: "添加购物车成功" });
+      } catch (error) {
+        this.$log.error(error);
+      }
+    },
+    async joinGroup(id) {
+      try {
+        if (this.addressID !== 0) {
+          await joinGroup(id, this.text, this.goodsCount, this.addressID);
+          this.$snackbar({ text: "拼单成功!", color: "success" });
+        } else this.$snackbar({ text: "请选择地址", color: "error" });
+      } catch (error) {
+        this.$log.error(error);
+      }
+    },
+    async createGroup() {
+      this.pickAddressDialog = true;
+      try {
+        const data = {
+          productId: this.text,
+          count: this.goodsCount,
+          addressID: this.addressID
+        };
+        if (!data.productId || !data.count || !data.addressID) return;
+        await createGroup(data);
+        this.pickAddressDialog = false;
+        this.$snackbar({ text: "拼单创建成功" });
+        this.refreshAssemble();
+      } catch (error) {
+        this.$log.error(error.response);
+      }
+    },
+    async refreshAssemble() {
+      const data_assem = (await getAssemble(this.goodsId)).data;
+      if (data_assem.data) {
+        this.assemble = true;
+        data_assem.data.forEach(item => {
+          this.group.push({
+            nickname: item.title.split(" ")[0],
+            deadline: new Date(item.deadline).toLocaleString(),
+            id: item.id,
+            productId: item.productId
+          });
+        });
+      }
+      this.$log.debug("获取当前商品已有拼单", data_assem);
+    },
+    handleAddressChange(v) {
+      this.addressID = v;
     }
   }
 };

@@ -3,48 +3,25 @@
     <!-- 头像区 -->
     <v-layout class="box-shadow">
       <v-flex xs2>
-        <div
-          class="d-f f-col align-center"
-          style="position:relative;"
-        >
-          <div
-            class="triangle"
-            v-if="detail.isPoster"
-          ></div>
-          <v-avatar
-            color="grey lighten-4"
-            class="mt-3"
-            size="80"
-          >
-            <img
-              :src="detail.avatar"
-              alt="avatar"
-            >
+        <div class="d-f f-col align-center" style="position:relative;">
+          <div class="triangle" v-if="detail.isPoster"></div>
+          <v-avatar color="grey lighten-4" class="mt-3" size="80">
+            <img :src="detail.avatar" alt="avatar">
           </v-avatar>
           <h4 class="my-2">{{detail.name}}</h4>
         </div>
       </v-flex>
       <!-- 信息区 -->
-      <v-flex
-        xs10
-        class="post-info d-f"
-      >
-        <div
-          class="d-f msg-wrapper f-col"
-          style="position:relative;"
-        >
+      <v-flex xs10 class="post-info d-f">
+        <div class="d-f msg-wrapper f-col" style="position:relative;">
           <p class="pa-4">{{detail.msg}}</p>
-          <img
-            src
-            alt
-          >
+          <img src alt>
 
           <!-- 投票区 -->
-          <v-container
-            class="poll"
-            v-if="detail.floor===1&&detail.poll"
-          >
-            <h4 class="text-xs-center grey--text pt-0 mt-0 mb-3">{{`${detail.poll.multi?"多项选择":"单项选择"}`}}</h4>
+          <v-container class="poll" v-if="detail.floor===1&&detail.poll">
+            <h4
+              class="text-xs-center grey--text pt-0 mt-0 mb-3"
+            >{{`${detail.poll.multi?"多项选择":"单项选择"}`}}</h4>
             <v-layout
               no-wrap
               row
@@ -52,18 +29,12 @@
               v-for="(option,index) in detail.poll.options"
               :key="index"
             >
-              <v-flex
-                xs4
-                class="desc"
-              >
+              <v-flex xs4 class="desc">
                 {{option.desc}}
                 <span class="grey--text">({{option.count}})</span>
               </v-flex>
               <v-flex xs6>
-                <div
-                  class="option-width"
-                  :style="{width:(option.count/detail.poll.sum)*100+'%'}"
-                ></div>
+                <div class="option-width" :style="{width:(option.count/detail.poll.sum)*100+'%'}"></div>
                 &nbsp;{{Math.floor((option.count/detail.poll.sum)*100)+'%'}}
               </v-flex>
               <v-flex xs2>
@@ -76,24 +47,17 @@
                 ></v-checkbox>
 
                 <!-- 多选时显示 -->
-                <v-checkbox
-                  v-if="detail.poll.multi"
-                  v-model="checkbox"
-                  :value="option.id"
-                ></v-checkbox>
+                <v-checkbox v-if="detail.poll.multi" v-model="checkbox" :value="option.id"></v-checkbox>
               </v-flex>
             </v-layout>
             <div class="d-f justify-center pt-3">
-              <v-btn color="info">投票</v-btn>
+              <v-btn color="info" @click="vote">投票</v-btn>
             </div>
           </v-container>
         </div>
 
         <div class="msg-footer ma-1 pt-5">
-          <div
-            class="d-f grey--text"
-            style="justify-content:flex-end;align-items:center;"
-          >
+          <div class="d-f grey--text" style="justify-content:flex-end;align-items:center;">
             <span style="display:inline-block;">{{detail.floor}}楼 {{detail.dateTime}}</span>
           </div>
         </div>
@@ -102,6 +66,7 @@
   </div>
 </template>
 <script>
+import { postVote } from "~/post";
 export default {
   name: "postdetail",
 
@@ -151,7 +116,18 @@ export default {
       };
     }
   },
-  methods: {}
+  methods: {
+    async vote() {
+      try {
+        await postVote(this.$route.params.id, Array.from(this.checkbox));
+        this.$snackbar({ text: "投票成功", color: "success" }).then(() => {
+          this.$router.go(0);
+        });
+      } catch (error) {
+        this.$log.debug(error.response);
+      }
+    }
+  }
 };
 </script>
 <style scoped>

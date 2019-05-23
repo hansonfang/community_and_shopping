@@ -41,109 +41,60 @@
   </div>
 </template>
 <script>
-// import { getNewsList } from "~/news";
+import { getNewsList, getHotNews } from "~/news";
 export default {
   name: "newsIndex",
-  async created(){
-try {
-  // const {data}=await getNewsList({});
-  // data.data.forEach(news => {
-  //   const d=news.publishTime.substr(0,news.publishTime.indexOf("T"));
-  //   const d_a=d.split("-");
-  //   const year=`${d_a[0]}-${d_a[1]}`;
-  //   const date=d_a[2];
-  //   this.news.push({
-  //     title:news.title,
-  //     detail:news.description,
-  //     year,
-  //     date,
-  //     id:news.id
-  //   })
-  // });
-} catch (error) {
-  this.$log.error(error)
-}
+  async created() {
+    try {
+      this.refreshNewsList();
+      const res = await getHotNews();
+      const hotNews = res.data.data;
+      hotNews.forEach(news => {
+        const d = news.publishTime.substr(0, news.publishTime.indexOf("T"));
+        const d_a = d.split("-");
+        const year = `${d_a[0]}-${d_a[1]}`;
+        const date = d_a[2];
+        this.hotNews.push({
+          date,
+          year,
+          detail: news.description,
+          image: news.images,
+          id: news.id
+        });
+      });
+    } catch (error) {
+      this.$log.error(error);
+    }
   },
   data() {
     return {
-      news: [
-        {
-          title: "2019中国（山东）在线教育及教育培训博览会",
-          date: "07",
-          year: "2019.2",
-          id: "00001",
-          detail:
-            " 2019中国（山东）在线教育及教育培训博览会将于5月31-6月2日在济南国际会展中心盛大召开。历经多年发展，累计1000余家品牌展商及各类在线教育产品，"
-        },
-        {
-          title: "2019中国（济南）孕婴童产业博览会",
-          date: "02",
-          year: "2019.2",
-          id: "00002",
-          detail:
-            "目前，中国正经历着第四次生育高峰，而母婴产品的市场也在蓬勃发展，2019年中国婴童行业的发展同样是机遇与挑战并存。中国孕婴童行业经过20年的发展"
-        },
-        {
-          title: "《天举三字语》是四书五经中的精华，是中华文化的结晶",
-          date: "29",
-          year: "2019.1",
-          id: "00003",
-          detail:
-            "刘联众先生的新三字经，是四书五经中的精华，是中华五千年历史文化提炼的结晶，是当代社会的先进文化的教课书。贪官看了会脸红耳赤，公务员读了"
-        },
-        {
-          title: "济南师范路小学家委会活动——学习雷锋，助人为乐",
-          date: "22",
-          year: "2019.01",
-          id: "00004",
-          detail:
-            "  每年的三月份是一个万物复苏，春暖花开的日子，同时三月份又让我们不禁想起我们的英雄雷锋（学雷锋活动日，所以2019年三月2014级二班"
-        },
-        {
-          title: "最是一年春好处 户外活动正当时",
-          date: "21",
-          year: "2019.01",
-          id: "00005",
-          detail:
-            " 等闲识得东风面，万紫千红总是春。阳春三月是万物开始生长发芽的季节，春天更是孩子们自由生长的季节，最是一年春好处，带孩子们在户外游戏，尽情感受春天"
-        },
-        {
-          title: "最是一年春好处——第二实验小学幼儿园师幼共成长 .",
-          date: "21",
-          year: "2019.01",
-          id: "00006",
-          detail:
-            " 春天是万物复苏的季节，在这充满生机勃勃的日子里，济南市莱芜二实小幼儿园的老师和孩子们一起探寻着春的脚步，在丰富多样的活动中，表达着对春天的热爱。"
-        }
-      ],
-      hotNews: [
-        {
-          date: "08/26",
-          year: "2018",
-          detail:
-            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
-          image: "https://picsum.photos/100/100?random",
-          id:"00007"
-        },
-        {
-          date: "05/21",
-          year: "2018",
-          detail:
-            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
-          image: "https://picsum.photos/100/100?random",
-          id:"00008"
-        },
-        {
-          date: "03/18",
-          year: "2018",
-          detail:
-            "近年来，大家应该感受到，愿意从教的人不多，可是，每年考教师资格证的人数却不少。真的是教师职业现在的吸引力增强了吗？",
-          image: "https://picsum.photos/100/100?random",
-          id:"00009"
-        }
-      ],
+      news: [],
+      hotNews: [],
       page: 1
     };
+  },
+  methods: {
+    async refreshNewsList() {
+      try {
+        const { data } = await getNewsList({});
+        this.news = [];
+        data.data.forEach(news => {
+          const d = news.publishTime.substr(0, news.publishTime.indexOf("T"));
+          const d_a = d.split("-");
+          const year = `${d_a[0]}-${d_a[1]}`;
+          const date = d_a[2];
+          this.news.push({
+            title: news.title,
+            detail: news.description,
+            year,
+            date,
+            id: news.id
+          });
+        });
+      } catch (error) {
+        this.$log.error(error);
+      }
+    }
   }
 };
 </script>

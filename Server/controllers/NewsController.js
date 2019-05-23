@@ -65,6 +65,28 @@ class NewsController {
       };
     }
   }
+  static async setCarousel(ctx) {
+    const { newsID, carouselID } = ctx.request.body;
+    try {
+      const news = await NewsModel.getNewsMainImage(newsID);
+      const { images } = news;
+      const res = await NewsModel.setCarousel(carouselID, images, newsID);
+      ctx.response.status = 200;
+      ctx.body = {
+        code: 200,
+        message: "更新首页轮播图成功",
+        data: res
+      };
+    } catch (error) {
+      console.log("更新首页轮播图失败", error);
+      ctx.response.status = 500;
+      ctx.body = {
+        code: 500,
+        message: "更新首页轮播图失败",
+        data: error
+      };
+    }
+  }
   static async addSection(ctx) {
     const newsID = ctx.request.body.newsID;
     console.log(newsID);
@@ -140,7 +162,10 @@ class NewsController {
     const newsID = ctx.request.body.newsID;
     try {
       const stream = fs.createReadStream(file.path);
-      const result = await ossClient.putStream(`headlineimage/1/${file.name}`, stream);
+      const result = await ossClient.putStream(
+        `headlineimage/1/${file.name}`,
+        stream
+      );
       const imageURL = result.url;
       NewsModel.setHeadlineImage(newsID, imageURL);
       ctx.response.status = 200;
@@ -165,7 +190,10 @@ class NewsController {
     const sectionID = ctx.request.body.sectionID;
     try {
       const stream = fs.createReadStream(file.path);
-      const result = await ossClient.putStream(`headlineimage/${newsID}/${sectionID}/${file.name}`, stream);
+      const result = await ossClient.putStream(
+        `headlineimage/${newsID}/${sectionID}/${file.name}`,
+        stream
+      );
       const imageURL = result.url;
       NewsModel.setSectionImage(sectionID, imageURL);
       ctx.response.status = 200;

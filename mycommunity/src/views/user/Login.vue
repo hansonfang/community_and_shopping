@@ -182,8 +182,8 @@ export default {
   data() {
     return {
       emailSwitch: true,
-      username: "",
-      password: "",
+      username: "hanson",
+      password: "123a1",
       autoLoginCheckbox: false,
       hasCaptcha: false,
       login_captcha: "",
@@ -257,10 +257,13 @@ export default {
               .catch(e => {
                 this.$log.error("获取用户信息失败", e.response);
               });
-            this.$snackbar({ text: "登录成功 正在跳转首页..." }).then(() => {
-              this.$log.debug("snackbar close!");
+            this.$snackbar({
+              text: "登录成功 正在跳转首页...",
+              duration: "1000"
+            }).then(() => {
               this.$router.push({ name: "index" });
             });
+            this.$log.debug("snackbar close!");
           })
           .catch(e => {
             this.$log.error(e.response);

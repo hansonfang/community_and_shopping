@@ -31,7 +31,13 @@ export const constantRouterMap = [
   {
     path: "/setting",
     component: Layout,
-    children: [{ path: "/", name: "setting", component: () => import("@/views/setting/index") }],
+    children: [
+      {
+        path: "/",
+        name: "setting",
+        component: () => import("@/views/setting/index")
+      }
+    ],
     hidden: true
   },
   {

@@ -18,24 +18,24 @@
           </v-layout>
         </v-flex>
       </v-layout>
-
-      <div class="text-xs-center">
-        <v-pagination v-model="page" :length="15" :total-visible="7"></v-pagination>
-      </div>
     </v-container>
   </div>
 </template>
 <script>
+import { getAnnouncement } from "~/information";
 export default {
   name: "propertyA",
   data() {
     return {
-      announces: [],
-      page: 1
+      announces: []
     };
   },
   created() {
-    this.changeAnnounceList(this.$route.name);
+    try {
+      this.changeAnnounceList(this.$route.name);
+    } catch (error) {
+      this.$log.error(error);
+    }
   },
   watch: {
     $route(to) {
@@ -43,8 +43,11 @@ export default {
     }
   },
   methods: {
-    changeAnnounceList(name) {
+    async changeAnnounceList(name) {
       if (name === "property") {
+        const res = await getAnnouncement("proper");
+        const data = res.data;
+        this.$log.debug(data);
         this.announces = [
           {
             date: "2018/08/23",
@@ -72,6 +75,9 @@ export default {
           }
         ];
       } else if (name === "community") {
+        const res = await getAnnouncement("community");
+        const data = res.data;
+        this.$log.debug(data);
         this.announces = [
           {
             date: "2019/01/20",
@@ -108,7 +114,7 @@ export default {
   font-family: Roboto Mono;
   font-size: 14px;
   color: #5f6368;
-  margin-right:30px;
+  margin-right: 30px;
 }
 .announce-title-wrapper {
   flex-shrink: 0;

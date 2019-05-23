@@ -1,13 +1,10 @@
 <template>
   <div class="mx-4">
-    <el-row
-      :gutter="10"
-      class="mb-1"
-    >
+    <el-row :gutter="10" class="mb-1">
       <el-col :span="4">
         <h3 class="text-right">主题图:</h3>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="16">
         <el-image
           v-if="headlineImage"
           :src="headlineImage"
@@ -23,16 +20,23 @@
           @change="handleUploadImage($event)"
         >
       </el-col>
+      <el-col :span="4" class="flex flex-column align-center">
+        <div class="mb-1">
+          <el-radio v-model="carouselID" label="1">1</el-radio>
+          <el-radio v-model="carouselID" label="2">2</el-radio>
+          <el-radio v-model="carouselID" label="3">3</el-radio>
+          <el-radio v-model="carouselID" label="4">4</el-radio>
+        </div>
+
+        <el-button type="success" @click="setCarousel">设为首页轮播图</el-button>
+      </el-col>
     </el-row>
     <el-row :gutter="10">
       <el-col :span="4">
         <h3 class="text-right">标题:</h3>
       </el-col>
       <el-col :span="20">
-        <el-input
-          v-model="title"
-          placeholder="请输入内容"
-        ></el-input>
+        <el-input v-model="title" placeholder="请输入内容"></el-input>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -40,10 +44,7 @@
         <h3 class="text-right">描述:</h3>
       </el-col>
       <el-col :span="20">
-        <el-input
-          v-model="desc"
-          placeholder="请输入内容"
-        ></el-input>
+        <el-input v-model="desc" placeholder="请输入内容"></el-input>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -51,17 +52,10 @@
         <h3 class="text-right">作者:</h3>
       </el-col>
       <el-col :span="20">
-        <el-input
-          v-model="author"
-          placeholder="请输入内容"
-        ></el-input>
+        <el-input v-model="author" placeholder="请输入内容"></el-input>
       </el-col>
     </el-row>
-    <el-row
-      :gutter="10"
-      v-for="(section,index) in sections"
-      :key="section.id"
-    >
+    <el-row :gutter="10" v-for="(section,index) in sections" :key="section.id">
       <el-col :span="4">
         <h3 class="text-right">段落{{index+1}}:</h3>
       </el-col>
@@ -72,20 +66,13 @@
           placeholder="请输入内容"
           v-model="sections[index].content"
           class="mb-1"
-        >
-        </el-input>
-
+        ></el-input>
       </el-col>
-      <el-col
-        :span="5"
-        @click.native="pickImage(index)"
-      >
-        <el-button
-          class="block"
-          type="primary"
-          plain
-          v-if="!section.image"
-        >添加图片<i class="el-icon-upload el-icon--right"></i></el-button>
+      <el-col :span="5" @click.native="pickImage(index)">
+        <el-button class="block" type="primary" plain v-if="!section.image">
+          添加图片
+          <i class="el-icon-upload el-icon--right"></i>
+        </el-button>
         <el-image
           v-if="section.image"
           :src="section.image"
@@ -105,24 +92,14 @@
 
     <el-row class="mb-2">
       <el-col :span="24">
-        <el-button
-          class="block"
-          type="success"
-          plain
-          @click="addSection()"
-        >
+        <el-button class="block" type="success" plain @click="addSection()">
           <i class="el-icon-plus"></i>
           添加段落
         </el-button>
       </el-col>
     </el-row>
     <div class="text-center mb-2">
-      <el-button
-        type="primary"
-        @click="submit()"
-      >
-        提交
-      </el-button>
+      <el-button type="primary" @click="submit()">提交</el-button>
     </div>
   </div>
 </template>
@@ -134,7 +111,8 @@ import {
   addSection,
   createNews,
   deleteNews,
-  updateContent
+  updateContent,
+  setCarousel
 } from "@/api/news";
 export default {
   name: "newsCreate",
@@ -144,7 +122,7 @@ export default {
       if (this.newsID) {
         const data = (await getNewsDetails(this.newsID)).data;
         this.isUpdateStatus = true;
-        this.headlineImage = data.images;
+        this.headlineImage = data.images || this.$store.getters.noImg;
         this.title = data.title;
         this.desc = data.description;
         this.author = data.author;
@@ -178,15 +156,15 @@ export default {
   },
   data() {
     return {
-      headlineImage:
-        "https://raw.githubusercontent.com/hansonfang/library_management/master/assets/no-image-available2.jpg",
+      headlineImage: this.$store.getters.noImg,
       title: "",
       desc: "",
       author: "",
       isUpdateStatus: false,
       hasSubmit: false,
       sections: [],
-      newsID: ""
+      newsID: "",
+      carouselID: 0
     };
   },
   methods: {
@@ -226,6 +204,16 @@ export default {
         }
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    async setCarousel() {
+      if (this.carouselID !== 0) {
+        try {
+          await setCarousel(this.newsID, this.carouselID);
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     async handleUploadImage(e) {
@@ -281,7 +269,4 @@ export default {
 };
 </script>
 <style scoped>
-/deep/.section-image .el-image__inner {
-  height: unset !important;
-}
 </style>

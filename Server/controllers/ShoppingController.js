@@ -67,5 +67,25 @@ class ShoppingController {
       console.log(error);
     }
   }
+  static async getGoodsList(ctx) {
+    const data = ctx.params;
+    try {
+      const res = await ShoppingModel.getGoodsList(data);
+      ctx.response.status = 200;
+      ctx.body = {
+        code: 200,
+        message: "获取商品列表成功",
+        data: res
+      };
+    } catch (error) {
+      console.error(error);
+      ctx.response.status = 500;
+      ctx.body = {
+        code: 500,
+        message: "获取商品列表失败",
+        data: error
+      };
+    }
+  }
 }
 module.exports = ShoppingController;

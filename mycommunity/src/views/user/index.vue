@@ -18,7 +18,7 @@
     <div class="content-wrapper">
       <v-tabs fixed-tabs centered>
         <v-tab to="activities">
-          <v-icon size="18" class="mr-2">fas fa-shoe-prints</v-icon>动态
+          <v-icon size="18" class="mr-2">fas fa-shopping-bag</v-icon>我的购物
         </v-tab>
         <v-tab to="info">
           <v-icon size="18" class="mr-2">fas fa-user-cog</v-icon>个人资料
@@ -57,8 +57,8 @@ export default {
 };
 </script>
 <style scoped>
-.v-tabs__item--active .fa-shoe-prints {
-  color: #1e88e5;
+.v-tabs__item--active .fa-shopping-bag {
+  color: #dd0000;
 }
 .v-tabs__item--active .fa-clipboard-list {
   color: #00b92e;

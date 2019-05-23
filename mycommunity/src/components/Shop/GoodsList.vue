@@ -26,26 +26,14 @@
 
           <!-- 商品列表 -->
           <v-layout row wrap class="goods-list">
-            <v-flex xs12 sm6 md4 lg3 v-for="(item,index) in goods" :key="index">
+            <v-flex xs12 sm6 md4 v-for="(item,index) in goods" :key="index">
               <v-hover>
-                <v-card slot-scope="{ hover }" class="mx-auto good-card">
+                <v-card class="mx-auto good-card">
                   <router-link :to="`goods?goods_id=${item.id}&category=${fromView}`">
                     <v-img :aspect-ratio="5/6" :src="item.image" contain min-height="200"></v-img>
                   </router-link>
 
                   <v-card-text class="pt-4" style="position: relative;">
-                    <v-btn
-                      absolute
-                      color="orange lighten-1"
-                      class="white--text"
-                      fab
-                      right
-                      top
-                      @click="addCart(item.id,$event)"
-                      small
-                    >
-                      <v-icon>fas fa-plus</v-icon>
-                    </v-btn>
                     <h3 class="body-1 font-weight-light black--text mb-1 goods-title">{{item.title}}</h3>
                     <h4 class="group-price red--text headline">
                       <span class="subheading">￥</span>
@@ -59,24 +47,6 @@
                         <span class="indigo--text darken-3 font-weight-bold">{{item.sales}}</span>件已售出
                       </span>
                     </div>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out mask darken-2 v-card--reveal display-3 white--text"
-                        style
-                      >
-                        <v-btn color="red" round dark class="font-weight-bold" v-if="!service">
-                          立刻拼购
-                          <span class="body-2">￥</span>
-                          {{item.groupPrice}}
-                        </v-btn>
-                        <v-btn round>
-                          单价购买
-                          <span class="body-2">￥</span>
-                          {{item.singlePrice}}
-                        </v-btn>
-                      </div>
-                    </v-expand-transition>
                   </v-card-text>
                 </v-card>
               </v-hover>
@@ -86,7 +56,7 @@
         <v-flex xs1 lg2></v-flex>
       </v-layout>
       <v-layout justify-center>
-        <v-pagination v-model="page" :length="15" :total-visible="7"></v-pagination>
+        <v-pagination v-model="page" :length="15" :total-visible="7" @input="changePage"></v-pagination>
       </v-layout>
     </v-container>
   </div>
@@ -135,6 +105,9 @@ export default {
       //成功回调
       // this.bus.$emit("addCart");
       this.$snackbar({ text: "成功添加购物车" });
+    },
+    changePage(v) {
+      this.$emit("changePage", v);
     }
   }
 };
