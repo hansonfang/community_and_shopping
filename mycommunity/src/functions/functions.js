@@ -3,7 +3,7 @@ function formatTime(t) {
   let unixTimestamp = new Date(unixtime);
   let Y = unixTimestamp.getFullYear();
   let M =
-    unixTimestamp.getMonth() + 1 > 10
+    unixTimestamp.getMonth() + 1 >= 10
       ? unixTimestamp.getMonth() + 1
       : "0" + (unixTimestamp.getMonth() + 1);
   let D =
